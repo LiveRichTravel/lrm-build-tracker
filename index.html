@@ -3,471 +3,485 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LRM Build Sheet — Daily Tracker</title>
+<title>LRM Build Tracker</title>
 <style>
 :root{
-  --bg:#1a1a1a; --bg-card:#232323; --bg-card-soft:#2a2a2a;
-  --text:#f5f5f4; --text-secondary:#a8a8a4; --border:rgba(255,255,255,0.10);
-  --success-border:#97C459; --success-text:#C0DD97; --success-bg-soft:#1f2e1a;
-  --info-border:#85B7EB; --info-text:#B5D4F4;
-  --purple-border:#7F77DD; --purple-text:#CECBF6;
-  --amber-text:#FAC775; --pink-text:#F4C0D1;
+  --bg:#0c0c0f; --text:#f4f4f3; --muted:#a6a6a8; --faint:#6d6d72;
+  --glass:rgba(255,255,255,0.045); --glass-2:rgba(255,255,255,0.07); --stroke:rgba(255,255,255,0.10); --stroke-2:rgba(255,255,255,0.06);
+  --green:#9bd459; --green-t:#c7e69e; --amber:#f7c66e; --blue:#86bdf2; --blue-t:#bcdcfb; --purple:#9a8cf0; --purple-t:#cfc8f8; --pink:#f3a8c4; --red:#f29b9b;
+  --grad:linear-gradient(100deg,#cfc8f8 0%,#f3a8c4 48%,#86bdf2 100%);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.55;padding:32px 20px}
-.container{max-width:880px;margin:0 auto}
-.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
-.brand{background:linear-gradient(90deg,#CECBF6 0%,#F4C0D1 50%,#85B7EB 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;font-size:22px}
-.header-meta{text-align:right;font-size:11px;color:var(--text-secondary)}
-h1{font-size:26px;font-weight:500;letter-spacing:-0.01em;margin-bottom:4px}
-h2{font-size:16px;font-weight:500;margin:28px 0 12px}
-.subtitle{font-size:13px;color:var(--text-secondary)}
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:16px}
-.rules-card{border-left:3px solid var(--amber-text)}
-.rules-card b{color:var(--amber-text)}
-.rules-card p{font-size:13px;color:var(--text-secondary);margin-bottom:6px}
-.rules-card p:last-child{margin-bottom:0}
-.mgr-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.mgr-chip{border:1px solid var(--border);background:var(--bg-card);color:var(--text);border-radius:999px;padding:7px 16px;font-size:13px;cursor:pointer;transition:all .15s}
-.mgr-chip:hover{border-color:var(--purple-border)}
-.mgr-chip.sel{background:var(--purple-border);color:#fff;border-color:var(--purple-border);font-weight:500}
-.mgr-models{font-size:12px;color:var(--text-secondary);margin:6px 0 0}
-.mgr-note{font-size:12px;color:var(--amber-text);margin-top:4px}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
-.stat-card.success{border-color:var(--success-border)}
-.stat-card.purple{border-color:var(--purple-border)}
-.stat-card.info{border-color:var(--info-border)}
-.stat-card .label{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary)}
-.stat-card .big{font-size:28px;font-weight:500;letter-spacing:-0.02em;margin:2px 0}
-.stat-card .sub{font-size:12px;color:var(--text-secondary)}
-.progress-bar{height:8px;background:var(--bg-card-soft);border-radius:4px;overflow:hidden;margin-top:8px}
-.progress-fill{height:100%;background:var(--success-border);border-radius:4px;transition:width .4s}
-.build-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px}
-.build-card.done{border-color:var(--success-border)}
-.build-card.today{border-color:var(--amber-text);box-shadow:0 0 0 1px var(--amber-text)}
-.build-card.locked{opacity:.55}
-.build-head{display:flex;align-items:flex-start;gap:12px}
-.build-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
-.build-title-wrap{flex:1;min-width:0}
-.build-title{font-size:15px;font-weight:500}
-.build-does{font-size:12.5px;color:var(--text-secondary);margin-top:2px}
-.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.badge{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1px solid var(--border);color:var(--text-secondary)}
-.badge.safe{color:var(--success-text);border-color:rgba(151,196,89,.4)}
-.badge.sends{color:#F7C1C1;border-color:rgba(247,193,193,.4)}
-.badge.sched{color:var(--info-text);border-color:rgba(133,183,235,.4)}
-.badge.deep{color:var(--purple-text);border-color:rgba(127,119,221,.4)}
-.badge.caption{color:var(--amber-text);border-color:rgba(250,199,117,.4)}
-.build-status{font-size:12px;flex-shrink:0;text-align:right}
-.build-status .done-mark{color:var(--success-text);font-weight:500}
-.build-status .by{color:var(--text-secondary);font-size:11px}
-.build-body{margin-top:12px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
-.prompt-box{background:var(--bg-card-soft);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--text-secondary);position:relative}
-.prompt-box .pb-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;color:var(--text-secondary)}
-.prompt-box .pb-text{color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap}
-.copy-btn{position:absolute;top:10px;right:10px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer}
-.copy-btn:hover{color:var(--text);border-color:var(--purple-border)}
-.endpoint-line{font-size:11.5px;color:var(--text-secondary);margin-top:8px}
-.endpoint-line code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--info-text);font-size:11px}
-.caption-warning{background:#2e2415;border-left:3px solid var(--amber-text);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--amber-text);margin-top:10px}
-.sends-warning{background:#2e1a1a;border-left:3px solid #F7C1C1;border-radius:10px;padding:10px 14px;font-size:12px;color:#F7C1C1;margin-top:10px}
-.checkoff-form{margin-top:12px;background:var(--bg-card-soft);border-radius:10px;padding:14px}
-.checkoff-form label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary);margin-bottom:6px}
-.checkoff-form textarea{width:100%;min-height:110px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:10px 12px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical}
-.checkoff-form textarea:focus{outline:none;border-color:var(--purple-border)}
-.file-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
-.file-row input[type=file]{font-size:12px;color:var(--text-secondary)}
-.char-count{font-size:11px;color:var(--text-secondary);margin-top:4px}
-.char-count.ok{color:var(--success-text)}
-.submit-btn{margin-top:12px;background:var(--success-border);color:#173404;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:600;cursor:pointer}
-.submit-btn:disabled{opacity:.4;cursor:not-allowed}
-.form-msg{font-size:12px;margin-top:8px}
-.form-msg.err{color:#F7C1C1}
-.form-msg.ok{color:var(--success-text)}
-.proof-view{margin-top:10px;background:var(--success-bg-soft);border-left:3px solid var(--success-border);border-radius:10px;padding:10px 14px;font-size:12px}
-.proof-view .pv-meta{color:var(--success-text);font-weight:500;margin-bottom:4px}
-.proof-view pre{white-space:pre-wrap;color:var(--text-secondary);font-size:11.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;max-height:160px;overflow-y:auto}
-.proof-view a{color:var(--info-text)}
-.board-wrap{overflow-x:auto}
-table.board{width:100%;border-collapse:collapse;font-size:12px}
-table.board th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary);font-weight:500;text-align:center;padding:8px 4px;border-bottom:1px solid var(--border)}
-table.board th:first-child{text-align:left}
-table.board td{padding:8px 4px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06)}
-table.board td:first-child{text-align:left;font-weight:500;white-space:nowrap}
-.cell{display:inline-block;width:22px;height:22px;border-radius:6px;line-height:22px;font-size:11px}
-.cell.done{background:rgba(151,196,89,.2);color:var(--success-text);border:1px solid rgba(151,196,89,.5)}
-.cell.pending{background:var(--bg-card-soft);color:#555;border:1px solid rgba(255,255,255,.06)}
-.board-count{font-variant-numeric:tabular-nums;color:var(--text-secondary)}
-.feed-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12.5px;cursor:pointer}
-.feed-row:last-child{border-bottom:none}
-.feed-avatar{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;font-size:13px}
-.feed-info{flex:1;min-width:0}
-.feed-name{font-weight:500}
-.feed-meta{color:var(--text-secondary);font-size:11.5px}
-.feed-date{color:var(--text-secondary);font-size:11px;white-space:nowrap}
-.feed-proof{display:none;padding:0 0 12px 44px}
-.feed-proof.open{display:block}
-details.ref{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:12px}
-details.ref summary{cursor:pointer;font-size:14px;font-weight:500}
-details.ref .ref-body{margin-top:10px;font-size:12.5px;color:var(--text-secondary)}
-details.ref .ref-item{padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-details.ref .ref-item:last-child{border-bottom:none}
-details.ref .ref-item b{color:var(--text);font-weight:500}
-.footer{text-align:center;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--text-secondary)}
-.loading{text-align:center;color:var(--text-secondary);padding:30px;font-size:13px}
-.today-banner{background:var(--success-bg-soft);border-left:3px solid var(--success-border);border-radius:12px;padding:14px 18px;margin-bottom:16px;font-size:13px}
-.today-banner b{color:var(--text)}
-.today-banner .tb-sub{color:var(--success-text)}
-@media (max-width:880px){.stat-grid{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:640px){
-  body{padding:20px 14px;font-size:13px}
-  .header-top{flex-direction:column;align-items:flex-start;gap:6px}
-  .header-meta{text-align:left}
-  h1{font-size:22px}
-  .stat-grid{grid-template-columns:1fr;gap:10px}
-  .stat-card .big{font-size:24px}
-  .card{padding:14px 16px}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;position:relative;overflow-x:hidden}
+/* animated gradient mesh background */
+.mesh{position:fixed;inset:0;z-index:-2;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.32;animation:float 22s ease-in-out infinite}
+.b1{width:520px;height:520px;background:#6f5bd4;top:-140px;left:-120px}
+.b2{width:460px;height:460px;background:#d36f9e;top:30%;right:-160px;animation-delay:-6s}
+.b3{width:420px;height:420px;background:#4f86c6;bottom:-160px;left:25%;animation-delay:-12s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.08)}66%{transform:translate(-30px,40px) scale(.95)}}
+.grain{position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.03),transparent 60%);pointer-events:none}
+
+.shell{max-width:1180px;margin:0 auto;padding:0 20px 70px}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;margin:0 -20px;padding:13px 20px;background:rgba(12,12,15,0.55);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-bottom:1px solid var(--stroke-2);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-weight:700;font-size:20px;letter-spacing:-.01em;background:var(--grad);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:200% center}}
+.nav-right{display:flex;align-items:center;gap:14px;font-size:12.5px}
+.nav-link{color:var(--muted);text-decoration:none;cursor:pointer}.nav-link:hover{color:var(--text)}
+.who-pill{display:flex;align-items:center;gap:8px;background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:5px 10px 5px 12px;cursor:pointer;backdrop-filter:blur(8px)}
+.who-pill .dot{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px}
+.who-pill .chev{color:var(--faint);font-size:9px}
+
+/* hero */
+.hero{padding:46px 0 26px}
+.hero .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-t);font-weight:600;margin-bottom:14px}
+.hero h1{font-size:38px;font-weight:600;letter-spacing:-.025em;line-height:1.08}
+.hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .lede{font-size:15.5px;color:var(--muted);margin-top:14px;max-width:660px}
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.chip{font-size:11.5px;color:var(--muted);background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:6px 13px;backdrop-filter:blur(8px)}
+.chip b{color:var(--text);font-weight:600}
+
+/* glass card base */
+.glass{background:var(--glass);border:1px solid var(--stroke);border-radius:20px;backdrop-filter:blur(20px) saturate(130%);-webkit-backdrop-filter:blur(20px) saturate(130%);box-shadow:0 10px 40px rgba(0,0,0,.28)}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+.sec{margin-top:42px}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.sec-h h2{font-size:20px;font-weight:600;letter-spacing:-.01em}
+.sec-h .sub{font-size:12.5px;color:var(--muted)}
+
+/* how it works */
+.how{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.step{padding:18px}
+.step .n{width:30px;height:30px;border-radius:9px;background:var(--grad);color:#1a1330;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.step h4{font-size:14px;font-weight:600;margin-bottom:5px}
+.step p{font-size:12.5px;color:var(--muted)}
+.step code{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--blue-t);background:rgba(134,189,242,.12);padding:1px 6px;border-radius:5px}
+
+/* pick */
+.pickbar{padding:18px 20px}
+.pb-label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:12px}
+.mgr-row{display:flex;flex-wrap:wrap;gap:9px}
+.mgr-chip{border:1px solid var(--stroke);background:rgba(255,255,255,.03);color:var(--text);border-radius:999px;padding:9px 17px;font-size:13px;cursor:pointer;transition:.18s}
+.mgr-chip:hover{border-color:var(--purple);transform:translateY(-2px);background:rgba(154,140,240,.12)}
+.mgr-chip.sel{background:var(--grad);color:#1a1330;border-color:transparent;font-weight:700}
+.mgr-models{font-size:12.5px;color:var(--muted);margin-top:13px}.mgr-models b{color:var(--text);font-weight:600}
+.mgr-note{font-size:12.5px;color:var(--amber);margin-top:6px}
+
+/* dashboard */
+.dash{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px}
+.dcard{padding:20px 22px;position:relative;overflow:hidden}
+.dcard .glow{position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;filter:blur(50px);opacity:.5}
+.dcard.g1 .glow{background:#9bd459}.dcard.g2 .glow{background:#86bdf2}.dcard.g3 .glow{background:#9a8cf0}
+.dcard .label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);position:relative}
+.dcard .big{font-size:34px;font-weight:600;letter-spacing:-.02em;margin:5px 0;position:relative}
+.dcard .small{font-size:12.5px;color:var(--muted);position:relative}
+.pbar{height:9px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;margin-top:11px;position:relative}
+.pbar>i{display:block;height:100%;background:linear-gradient(90deg,#9bd459,#c7e69e);border-radius:6px;transition:width .6s cubic-bezier(.2,.7,.2,1);position:relative}
+.pbar>i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);transform:translateX(-100%);animation:sweep 2.4s infinite}
+@keyframes sweep{to{transform:translateX(200%)}}
+
+/* spotlight */
+.spot{margin-top:14px;padding:24px;display:none;position:relative;overflow:hidden}
+.spot.show{display:block}
+.spot::before{content:"";position:absolute;top:-60px;left:-30px;width:220px;height:220px;border-radius:50%;background:var(--amber);filter:blur(80px);opacity:.16}
+.spot.done-state::before{background:var(--green)}
+.spot .kicker{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);font-weight:700;position:relative}
+.spot.done-state .kicker{color:var(--green-t)}
+.spot h3{font-size:25px;font-weight:600;letter-spacing:-.01em;margin:7px 0 5px;position:relative}
+.spot .does{font-size:13.5px;color:var(--muted);max-width:700px;position:relative}
+
+/* builds */
+.builds{display:flex;flex-direction:column;gap:13px}
+.bcard{padding:18px 20px;transition:transform .2s,box-shadow .2s,border-color .2s}
+.bcard:hover{transform:translateY(-2px);box-shadow:0 16px 50px rgba(0,0,0,.34)}
+.bcard.done{border-color:rgba(155,212,89,.4)}
+.bcard.today{border-color:rgba(247,198,110,.55);box-shadow:0 0 0 1px rgba(247,198,110,.4),0 16px 50px rgba(0,0,0,.34)}
+.bcard.locked{opacity:.45}
+.bhead{display:flex;align-items:flex-start;gap:14px}
+.bnum{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
+.btw{flex:1;min-width:0}
+.btitle{font-size:16px;font-weight:600}
+.bdoes{font-size:13px;color:var(--muted);margin-top:3px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.badge{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px;border:1px solid var(--stroke);color:var(--muted)}
+.badge.safe{color:var(--green-t);border-color:rgba(155,212,89,.4)}
+.badge.sends{color:var(--red);border-color:rgba(242,155,155,.45);background:rgba(242,155,155,.08)}
+.badge.sched{color:var(--blue-t);border-color:rgba(134,189,242,.4)}
+.badge.deep{color:var(--purple-t);border-color:rgba(154,140,240,.4)}
+.badge.caption{color:var(--amber);border-color:rgba(247,198,110,.4)}
+.bstatus{flex-shrink:0;text-align:right;font-size:12px}
+.bstatus .ok{color:var(--green-t);font-weight:600}.bstatus .dt{color:var(--faint);font-size:11px}
+.bstatus .tdy{color:var(--amber);font-weight:700}.bstatus .lk{color:var(--faint)}
+.skill-btn{display:inline-flex;align-items:center;gap:7px;margin-top:12px;background:rgba(154,140,240,.14);border:1px solid rgba(154,140,240,.4);color:var(--purple-t);border-radius:10px;padding:8px 14px;font-size:12.5px;font-weight:600;text-decoration:none;transition:.15s}
+.skill-btn:hover{background:rgba(154,140,240,.24);transform:translateY(-1px)}
+.skill-btn svg{width:14px;height:14px}
+
+.bbody{margin-top:16px;border-top:1px solid var(--stroke-2);padding-top:16px}
+.run{background:rgba(0,0,0,.22);border:1px solid var(--stroke-2);border-radius:14px;padding:16px 18px}
+.run .rt{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:13px}
+.run ol{list-style:none;counter-reset:r;display:flex;flex-direction:column;gap:12px}
+.run li{counter-increment:r;position:relative;padding-left:34px;font-size:13px}
+.run li::before{content:counter(r);position:absolute;left:0;top:-1px;width:23px;height:23px;border-radius:8px;background:var(--glass-2);border:1px solid var(--stroke);color:var(--text);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.run li .h{font-weight:600}.run li .d{color:var(--muted);display:block;margin-top:2px;font-size:12.5px}
+.run code{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--blue-t);background:rgba(134,189,242,.12);padding:1px 6px;border-radius:5px}
+.run .pill-skill{color:var(--purple-t);font-weight:700}
+
+.prompt-box{margin-top:12px;background:rgba(0,0,0,.4);border:1px solid var(--stroke);border-radius:12px;padding:14px 14px 14px 16px;position:relative}
+.prompt-box .pl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:6px}
+.prompt-box .pt{color:#e9f1e1;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;white-space:pre-wrap;line-height:1.5;padding-right:74px}
+.prompt-box .hl{color:var(--amber);font-weight:700}
+.copy{position:absolute;top:12px;right:12px;background:var(--grad);border:none;color:#1a1330;border-radius:8px;padding:6px 14px;font-size:11.5px;font-weight:700;cursor:pointer}
+.copy:hover{filter:brightness(1.07)}
+.endpoint{font-size:11.5px;color:var(--muted);margin-top:10px}.endpoint code{font-family:ui-monospace,Menlo,monospace;color:var(--blue-t);font-size:11px}
+.warn{border-radius:12px;padding:11px 14px;font-size:12.5px;margin-top:12px;line-height:1.5}
+.warn.cap{background:rgba(247,198,110,.1);border-left:3px solid var(--amber);color:var(--amber)}
+.warn.snd{background:rgba(242,155,155,.1);border-left:3px solid var(--red);color:var(--red)}
+.warn b{font-weight:700}
+
+.form{margin-top:16px;background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:14px;padding:18px}
+.form .fl{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:8px;font-weight:600}
+.form textarea{width:100%;min-height:120px;background:rgba(0,0,0,.4);border:1px solid var(--stroke);border-radius:10px;color:var(--text);padding:12px 14px;font-size:13px;font-family:ui-monospace,Menlo,monospace;resize:vertical;line-height:1.5}
+.form textarea:focus{outline:none;border-color:var(--purple)}
+.cc{font-size:11px;color:var(--faint);margin-top:6px}.cc.ok{color:var(--green-t)}
+.filerow{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.filerow input[type=file]{font-size:12px;color:var(--muted)}
+.submit{margin-top:16px;background:linear-gradient(90deg,#9bd459,#7fc04a);color:#16330a;border:none;border-radius:11px;padding:11px 26px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s}
+.submit:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.submit:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.fmsg{font-size:12.5px;margin-top:10px}.fmsg.err{color:var(--red)}.fmsg.ok{color:var(--green-t)}
+.proof{margin-top:14px;background:rgba(155,212,89,.08);border-left:3px solid var(--green);border-radius:12px;padding:12px 16px;font-size:12.5px}
+.proof .pm{color:var(--green-t);font-weight:600;margin-bottom:6px}
+.proof pre{white-space:pre-wrap;color:var(--muted);font-size:12px;font-family:ui-monospace,Menlo,monospace;max-height:180px;overflow-y:auto}
+.proof a{color:var(--blue-t)}
+
+.board-wrap{padding:8px;overflow-x:auto}
+table.board{width:100%;border-collapse:collapse;font-size:12px;min-width:680px}
+table.board th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;text-align:center;padding:12px 6px;border-bottom:1px solid var(--stroke)}
+table.board th:first-child{text-align:left;padding-left:14px}
+table.board td{padding:9px 6px;text-align:center;border-bottom:1px solid var(--stroke-2)}
+table.board tr:last-child td{border-bottom:none}
+table.board td:first-child{text-align:left;font-weight:600;white-space:nowrap;padding-left:14px}
+table.board tr:hover td{background:rgba(255,255,255,.03)}
+.cell{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;font-size:11px}
+.cell.done{background:rgba(155,212,89,.22);color:var(--green-t);border:1px solid rgba(155,212,89,.5)}
+.cell.pending{background:rgba(255,255,255,.04);color:#4a4a4e;border:1px solid var(--stroke-2)}
+.cnt{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600}
+
+.feed{padding:6px 18px}
+.frow{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--stroke-2);font-size:13px;cursor:pointer;align-items:center}
+.frow:last-child{border-bottom:none}
+.fav{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:14px}
+.finfo{flex:1;min-width:0}.fname{font-weight:600}.fmeta{color:var(--muted);font-size:12px;margin-top:1px}
+.fdate{color:var(--faint);font-size:11.5px;white-space:nowrap}
+.fproof{display:none;padding:0 0 14px 50px}.fproof.open{display:block}
+
+details.ref{padding:16px 20px;margin-bottom:12px}
+details.ref summary{cursor:pointer;font-size:14.5px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"+";color:var(--muted);font-size:18px}
+details.ref[open] summary::after{content:"\2013"}
+details.ref .rb{margin-top:12px;font-size:12.5px;color:var(--muted)}
+details.ref .ri{padding:8px 0;border-bottom:1px solid var(--stroke-2)}
+details.ref .ri:last-child{border-bottom:none}
+details.ref .ri b{color:var(--text);font-weight:600}
+
+.empty{text-align:center;color:var(--muted);padding:30px;font-size:13px}
+.foot{text-align:center;margin-top:48px;padding-top:22px;border-top:1px solid var(--stroke-2);font-size:12px;color:var(--faint)}
+
+@media (max-width:900px){.how{grid-template-columns:1fr 1fr}.dash{grid-template-columns:1fr}}
+@media (max-width:600px){
+  .shell{padding:0 14px 50px}.hero{padding:34px 0 20px}.hero h1{font-size:29px}
+  .how{grid-template-columns:1fr}.nav-right .nav-link{display:none}
 }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header-top">
-    <div class="brand">LiveRichMedia</div>
-    <div class="header-meta">OnlyFans Automation Build Sheet<br><span id="todayLabel"></span></div>
+<div class="mesh"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grain"></div>
+
+<div class="nav">
+  <div class="brand">LiveRichMedia</div>
+  <div class="nav-right">
+    <a class="nav-link" onclick="document.getElementById('how').scrollIntoView()">How it works</a>
+    <a class="nav-link" onclick="document.getElementById('board').scrollIntoView()">Team board</a>
+    <div class="who-pill" onclick="document.getElementById('pick').scrollIntoView()"><span class="dot" id="navDot" style="background:rgba(255,255,255,.1);color:#a6a6a8">?</span><span id="navWho">Pick your name</span><span class="chev">▼</span></div>
   </div>
+</div>
 
-  <h1>Build Tracker — one a day, with proof</h1>
-  <p class="subtitle">Every manager builds one automation per day on their own models, checks it off here, and pastes the proof. No proof, no check.</p>
+<div class="shell">
 
-  <h2>Ground rules</h2>
-  <div class="card rules-card">
-    <p><b>Safe vs. Sending.</b> Read-only tools: run freely. Anything that SENDS to fans drafts only and waits for human approval. No auto-send to fans, ever.</p>
-    <p><b>Caption boundary — hard line.</b> Claude studies top captions and WHY they worked (hook, structure, urgency, timing) and suggests non-explicit angles. Claude will NOT write erotic or sexually explicit wording. Breaking this can get the account banned.</p>
-    <p><b>One per day.</b> The page enforces it: one check-off per manager per day, each build only once, and check-offs can't be edited or deleted after submitting.</p>
-  </div>
-
-  <h2>Who are you?</h2>
-  <div class="card">
-    <div class="mgr-row" id="mgrRow"><span class="loading">Loading roster…</span></div>
-    <div class="mgr-models" id="mgrModels"></div>
-    <div class="mgr-note" id="mgrNote"></div>
-  </div>
-
-  <div id="todayBanner"></div>
-
-  <div class="stat-grid" id="statGrid"></div>
-
-  <h2>Tier 1 — The Core 10 <span style="font-size:12px;color:var(--text-secondary);font-weight:400">(build in this order)</span></h2>
-  <div id="buildList"><div class="loading">Loading…</div></div>
-
-  <h2>Team board</h2>
-  <div class="card board-wrap" id="boardCard"><div class="loading">Loading…</div></div>
-
-  <h2>Check-off log</h2>
-  <div class="card" id="feedCard"><div class="loading">Loading…</div></div>
-
-  <h2>Reference — what comes after Tier 1</h2>
-  <details class="ref">
-    <summary>Tier 2 — Explore these too (pick 1–2 that excite you)</summary>
-    <div class="ref-body">
-      <div class="ref-item"><b>Spender tier auto-sorter</b> — group every fan cheap/mid/whale so masses hit the right list · listTopFans, fan lists</div>
-      <div class="ref-item"><b>Refund &amp; chargeback watch ⏰</b> — flag disputes/refunds as they hit · transactions/chargebacks</div>
-      <div class="ref-item"><b>First-time buyer catcher</b> — spot a fan's first-ever purchase so chatters pounce · directMessages, transactions</div>
-      <div class="ref-item"><b>Tip-chaser</b> — fans who tip but don't buy PPV (and vice versa) · listTopFans</div>
-      <div class="ref-item"><b>Shift-over-shift comparison ⏰</b> — same chatter vs their own normal; catch slipping early · directMessages (deeper dig)</div>
-      <div class="ref-item"><b>Response-time check</b> — how long fans wait for a reply · directMessages (deeper dig)</div>
-      <div class="ref-item"><b>Unsent-content tracker</b> — flag what should've been unsent and wasn't · massMessages, queue</div>
-      <div class="ref-item"><b>Dead-conversation reviver</b> — fans who went quiet mid-chat, never closed · directMessages (deeper dig)</div>
-      <div class="ref-item"><b>Content gap finder</b> — what's selling that we're low on → ask model to shoot · listVaultMedia, massMessages</div>
-      <div class="ref-item"><b>OFTV / promo countdown prep</b> — pull what worked last promo · massMessages, getEarnings</div>
-      <div class="ref-item"><b>Holiday &amp; event calendar ⏰</b> — auto-remind ahead of holidays/paydays · Google Calendar + Slack</div>
-      <div class="ref-item"><b>Best-performing post finder</b> — which wall posts drove subs; repost winners · statisticsOverview</div>
-      <div class="ref-item"><b>Caption help — the RIGHT way</b> — study top captions, analyze WHY they worked, suggest non-explicit angles. <span style="color:var(--amber-text)">Hard rule: no erotic or explicit wording, study and structure only.</span> · massMessages</div>
-      <div class="ref-item"><b>Voice note → game plan</b> — speak it, get a clean written plan</div>
-      <div class="ref-item"><b>Daily viral-topics feed ⏰</b> — trending things to talk about, into Slack</div>
-      <div class="ref-item"><b>Shift summarizer</b> — auto-summarize a chatter's shift</div>
-      <div class="ref-item"><b>Model check-in drafts</b> — draft WhatsApp check-ins</div>
-      <div class="ref-item"><b>Model performance report</b> — the report you send each model</div>
-      <div class="ref-item"><b>Manager's morning briefing ⏰</b> — ALL her accounts in one card</div>
-      <div class="ref-item"><b>"What changed" detector</b> — model dropped? auto-compare to her best week, name what slacked</div>
-      <div class="ref-item"><b>Win-back list</b> — lapsed whales across all her models, ready to re-engage</div>
+  <div class="hero reveal">
+    <div class="eyebrow">OnlyFans automation · build sheet</div>
+    <h1>Build one automation a day.<br><span class="g">Prove it. Check it off.</span></h1>
+    <p class="lede">Each automation is now an installable skill. Add it to your Claude app once, then just say "run it" — no copying prompts. Build one a day on your own models, paste the real result here as proof, and the page locks it so it can't be faked.</p>
+    <div class="chips">
+      <span class="chip"><b>10</b> skills to install</span>
+      <span class="chip"><b>1</b> build per day</span>
+      <span class="chip">proof <b>required</b></span>
+      <span class="chip"><b>no</b> auto-send to fans</span>
+      <span class="chip">caption <b>boundary</b> enforced</span>
     </div>
-  </details>
-  <details class="ref">
-    <summary>Tier 3 — Slack / team-operations layer</summary>
-    <div class="ref-body">
-      <div class="ref-item"><b>Morning Slack sweep ⏰</b> — overnight @s, urgent or unanswered messages, newspaper-style · Slack read (safe)</div>
-      <div class="ref-item"><b>Unanswered-message catcher ⏰</b> — chatter question or model message sitting with no reply · Slack read (safe)</div>
-      <div class="ref-item"><b>Clock-out report check ⏰</b> — who didn't leave their end-of-shift report · Slack read (safe)</div>
-      <div class="ref-item"><b>Problem triage</b> — simple &amp; known → handle; real problem → flag, don't guess · draft-and-confirm</div>
-      <div class="ref-item"><b>Scheduled chatter check-ins ⏰</b> — "you good? need anything?" mid-shift · simple = auto-send OK</div>
-      <div class="ref-item"><b>Score-request reminders ⏰</b> — auto-ping chatters to send scores X min into shift</div>
-      <div class="ref-item"><b>Encouragement / morale pings ⏰</b> — positive note on a good shift, gentle nudge on a slow one</div>
-      <div class="ref-item"><b>Daily viral-topics drop ⏰</b> — trending topics into the team channel</div>
-      <div class="ref-item" style="color:var(--amber-text)">⚠️ Auto-firing on a schedule needs the hosted job layer (cron/agent) — Slack Workflow Builder covers fixed-time pings only. Don't promise "fully automatic" until that exists.</div>
-    </div>
-  </details>
+  </div>
 
-  <div class="footer">One build a day · proof or it didn't happen · LiveRichMedia</div>
+  <div class="sec reveal" id="how">
+    <div class="sec-h"><h2>How it works</h2><span class="sub">Done inside the Claude desktop app (Cowork) · ~10–20 min</span></div>
+    <div class="how">
+      <div class="step glass"><div class="n">1</div><h4>Install the skill</h4><p>On today's build, tap <b>Get the skill</b>. It downloads a <code>.skill</code> file — open it / add it in your Claude app once and it's installed.</p></div>
+      <div class="step glass"><div class="n">2</div><h4>Run it in Claude</h4><p>Make sure the <b>OnlyFans connector</b> is on, then just tell Claude to run it for one of your models. The skill already knows the steps.</p></div>
+      <div class="step glass"><div class="n">3</div><h4>Read the result</h4><p>Claude pulls your numbers and builds the report in our LRM style. Read it over — that's the work the robot just did for you.</p></div>
+      <div class="step glass"><div class="n">4</div><h4>Prove it here</h4><p>Copy what Claude gave you, paste it below as <b>proof</b>, add a screenshot, and hit <b>Check it off</b>. Done till tomorrow.</p></div>
+    </div>
+  </div>
+
+  <div class="sec reveal" id="pick">
+    <div class="pickbar glass">
+      <div class="pb-label">Who are you?</div>
+      <div class="mgr-row" id="mgrRow"><span class="empty">Loading roster…</span></div>
+      <div class="mgr-models" id="mgrModels"></div>
+      <div class="mgr-note" id="mgrNote"></div>
+    </div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="dash" id="dash"></div>
+    <div class="spot glass" id="spot"></div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-h"><h2>The Core 10</h2><span class="sub">Build in this order · today's is highlighted · grab any skill anytime</span></div>
+    <div class="builds" id="buildList"><div class="empty">Loading…</div></div>
+  </div>
+
+  <div class="sec reveal" id="board">
+    <div class="sec-h"><h2>Team board</h2><span class="sub">Everyone × every build · live</span></div>
+    <div class="board-wrap glass" id="boardCard"><div class="empty">Loading…</div></div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-h"><h2>Check-off log</h2><span class="sub">Tap any entry to read the proof</span></div>
+    <div class="feed glass" id="feedCard"><div class="empty">Loading…</div></div>
+  </div>
+
+  <div class="sec reveal">
+    <div class="sec-h"><h2>What's next</h2><span class="sub">After the Core 10</span></div>
+    <details class="ref glass"><summary>Tier 2 — Explore these too (pick 1–2 that excite you)</summary><div class="rb" id="t2"></div></details>
+    <details class="ref glass"><summary>Tier 3 — Slack / team-operations layer</summary><div class="rb" id="t3"></div></details>
+  </div>
+
+  <div class="foot">One build a day · proof or it didn't happen · LiveRichMedia</div>
 </div>
 
 <script>
-const SUPA = 'https://hqvtbfainhtkfptglfuv.supabase.co';
-const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxdnRiZmFpbmh0a2ZwdGdsZnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTI2NjEsImV4cCI6MjA4NzE4ODY2MX0.ZCxTY3aslMdcBuy3QNl5IVR4dTWn7SRM5SvkmdUgAT4';
-const H = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY };
-const MIN_PROOF = 40;
+const SUPA='https://hqvtbfainhtkfptglfuv.supabase.co';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxdnRiZmFpbmh0a2ZwdGdsZnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTI2NjEsImV4cCI6MjA4NzE4ODY2MX0.ZCxTY3aslMdcBuy3QNl5IVR4dTWn7SRM5SvkmdUgAT4';
+const H={'apikey':KEY,'Authorization':'Bearer '+KEY};
+const MIN_PROOF=40;
+const SKILL_BASE='https://liverichtravel.github.io/lrm-build-tracker/skills/';
 
-const BUILDS = [
- {id:'b1', day:1, name:'Morning Money Report', sched:true, deep:false, sends:false, caption:false,
-  does:"Yesterday's earnings per model, one card. Total + subs/tips/messages, who's up, who's down.",
-  prompt:'Pull yesterday\'s OnlyFans earnings for [model]. One clean card: total, subscriptions, tips, messages. Tell me up or down vs the day before.',
-  endpoint:'getEarnings, getEarningsOverview'},
- {id:'b2', day:2, name:'Mass Message Check', sched:true, deep:false, sends:false, caption:false,
-  does:'How many masses went out, viewed, bought + revenue. Flags duds.',
-  prompt:'Check [model]\'s mass messages from yesterday. For each: sent, viewed, bought, revenue. Flag any that barely sold.',
-  endpoint:'massMessages, getMassMessageOverview'},
- {id:'b3', day:3, name:'Top Sellers Library', sched:false, deep:false, sends:false, caption:true,
-  does:'Pulls the captions that sold the most times — repeat winners — so chatters reuse proven ones.',
-  prompt:'Look at [model]\'s mass messages over 90 days. Find captions that sold the most times. Top 20 with sale counts.',
-  endpoint:'massMessages (filter by purchases)'},
- {id:'b4', day:4, name:'Top Fans / VIP Watch', sched:true, deep:false, sends:false, caption:false,
-  does:'Top 20 spenders ranked, with tip/message/sub breakdown. VIPs highlighted.',
-  prompt:'Top 20 fans by spend for [model], with how much and whether tips/messages/subs. Highlight VIPs.',
-  endpoint:'listTopFans'},
- {id:'b5', day:5, name:'Whale Went Quiet', sched:true, deep:false, sends:false, caption:false,
-  does:'Flags a big fan ($1k+ lifetime) who stopped buying in 2–4 weeks, to re-engage.',
-  prompt:'Scan [model]\'s top spenders. Find any $1k+ fan who hasn\'t bought in 2–4 weeks. Names + what they used to spend.',
-  endpoint:'listTopFans + transaction history'},
- {id:'b6', day:6, name:'Chatter Scorecard', sched:true, deep:true, sends:false, caption:false,
-  does:'Reads actual chats, grades each chatter on relationship-building, value-setting, funnel push, dead-end replies. 0–100 + real examples.',
-  prompt:'Pull [model]\'s direct messages last 2 days. Grade each chatter 0–100 on relationship, value, VIP funnel, no dead-ends. Give 3 good and 3 bad real examples.',
-  endpoint:'directMessages'},
- {id:'b7', day:7, name:'Missed-Boat Alert', sched:true, deep:true, sends:false, caption:false,
-  does:'Finds buying-signal fans who got a flat reply or were left unread this shift.',
-  prompt:'Look at [model]\'s conversations this shift. Find fans who showed a buying signal but got a flat reply or were left unread. List them.',
-  endpoint:'directMessages'},
- {id:'b9', day:8, name:'Price-Band Read', sched:true, deep:false, sends:false, caption:false,
-  does:"Breaks sales into cheap/mid/big bands. What price points are working vs flopping now; video vs photo demand.",
-  prompt:'Look at [model]\'s paid masses + sales last 3 weeks. Break down by price band (cheap/mid/big). What\'s selling, what\'s flopping, are fans buying more video or photo?',
-  endpoint:'massMessages, getEarnings'},
- {id:'b10', day:9, name:'Daily Lesson Plan', sched:true, deep:false, sends:false, caption:false,
-  does:"Pulls it all into one game plan: what's selling, best price points today, 5 proven captions, who to prioritize.",
-  prompt:'Build a short daily game plan for [model]: what\'s selling now, best price points today, 5 proven captions to reuse, fans to prioritize. Use the LRM design style.',
-  endpoint:'combines Mass Check, Top Sellers, VIP Watch, Price-Band'},
- {id:'b8', day:10, name:'Fan Recovery Draft', sched:false, deep:false, sends:true, caption:false,
-  does:'Drafts a warm check-in to each missed fan. Approve before sending. Built LAST on purpose — it\'s the only one that sends, so the approval gate gets built carefully.',
-  prompt:'For the missed fans on [model], draft a natural check-in for each to re-open the chat. Show drafts — DO NOT send until I approve.',
-  endpoint:'directMessages (read) → sendMessage (only after approval)'}
+const BUILDS=[
+ {id:'b1',day:1,name:'Morning Money Report',skill:'of-morning-money',sched:true,deep:false,sends:false,caption:false,
+  does:"Yesterday's earnings for the model, one clean card: total + subs, tips, messages, and whether she's up or down vs the day before.",
+  prompt:"Run my Morning Money skill for [model] (yesterday's earnings: total, subs, tips, messages, up or down vs the day before, LRM style).",
+  endpoint:'getEarnings, getEarningsOverview',result:'A dark LRM card with total earnings, the breakdown, and an up/down arrow vs the prior day.'},
+ {id:'b2',day:2,name:'Mass Message Check',skill:'of-mass-check',sched:true,deep:false,sends:false,caption:false,
+  does:'How many mass messages went out yesterday — sent, viewed, bought, revenue — and which ones barely sold.',
+  prompt:"Run my Mass Message Check skill for [model] (yesterday's masses: sent, viewed, bought, revenue; flag the duds).",
+  endpoint:'massMessages, getMassMessageOverview',result:'A list of yesterday’s masses with sent/viewed/bought/revenue and the duds flagged.'},
+ {id:'b3',day:3,name:'Top Sellers Library',skill:'of-top-sellers',sched:false,deep:false,sends:false,caption:true,
+  does:'The captions that sold the most over 90 days — repeat winners chatters should reuse.',
+  prompt:"Run my Top Sellers skill for [model] (top 20 captions by number of sales over 90 days). Study only — no explicit wording.",
+  endpoint:'massMessages (filter by purchases)',result:'A top-20 list of proven captions with how many times each sold.'},
+ {id:'b4',day:4,name:'Top Fans / VIP Watch',skill:'of-vip-watch',sched:true,deep:false,sends:false,caption:false,
+  does:'Top 20 spenders ranked, with tip/message/sub breakdown, VIPs highlighted.',
+  prompt:"Run my VIP Watch skill for [model] (top 20 spenders, tips/messages/subs breakdown, VIPs highlighted).",
+  endpoint:'listTopFans',result:'A ranked top-20 spender card with the breakdown and VIPs marked.'},
+ {id:'b5',day:5,name:'Whale Went Quiet',skill:'of-whale-quiet',sched:true,deep:false,sends:false,caption:false,
+  does:'Big fans ($1k+ lifetime) who stopped buying in the last 2–4 weeks — so you can re-engage them.',
+  prompt:"Run my Whale Went Quiet skill for [model] ($1k+ lifetime fans who haven't bought in 2–4 weeks, with their old spend).",
+  endpoint:'listTopFans + transaction history',result:'A short list of lapsed whales with names and their old spend.'},
+ {id:'b6',day:6,name:'Chatter Scorecard',skill:'of-chatter-scorecard',sched:true,deep:true,sends:false,caption:false,
+  does:'Grades each chatter 0–100 on relationship-building, value-setting, VIP funnel, and dead-end replies — with real examples.',
+  prompt:"Run my Chatter Scorecard skill for [model] (grade each chatter 0–100 on relationship, value, VIP funnel, no dead-ends; 3 good + 3 bad real examples).",
+  endpoint:'directMessages',result:'A scorecard per chatter (0–100) with three good and three bad real message examples.'},
+ {id:'b7',day:7,name:'Missed-Boat Alert',skill:'of-missed-boat',sched:true,deep:true,sends:false,caption:false,
+  does:'Fans who showed a buying signal this shift but got a flat reply or were left unread.',
+  prompt:"Run my Missed-Boat skill for [model] (this shift's fans who showed a buying signal but got a flat reply or were left unread).",
+  endpoint:'directMessages',result:'A list of buying-signal fans who slipped through this shift.'},
+ {id:'b9',day:8,name:'Price-Band Read',skill:'of-price-band',sched:true,deep:false,sends:false,caption:false,
+  does:'Sales split into cheap / mid / big price bands — what’s working, what’s flopping, and whether fans want video or photo right now.',
+  prompt:"Run my Price-Band skill for [model] (last 3 weeks split into cheap/mid/big bands: what's selling, what's flopping, video vs photo).",
+  endpoint:'massMessages, getEarnings',result:'A price-band breakdown showing winners, flops, and video-vs-photo demand.'},
+ {id:'b10',day:9,name:'Daily Lesson Plan',skill:'of-daily-lesson',sched:true,deep:false,sends:false,caption:false,
+  does:'Everything pulled into one game plan: what’s selling, best price points today, 5 proven captions, who to prioritize.',
+  prompt:"Run my Daily Lesson Plan skill for [model] (what's selling now, best price points today, 5 proven captions, fans to prioritize).",
+  endpoint:'combines Mass Check, Top Sellers, VIP Watch, Price-Band',result:'A one-card game plan: what to push, price points, 5 captions, fans to prioritize.'},
+ {id:'b8',day:10,name:'Fan Recovery Draft',skill:'of-fan-recovery',sched:false,deep:false,sends:true,caption:false,
+  does:'Drafts a warm check-in to each missed fan — you approve before anything sends. Built last on purpose: it’s the only one that can send.',
+  prompt:"Run my Fan Recovery skill for [model] (draft a check-in for each missed fan). Show me the drafts — DO NOT send until I approve.",
+  endpoint:'directMessages (read) → sendMessage (only after approval)',result:'A set of draft check-in messages, one per fan — nothing sent. You review, then approve each.'}
 ];
 
-const AVATARS = [['#CECBF6','#26215C'],['#B5D4F4','#042C53'],['#F4C0D1','#4B1528'],['#FAC775','#412402'],['#C0DD97','#173404'],['#9FE1CB','#04342C'],['#B4B2A9','#2C2C2A'],['#F0997B','#4A1B0C']];
-let roster = [], checkoffs = [], selMgr = localStorage.getItem('bs_manager') || null;
+const T2=[['Spender tier auto-sorter','group every fan cheap/mid/whale so masses hit the right list'],['Refund & chargeback watch ⏰','flag disputes/refunds as they hit'],['First-time buyer catcher','spot a fan’s first-ever purchase so chatters pounce'],['Tip-chaser','fans who tip but don’t buy PPV (and vice versa)'],['Shift-over-shift comparison ⏰','same chatter vs their own normal; catch slipping early'],['Response-time check','how long fans wait for a reply'],['Unsent-content tracker','flag what should’ve been unsent and wasn’t'],['Dead-conversation reviver','fans who went quiet mid-chat, never closed'],['Content gap finder','what’s selling that we’re low on → ask model to shoot'],['OFTV / promo countdown prep','pull what worked last promo'],['Holiday & event calendar ⏰','auto-remind ahead of holidays/paydays'],['Best-performing post finder','which wall posts drove subs; repost winners'],['Caption help — the RIGHT way','study top captions & why they worked, suggest non-explicit angles. No explicit wording, ever.'],['Voice note → game plan','speak it, get a clean written plan'],['Daily viral-topics feed ⏰','trending things to talk about, into Slack'],['Shift summarizer','auto-summarize a chatter’s shift'],['Model check-in drafts','draft WhatsApp check-ins'],['Model performance report','the report you send each model'],['Manager’s morning briefing ⏰','ALL her accounts in one card'],['"What changed" detector','model dropped? compare to her best week, name what slacked'],['Win-back list','lapsed whales across all her models, ready to re-engage']];
+const T3=[['Morning Slack sweep ⏰','overnight @s, urgent or unanswered messages, newspaper-style · safe read'],['Unanswered-message catcher ⏰','chatter question or model message sitting with no reply · safe read'],['Clock-out report check ⏰','who didn’t leave their end-of-shift report · safe read'],['Problem triage','simple & known → handle; real problem → flag, don’t guess · draft-and-confirm'],['Scheduled chatter check-ins ⏰','"you good? need anything?" mid-shift · simple = auto-send OK'],['Score-request reminders ⏰','auto-ping chatters to send scores X min into shift'],['Encouragement / morale pings ⏰','positive note on a good shift, gentle nudge on a slow one'],['Daily viral-topics drop ⏰','trending topics into the team channel'],['⚠️ Build note','auto-firing on a schedule needs the hosted job layer (cron/agent) — Slack Workflow Builder covers fixed-time pings only.']];
 
-function laToday(){ return new Date().toLocaleDateString('en-CA', {timeZone:'America/Los_Angeles'}); }
-function esc(s){ const d=document.createElement('div'); d.textContent=s==null?'':String(s); return d.innerHTML; }
-function fmtDate(d){ const [y,m,dd]=d.split('-'); return new Date(+y,+m-1,+dd).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
-function avatarFor(name){ let h=0; for(const c of name) h=(h*31+c.charCodeAt(0))>>>0; return AVATARS[h%AVATARS.length]; }
+const AV=[['#cfc8f8','#26215C'],['#bcdcfb','#042C53'],['#f3a8c4','#4B1528'],['#f7c66e','#412402'],['#c7e69e','#173404'],['#9FE1CB','#04342C'],['#F0997B','#4A1B0C'],['#B4B2A9','#2C2C2A']];
+let roster=[],checkoffs=[],selMgr=localStorage.getItem('bs_manager')||null;
+const laToday=()=>new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});
+const esc=s=>{const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;};
+const fmtDate=d=>{const[y,m,dd]=d.split('-');return new Date(+y,+m-1,+dd).toLocaleDateString('en-US',{month:'short',day:'numeric'});};
+const avatarFor=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))>>>0;return AV[h%AV.length];};
 
 async function loadData(){
-  const [r1, r2] = await Promise.all([
-    fetch(SUPA+'/rest/v1/build_sheet_roster?select=*&active=eq.true&order=sort', {headers:H}),
-    fetch(SUPA+'/rest/v1/build_sheet_checkoffs?select=*&order=created_at.desc', {headers:H})
-  ]);
-  roster = await r1.json();
-  checkoffs = await r2.json();
-  if(!Array.isArray(roster)) roster=[];
-  if(!Array.isArray(checkoffs)) checkoffs=[];
+  try{
+    const[r1,r2]=await Promise.all([
+      fetch(SUPA+'/rest/v1/build_sheet_roster?select=*&active=eq.true&order=sort',{headers:H}),
+      fetch(SUPA+'/rest/v1/build_sheet_checkoffs?select=*&order=created_at.desc',{headers:H})]);
+    roster=await r1.json();checkoffs=await r2.json();
+    if(!Array.isArray(roster))roster=[];if(!Array.isArray(checkoffs))checkoffs=[];
+  }catch(e){roster=[];checkoffs=[];}
   renderAll();
 }
+const mgrChecks=m=>checkoffs.filter(c=>c.manager===m);
+const doneBuild=(m,b)=>checkoffs.find(c=>c.manager===m&&c.build_id===b);
+const doneToday=m=>checkoffs.find(c=>c.manager===m&&c.checked_date===laToday());
+const nextBuild=m=>{for(const b of BUILDS)if(!doneBuild(m,b.id))return b;return null;};
 
-function mgrChecks(m){ return checkoffs.filter(c=>c.manager===m); }
-function doneBuild(m, bid){ return checkoffs.find(c=>c.manager===m && c.build_id===bid); }
-function doneToday(m){ return checkoffs.find(c=>c.manager===m && c.checked_date===laToday()); }
-function nextBuild(m){ for(const b of BUILDS){ if(!doneBuild(m,b.id)) return b; } return null; }
+function renderAll(){renderMgrs();renderNav();renderDash();renderSpot();renderBuilds();renderBoard();renderFeed();renderRef();observeReveals();}
 
-function renderAll(){ renderMgrs(); renderBanner(); renderStats(); renderBuilds(); renderBoard(); renderFeed();
-  document.getElementById('todayLabel').textContent = 'Today · ' + new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});
-}
-
+function renderNav(){const dot=document.getElementById('navDot'),who=document.getElementById('navWho');
+  if(selMgr){const a=avatarFor(selMgr);dot.style.background=a[0];dot.style.color=a[1];dot.textContent=selMgr[0];who.textContent=selMgr;}
+  else{dot.style.background='rgba(255,255,255,.1)';dot.style.color='#a6a6a8';dot.textContent='?';who.textContent='Pick your name';}}
 function renderMgrs(){
-  const row = document.getElementById('mgrRow');
-  row.innerHTML = roster.map(r=>`<button class="mgr-chip${r.manager===selMgr?' sel':''}" onclick="pickMgr('${esc(r.manager)}')">${esc(r.manager)}</button>`).join('');
-  const mm = document.getElementById('mgrModels'), mn = document.getElementById('mgrNote');
-  const r = roster.find(x=>x.manager===selMgr);
-  mm.textContent = r ? 'Your models: ' + r.models.join(' · ') : 'Pick your name — your daily queue and models load from the roster.';
-  mn.textContent = r && r.note ? '⚠ ' + r.note : '';
-}
-function pickMgr(m){ selMgr=m; localStorage.setItem('bs_manager',m); renderAll(); }
+  document.getElementById('mgrRow').innerHTML=roster.map(r=>`<button class="mgr-chip${r.manager===selMgr?' sel':''}" onclick="pickMgr('${esc(r.manager)}')">${esc(r.manager)}</button>`).join('')||'<span class="empty">No roster.</span>';
+  const r=roster.find(x=>x.manager===selMgr);
+  document.getElementById('mgrModels').innerHTML=r?'<b>Your models:</b> '+r.models.map(esc).join(' · '):'Pick your name and your daily build + models load up.';
+  document.getElementById('mgrNote').textContent=r&&r.note?'⚠ '+r.note:'';}
+function pickMgr(m){selMgr=m;localStorage.setItem('bs_manager',m);renderAll();document.getElementById('pick').scrollIntoView({behavior:'smooth'});}
 
-function renderBanner(){
-  const el = document.getElementById('todayBanner');
-  if(!selMgr){ el.innerHTML=''; return; }
-  const dt = doneToday(selMgr), nb = nextBuild(selMgr);
-  if(dt){
-    el.innerHTML = `<div class="today-banner"><b>✓ ${esc(selMgr)} — today is done.</b> <span class="tb-sub">You checked off "${esc(dt.build_name)}". Next build unlocks tomorrow.</span></div>`;
-  } else if(nb){
-    el.innerHTML = `<div class="today-banner"><b>${esc(selMgr)}, today's build is #${nb.day}: ${esc(nb.name)}.</b> <span class="tb-sub">Build it on one of your models, run it, paste the output below, attach a screenshot, check it off.</span></div>`;
-  } else {
-    el.innerHTML = `<div class="today-banner"><b>🏁 ${esc(selMgr)} — Tier 1 complete.</b> <span class="tb-sub">All 10 built and proven. Pick 1–2 from Tier 2 that excite you.</span></div>`;
-  }
-}
+function renderDash(){const el=document.getElementById('dash');if(!selMgr){el.innerHTML='';return;}
+  const mine=mgrChecks(selMgr).length,tToday=checkoffs.filter(c=>c.checked_date===laToday()).length,total=checkoffs.length;
+  el.innerHTML=`
+   <div class="dcard glass g1"><div class="glow"></div><div class="label">${esc(selMgr)} — your progress</div><div class="big">${mine}/10</div>
+     <div class="pbar"><i style="width:${mine*10}%"></i></div><div class="small" style="margin-top:9px">${10-mine} build${10-mine===1?'':'s'} left in the Core 10</div></div>
+   <div class="dcard glass g2"><div class="glow"></div><div class="label">Team built today</div><div class="big">${tToday}/${roster.length}</div><div class="small">${fmtDate(laToday())}</div></div>
+   <div class="dcard glass g3"><div class="glow"></div><div class="label">Total proven</div><div class="big">${total}</div><div class="small">of ${roster.length*10} across the team</div></div>`;}
 
-function renderStats(){
-  const el = document.getElementById('statGrid');
-  if(!selMgr){ el.innerHTML=''; return; }
-  const mine = mgrChecks(selMgr).length;
-  const teamToday = checkoffs.filter(c=>c.checked_date===laToday()).length;
-  const teamTotal = checkoffs.length;
-  el.innerHTML = `
-   <div class="stat-card success"><p class="label">Your progress</p><p class="big">${mine}/10</p>
-     <div class="progress-bar"><div class="progress-fill" style="width:${mine*10}%"></div></div></div>
-   <div class="stat-card info"><p class="label">Team check-offs today</p><p class="big">${teamToday}/${roster.length}</p><p class="sub">${fmtDate(laToday())}</p></div>
-   <div class="stat-card purple"><p class="label">Total builds proven</p><p class="big">${teamTotal}</p><p class="sub">of ${roster.length*10} across the team</p></div>`;
-}
+function renderSpot(){const el=document.getElementById('spot');if(!selMgr){el.className='spot glass';el.innerHTML='';return;}
+  const dt=doneToday(selMgr),nb=nextBuild(selMgr);
+  if(dt){el.className='spot glass show done-state';el.innerHTML=`<div class="kicker">✓ Today is done</div><h3>Nice — you built "${esc(dt.build_name)}"</h3><p class="does">Your next build unlocks tomorrow. Check the team board to see how everyone else is doing.</p>`;}
+  else if(nb){el.className='spot glass show';el.innerHTML=`<div class="kicker">Today's build · #${nb.day} of 10</div><h3>${esc(nb.name)}</h3><p class="does">${esc(nb.does)} — scroll to the highlighted card for the skill and the steps.</p>`;}
+  else{el.className='spot glass show done-state';el.innerHTML=`<div class="kicker">🏁 Tier 1 complete</div><h3>All 10 built and proven</h3><p class="does">Pick 1–2 from Tier 2 that excite you.</p>`;}}
 
-function renderBuilds(){
-  const el = document.getElementById('buildList');
-  const nb = selMgr ? nextBuild(selMgr) : null;
-  const dt = selMgr ? doneToday(selMgr) : null;
-  el.innerHTML = BUILDS.map(b=>{
-    const done = selMgr ? doneBuild(selMgr,b.id) : null;
-    const isToday = selMgr && nb && nb.id===b.id && !dt;
-    const locked = selMgr && !done && !isToday;
-    const [bg,fg] = done ? ['rgba(151,196,89,.25)','#C0DD97'] : isToday ? ['rgba(250,199,117,.25)','#FAC775'] : ['#2a2a2a','#a8a8a4'];
-    let badges = `<span class="badge ${b.sends?'sends':'safe'}">${b.sends?'⚠️ Sends — draft only':'Safe · read'}</span>`;
-    if(b.sched) badges += '<span class="badge sched">⏰ schedule after proven</span>';
-    if(b.deep) badges += '<span class="badge deep">deeper dig · slower</span>';
-    if(b.caption) badges += '<span class="badge caption">caption boundary</span>';
-    let status = '';
-    if(done) status = `<div class="build-status"><div class="done-mark">✓ built</div><div class="by">${fmtDate(done.checked_date)}</div></div>`;
-    else if(isToday) status = `<div class="build-status"><div style="color:var(--amber-text);font-weight:500">today</div></div>`;
-    let body = '';
-    const open = done || isToday;
-    if(open){
-      body = `<div class="build-body">
-        <div class="prompt-box"><div class="pb-label">Exact prompt</div><div class="pb-text" id="pt-${b.id}">${esc(b.prompt)}</div>
-          <button class="copy-btn" onclick="copyPrompt('${b.id}', this)">copy</button></div>
-        <div class="endpoint-line">Endpoint: <code>${esc(b.endpoint)}</code></div>
-        ${b.caption?'<div class="caption-warning"><b>Caption boundary:</b> study captions and why they worked. Claude will NOT write erotic or sexually explicit wording — analysis and non-explicit angles only. Breaking this can get the account banned.</div>':''}
-        ${b.sends?'<div class="sends-warning"><b>⚠️ This one sends.</b> Drafts only. Nothing goes to a fan without explicit human approval. Build the approval gate first, prove it, then use it.</div>':''}
-        ${done ? proofView(done) : checkoffForm(b)}
-      </div>`;
+function renderBuilds(){const el=document.getElementById('buildList');
+  const nb=selMgr?nextBuild(selMgr):null,dt=selMgr?doneToday(selMgr):null;
+  el.innerHTML=BUILDS.map(b=>{
+    const done=selMgr?doneBuild(selMgr,b.id):null;
+    const isToday=selMgr&&nb&&nb.id===b.id&&!dt;
+    const locked=selMgr&&!done&&!isToday;
+    const col=done?['rgba(155,212,89,.25)','#c7e69e']:isToday?['rgba(247,198,110,.25)','#f7c66e']:['rgba(255,255,255,.06)','#a6a6a8'];
+    let badges=`<span class="badge ${b.sends?'sends':'safe'}">${b.sends?'⚠️ Sends — draft only':'Safe · read only'}</span>`;
+    if(b.sched)badges+='<span class="badge sched">⏰ schedule after proven</span>';
+    if(b.deep)badges+='<span class="badge deep">deeper dig · slower</span>';
+    if(b.caption)badges+='<span class="badge caption">caption boundary</span>';
+    const dl=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`;
+    const skillBtn=`<a class="skill-btn" href="${SKILL_BASE}${b.skill}.skill" download>${dl} Get the skill</a>`;
+    let status='';
+    if(done)status=`<div class="bstatus"><div class="ok">✓ built</div><div class="dt">${fmtDate(done.checked_date)}</div></div>`;
+    else if(isToday)status=`<div class="bstatus"><div class="tdy">today</div></div>`;
+    else if(locked)status=`<div class="bstatus"><div class="lk">🔒</div></div>`;
+    let body='';
+    if(done||isToday){
+      const hp=esc(b.prompt).replace(/\[model\]/g,'<span class="hl">[model]</span>');
+      const run=isToday?`<div class="run">
+        <div class="rt">How to run this build</div>
+        <ol>
+          <li><span class="h">Install the skill</span><span class="d">Tap <span class="pill-skill">Get the skill</span> above, then add the downloaded <code>.skill</code> file in your Claude app.</span></li>
+          <li><span class="h">Turn on the OnlyFans connector</span><span class="d">In Claude, make sure OnlyFans is connected.</span></li>
+          <li><span class="h">Tell Claude to run it for your model</span><span class="d">Use the line below and swap <code>[model]</code> for one of your own. Claude builds: <i>${esc(b.result)}</i></span></li>
+          <li><span class="h">Paste the result here as proof</span><span class="d">Copy what Claude gave you into the box below, add a screenshot, check it off.</span></li>
+        </ol>
+        <div class="prompt-box"><div class="pl">Say this to Claude — tap copy</div><div class="pt">${hp}</div><button class="copy" onclick="copyPrompt('${b.id}',this)">Copy</button></div>
+        <div class="endpoint">Pulls from: <code>${esc(b.endpoint)}</code></div>
+        ${b.caption?'<div class="warn cap"><b>Caption boundary:</b> study captions and why they worked only. Claude will NOT write explicit wording — this protects the account from bans.</div>':''}
+        ${b.sends?'<div class="warn snd"><b>⚠️ This one can send.</b> It only drafts. Nothing goes to a fan until you personally approve each message.</div>':''}
+      </div>`:`<div class="prompt-box"><div class="pl">Say this to Claude</div><div class="pt">${hp}</div><button class="copy" onclick="copyPrompt('${b.id}',this)">Copy</button></div>`;
+      body=`<div class="bbody">${run}${done?proofView(done):checkoffForm(b)}</div>`;
     }
-    return `<div class="build-card${done?' done':''}${isToday?' today':''}${locked?' locked':''}">
-      <div class="build-head">
-        <div class="build-num" style="background:${bg};color:${fg}">${b.day}</div>
-        <div class="build-title-wrap">
-          <div class="build-title">${esc(b.name)}</div>
-          <div class="build-does">${esc(b.does)}</div>
-          <div class="badges">${badges}</div>
-        </div>
+    return `<div class="bcard glass${done?' done':''}${isToday?' today':''}${locked?' locked':''}">
+      <div class="bhead">
+        <div class="bnum" style="background:${col[0]};color:${col[1]}">${b.day}</div>
+        <div class="btw"><div class="btitle">${esc(b.name)}</div><div class="bdoes">${esc(b.does)}</div><div class="badges">${badges}</div>${skillBtn}</div>
         ${status}
-      </div>
-      ${body}
-    </div>`;
-  }).join('');
-}
+      </div>${body}</div>`;
+  }).join('');}
 
-function proofView(c){
-  return `<div class="proof-view"><div class="pv-meta">Proof · checked off ${fmtDate(c.checked_date)}</div>
-    <pre>${esc(c.proof_text)}</pre>
-    ${c.screenshot_url?`<a href="${esc(c.screenshot_url)}" target="_blank">View screenshot →</a>`:''}</div>`;
-}
+const proofView=c=>`<div class="proof"><div class="pm">✓ Proof · checked off ${fmtDate(c.checked_date)}</div><pre>${esc(c.proof_text)}</pre>${c.screenshot_url?`<a href="${esc(c.screenshot_url)}" target="_blank">View screenshot →</a>`:''}</div>`;
+const checkoffForm=b=>`<div class="form">
+  <div class="fl">Proof — paste what Claude actually gave you (min ${MIN_PROOF} characters)</div>
+  <textarea id="proof-${b.id}" placeholder="Paste the report Claude produced when you ran the skill…" oninput="countChars('${b.id}')"></textarea>
+  <div class="cc" id="cc-${b.id}">0 / ${MIN_PROOF}</div>
+  <div class="filerow"><span class="fl" style="margin:0">Screenshot (encouraged)</span><input type="file" id="shot-${b.id}" accept="image/*"></div>
+  <button class="submit" id="btn-${b.id}" onclick="submitCheckoff('${b.id}')">Check it off ✓</button>
+  <div class="fmsg" id="msg-${b.id}"></div></div>`;
+function countChars(b){const t=document.getElementById('proof-'+b).value.trim(),cc=document.getElementById('cc-'+b);cc.textContent=t.length+' / '+MIN_PROOF;cc.className='cc'+(t.length>=MIN_PROOF?' ok':'');}
+function copyPrompt(b,btn){const x=BUILDS.find(v=>v.id===b);navigator.clipboard.writeText(x.prompt).then(()=>{btn.textContent='Copied ✓';setTimeout(()=>btn.textContent='Copy',1500);});}
 
-function checkoffForm(b){
-  return `<div class="checkoff-form">
-    <label>Proof — paste the actual output your build produced (min ${MIN_PROOF} chars)</label>
-    <textarea id="proof-${b.id}" placeholder="Paste the report/output the automation produced when you ran it…" oninput="countChars('${b.id}')"></textarea>
-    <div class="char-count" id="cc-${b.id}">0 / ${MIN_PROOF}</div>
-    <div class="file-row"><label style="margin:0">Screenshot (optional but encouraged)</label><input type="file" id="shot-${b.id}" accept="image/*"></div>
-    <button class="submit-btn" id="btn-${b.id}" onclick="submitCheckoff('${b.id}')">Check it off ✓</button>
-    <div class="form-msg" id="msg-${b.id}"></div>
-  </div>`;
-}
-
-function countChars(bid){
-  const t = document.getElementById('proof-'+bid).value.trim();
-  const cc = document.getElementById('cc-'+bid);
-  cc.textContent = t.length + ' / ' + MIN_PROOF;
-  cc.className = 'char-count' + (t.length>=MIN_PROOF?' ok':'');
-}
-
-function copyPrompt(bid, btn){
-  const b = BUILDS.find(x=>x.id===bid);
-  navigator.clipboard.writeText(b.prompt).then(()=>{ btn.textContent='copied ✓'; setTimeout(()=>btn.textContent='copy',1500); });
-}
-
-async function submitCheckoff(bid){
-  const b = BUILDS.find(x=>x.id===bid);
-  const msg = document.getElementById('msg-'+bid);
-  const btn = document.getElementById('btn-'+bid);
-  const proof = document.getElementById('proof-'+bid).value.trim();
-  if(!selMgr){ msg.className='form-msg err'; msg.textContent='Pick your name at the top first.'; return; }
-  if(proof.length < MIN_PROOF){ msg.className='form-msg err'; msg.textContent='Proof too short — paste the real output ('+MIN_PROOF+'+ characters).'; return; }
-  btn.disabled = true; msg.className='form-msg'; msg.textContent='Submitting…';
-  let screenshot_url = null;
+async function submitCheckoff(b){
+  const x=BUILDS.find(v=>v.id===b),msg=document.getElementById('msg-'+b),btn=document.getElementById('btn-'+b);
+  const proof=document.getElementById('proof-'+b).value.trim();
+  if(!selMgr){msg.className='fmsg err';msg.textContent='Pick your name at the top first.';return;}
+  if(proof.length<MIN_PROOF){msg.className='fmsg err';msg.textContent='Proof too short — paste the real result ('+MIN_PROOF+'+ characters).';return;}
+  btn.disabled=true;msg.className='fmsg';msg.textContent='Submitting…';let url=null;
   try{
-    const fileEl = document.getElementById('shot-'+bid);
-    if(fileEl.files && fileEl.files[0]){
-      const f = fileEl.files[0];
-      const ext = (f.name.split('.').pop()||'png').toLowerCase().replace(/[^a-z0-9]/g,'');
-      const path = encodeURIComponent(selMgr.toLowerCase()) + '/' + bid + '-' + Date.now() + '.' + ext;
-      const up = await fetch(SUPA+'/storage/v1/object/build-proofs/'+path, {method:'POST', headers:{...H,'content-type':f.type||'image/png'}, body:f});
-      if(up.ok) screenshot_url = SUPA+'/storage/v1/object/public/build-proofs/'+path;
-      else { msg.className='form-msg err'; msg.textContent='Screenshot upload failed ('+up.status+'). Remove it or try again.'; btn.disabled=false; return; }
-    }
-    const res = await fetch(SUPA+'/rest/v1/build_sheet_checkoffs', {
-      method:'POST', headers:{...H,'content-type':'application/json','prefer':'return=representation'},
-      body: JSON.stringify({manager:selMgr, build_id:bid, build_name:b.name, proof_text:proof, screenshot_url})
-    });
-    if(res.ok){ msg.className='form-msg ok'; msg.textContent='✓ Checked off. Locked in — proof is permanent.'; await loadData(); }
-    else {
-      const e = await res.json().catch(()=>({}));
-      msg.className='form-msg err';
-      if((e.message||'').includes('one_per_day')) msg.textContent='You already checked off a build today. One per day — next unlocks tomorrow.';
-      else if((e.message||'').includes('one_build_once')) msg.textContent='This build is already checked off for you.';
-      else msg.textContent='Failed: '+(e.message||res.status);
-      btn.disabled=false;
-    }
-  }catch(err){ msg.className='form-msg err'; msg.textContent='Network error: '+err.message; btn.disabled=false; }
-}
+    const fe=document.getElementById('shot-'+b);
+    if(fe.files&&fe.files[0]){const f=fe.files[0],ext=(f.name.split('.').pop()||'png').toLowerCase().replace(/[^a-z0-9]/g,'');
+      const path=encodeURIComponent(selMgr.toLowerCase())+'/'+b+'-'+Date.now()+'.'+ext;
+      const up=await fetch(SUPA+'/storage/v1/object/build-proofs/'+path,{method:'POST',headers:{...H,'content-type':f.type||'image/png'},body:f});
+      if(up.ok)url=SUPA+'/storage/v1/object/public/build-proofs/'+path;
+      else{msg.className='fmsg err';msg.textContent='Screenshot upload failed ('+up.status+'). Remove it or try again.';btn.disabled=false;return;}}
+    const res=await fetch(SUPA+'/rest/v1/build_sheet_checkoffs',{method:'POST',headers:{...H,'content-type':'application/json','prefer':'return=representation'},
+      body:JSON.stringify({manager:selMgr,build_id:b,build_name:x.name,proof_text:proof,screenshot_url:url})});
+    if(res.ok){msg.className='fmsg ok';msg.textContent='✓ Checked off — locked in. Proof can’t be changed.';await loadData();}
+    else{const e=await res.json().catch(()=>({}));msg.className='fmsg err';
+      if((e.message||'').includes('one_per_day'))msg.textContent='You already checked off a build today. One per day — next unlocks tomorrow.';
+      else if((e.message||'').includes('one_build_once'))msg.textContent='This build is already checked off for you.';
+      else msg.textContent='Failed: '+(e.message||res.status);btn.disabled=false;}
+  }catch(err){msg.className='fmsg err';msg.textContent='Network error: '+err.message;btn.disabled=false;}}
 
-function renderBoard(){
-  const el = document.getElementById('boardCard');
-  if(!roster.length){ el.innerHTML='<div class="loading">No roster.</div>'; return; }
-  let html = '<table class="board"><tr><th>Manager</th>' + BUILDS.map(b=>`<th title="${esc(b.name)}">${b.day}</th>`).join('') + '<th>Done</th><th>Today</th></tr>';
-  for(const r of roster){
-    const mine = mgrChecks(r.manager);
-    const today = doneToday(r.manager);
-    html += `<tr><td>${esc(r.manager)}</td>` + BUILDS.map(b=>{
-      const d = doneBuild(r.manager,b.id);
-      return `<td><span class="cell ${d?'done':'pending'}" title="${esc(b.name)}${d?' · '+fmtDate(d.checked_date):''}">${d?'✓':''}</span></td>`;
-    }).join('') + `<td class="board-count">${mine.length}/10</td><td>${today?'<span style="color:var(--success-text)">✓</span>':'<span style="color:#666">—</span>'}</td></tr>`;
-  }
-  html += '</table>';
-  el.innerHTML = html;
-}
+function renderBoard(){const el=document.getElementById('boardCard');if(!roster.length){el.innerHTML='<div class="empty">No roster.</div>';return;}
+  let h='<table class="board"><tr><th>Manager</th>'+BUILDS.map(b=>`<th title="${esc(b.name)}">${b.day}</th>`).join('')+'<th>Done</th><th>Today</th></tr>';
+  for(const r of roster){const mine=mgrChecks(r.manager),today=doneToday(r.manager);
+    h+=`<tr><td>${esc(r.manager)}</td>`+BUILDS.map(b=>{const d=doneBuild(r.manager,b.id);return `<td><span class="cell ${d?'done':'pending'}" title="${esc(b.name)}${d?' · '+fmtDate(d.checked_date):''}">${d?'✓':''}</span></td>`;}).join('')+`<td class="cnt">${mine.length}/10</td><td>${today?'<span style="color:var(--green-t)">✓</span>':'<span style="color:#555">—</span>'}</td></tr>`;}
+  el.innerHTML=h+'</table>';}
 
-function renderFeed(){
-  const el = document.getElementById('feedCard');
-  if(!checkoffs.length){ el.innerHTML='<div class="loading">No check-offs yet. First manager to build one gets bragging rights.</div>'; return; }
-  el.innerHTML = checkoffs.slice(0,40).map((c,i)=>{
-    const [bg,fg] = avatarFor(c.manager);
-    return `<div class="feed-row" onclick="document.getElementById('fp-${i}').classList.toggle('open')">
-      <div class="feed-avatar" style="background:${bg};color:${fg}">${esc(c.manager[0])}</div>
-      <div class="feed-info"><div class="feed-name">${esc(c.manager)} · ${esc(c.build_name)}</div>
-      <div class="feed-meta">${esc(c.proof_text.slice(0,90))}${c.proof_text.length>90?'… (tap to expand)':''}</div></div>
-      <div class="feed-date">${fmtDate(c.checked_date)}</div>
-    </div>
-    <div class="feed-proof" id="fp-${i}"><div class="proof-view"><div class="pv-meta">Full proof</div><pre>${esc(c.proof_text)}</pre>
-    ${c.screenshot_url?`<a href="${esc(c.screenshot_url)}" target="_blank">View screenshot →</a>`:''}</div></div>`;
-  }).join('');
-}
+function renderFeed(){const el=document.getElementById('feedCard');
+  if(!checkoffs.length){el.innerHTML='<div class="empty">No check-offs yet. First manager to build one gets bragging rights.</div>';return;}
+  el.innerHTML=checkoffs.slice(0,50).map((c,i)=>{const a=avatarFor(c.manager);
+    return `<div class="frow" onclick="document.getElementById('fp-${i}').classList.toggle('open')">
+      <div class="fav" style="background:${a[0]};color:${a[1]}">${esc(c.manager[0])}</div>
+      <div class="finfo"><div class="fname">${esc(c.manager)} · ${esc(c.build_name)}</div><div class="fmeta">${esc(c.proof_text.slice(0,100))}${c.proof_text.length>100?'… (tap to read)':''}</div></div>
+      <div class="fdate">${fmtDate(c.checked_date)}</div></div>
+      <div class="fproof" id="fp-${i}"><div class="proof"><div class="pm">Full proof</div><pre>${esc(c.proof_text)}</pre>${c.screenshot_url?`<a href="${esc(c.screenshot_url)}" target="_blank">View screenshot →</a>`:''}</div></div>`;}).join('');}
 
+function renderRef(){
+  document.getElementById('t2').innerHTML=T2.map(x=>`<div class="ri"><b>${esc(x[0])}</b> — ${esc(x[1])}</div>`).join('');
+  document.getElementById('t3').innerHTML=T3.map(x=>`<div class="ri"><b>${esc(x[0])}</b> — ${esc(x[1])}</div>`).join('');}
+
+let io;
+function observeReveals(){
+  if(!io)io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.08});
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+}
 loadData();
-setInterval(loadData, 120000);
+setInterval(loadData,120000);
 </script>
 </body>
 </html>
