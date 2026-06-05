@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LRM Build Sheet — Daily Tracker</title>
+<style>
+:root{
+  --bg:#1a1a1a; --bg-card:#232323; --bg-card-soft:#2a2a2a;
+  --text:#f5f5f4; --text-secondary:#a8a8a4; --border:rgba(255,255,255,0.10);
+  --success-border:#97C459; --success-text:#C0DD97; --success-bg-soft:#1f2e1a;
+  --info-border:#85B7EB; --info-text:#B5D4F4;
+  --purple-border:#7F77DD; --purple-text:#CECBF6;
+  --amber-text:#FAC775; --pink-text:#F4C0D1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.55;padding:32px 20px}
+.container{max-width:880px;margin:0 auto}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+.brand{background:linear-gradient(90deg,#CECBF6 0%,#F4C0D1 50%,#85B7EB 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:600;font-size:22px}
+.header-meta{text-align:right;font-size:11px;color:var(--text-secondary)}
+h1{font-size:26px;font-weight:500;letter-spacing:-0.01em;margin-bottom:4px}
+h2{font-size:16px;font-weight:500;margin:28px 0 12px}
+.subtitle{font-size:13px;color:var(--text-secondary)}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:16px}
+.rules-card{border-left:3px solid var(--amber-text)}
+.rules-card b{color:var(--amber-text)}
+.rules-card p{font-size:13px;color:var(--text-secondary);margin-bottom:6px}
+.rules-card p:last-child{margin-bottom:0}
+.mgr-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.mgr-chip{border:1px solid var(--border);background:var(--bg-card);color:var(--text);border-radius:999px;padding:7px 16px;font-size:13px;cursor:pointer;transition:all .15s}
+.mgr-chip:hover{border-color:var(--purple-border)}
+.mgr-chip.sel{background:var(--purple-border);color:#fff;border-color:var(--purple-border);font-weight:500}
+.mgr-models{font-size:12px;color:var(--text-secondary);margin:6px 0 0}
+.mgr-note{font-size:12px;color:var(--amber-text);margin-top:4px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px}
+.stat-card.success{border-color:var(--success-border)}
+.stat-card.purple{border-color:var(--purple-border)}
+.stat-card.info{border-color:var(--info-border)}
+.stat-card .label{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary)}
+.stat-card .big{font-size:28px;font-weight:500;letter-spacing:-0.02em;margin:2px 0}
+.stat-card .sub{font-size:12px;color:var(--text-secondary)}
+.progress-bar{height:8px;background:var(--bg-card-soft);border-radius:4px;overflow:hidden;margin-top:8px}
+.progress-fill{height:100%;background:var(--success-border);border-radius:4px;transition:width .4s}
+.build-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+.build-card.done{border-color:var(--success-border)}
+.build-card.today{border-color:var(--amber-text);box-shadow:0 0 0 1px var(--amber-text)}
+.build-card.locked{opacity:.55}
+.build-head{display:flex;align-items:flex-start;gap:12px}
+.build-num{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.build-title-wrap{flex:1;min-width:0}
+.build-title{font-size:15px;font-weight:500}
+.build-does{font-size:12.5px;color:var(--text-secondary);margin-top:2px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.badge{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1px solid var(--border);color:var(--text-secondary)}
+.badge.safe{color:var(--success-text);border-color:rgba(151,196,89,.4)}
+.badge.sends{color:#F7C1C1;border-color:rgba(247,193,193,.4)}
+.badge.sched{color:var(--info-text);border-color:rgba(133,183,235,.4)}
+.badge.deep{color:var(--purple-text);border-color:rgba(127,119,221,.4)}
+.badge.caption{color:var(--amber-text);border-color:rgba(250,199,117,.4)}
+.build-status{font-size:12px;flex-shrink:0;text-align:right}
+.build-status .done-mark{color:var(--success-text);font-weight:500}
+.build-status .by{color:var(--text-secondary);font-size:11px}
+.build-body{margin-top:12px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px}
+.prompt-box{background:var(--bg-card-soft);border-radius:10px;padding:12px 14px;font-size:12.5px;color:var(--text-secondary);position:relative}
+.prompt-box .pb-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;color:var(--text-secondary)}
+.prompt-box .pb-text{color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap}
+.copy-btn{position:absolute;top:10px;right:10px;background:transparent;border:1px solid var(--border);color:var(--text-secondary);border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer}
+.copy-btn:hover{color:var(--text);border-color:var(--purple-border)}
+.endpoint-line{font-size:11.5px;color:var(--text-secondary);margin-top:8px}
+.endpoint-line code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--info-text);font-size:11px}
+.caption-warning{background:#2e2415;border-left:3px solid var(--amber-text);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--amber-text);margin-top:10px}
+.sends-warning{background:#2e1a1a;border-left:3px solid #F7C1C1;border-radius:10px;padding:10px 14px;font-size:12px;color:#F7C1C1;margin-top:10px}
+.checkoff-form{margin-top:12px;background:var(--bg-card-soft);border-radius:10px;padding:14px}
+.checkoff-form label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary);margin-bottom:6px}
+.checkoff-form textarea{width:100%;min-height:110px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:10px 12px;font-size:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;resize:vertical}
+.checkoff-form textarea:focus{outline:none;border-color:var(--purple-border)}
+.file-row{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.file-row input[type=file]{font-size:12px;color:var(--text-secondary)}
+.char-count{font-size:11px;color:var(--text-secondary);margin-top:4px}
+.char-count.ok{color:var(--success-text)}
+.submit-btn{margin-top:12px;background:var(--success-border);color:#173404;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:600;cursor:pointer}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed}
+.form-msg{font-size:12px;margin-top:8px}
+.form-msg.err{color:#F7C1C1}
+.form-msg.ok{color:var(--success-text)}
+.proof-view{margin-top:10px;background:var(--success-bg-soft);border-left:3px solid var(--success-border);border-radius:10px;padding:10px 14px;font-size:12px}
+.proof-view .pv-meta{color:var(--success-text);font-weight:500;margin-bottom:4px}
+.proof-view pre{white-space:pre-wrap;color:var(--text-secondary);font-size:11.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;max-height:160px;overflow-y:auto}
+.proof-view a{color:var(--info-text)}
+.board-wrap{overflow-x:auto}
+table.board{width:100%;border-collapse:collapse;font-size:12px}
+table.board th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary);font-weight:500;text-align:center;padding:8px 4px;border-bottom:1px solid var(--border)}
+table.board th:first-child{text-align:left}
+table.board td{padding:8px 4px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06)}
+table.board td:first-child{text-align:left;font-weight:500;white-space:nowrap}
+.cell{display:inline-block;width:22px;height:22px;border-radius:6px;line-height:22px;font-size:11px}
+.cell.done{background:rgba(151,196,89,.2);color:var(--success-text);border:1px solid rgba(151,196,89,.5)}
+.cell.pending{background:var(--bg-card-soft);color:#555;border:1px solid rgba(255,255,255,.06)}
+.board-count{font-variant-numeric:tabular-nums;color:var(--text-secondary)}
+.feed-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:12.5px;cursor:pointer}
+.feed-row:last-child{border-bottom:none}
+.feed-avatar{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;font-size:13px}
+.feed-info{flex:1;min-width:0}
+.feed-name{font-weight:500}
+.feed-meta{color:var(--text-secondary);font-size:11.5px}
+.feed-date{color:var(--text-secondary);font-size:11px;white-space:nowrap}
+.feed-proof{display:none;padding:0 0 12px 44px}
+.feed-proof.open{display:block}
+details.ref{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:12px}
+details.ref summary{cursor:pointer;font-size:14px;font-weight:500}
+details.ref .ref-body{margin-top:10px;font-size:12.5px;color:var(--text-secondary)}
+details.ref .ref-item{padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+details.ref .ref-item:last-child{border-bottom:none}
+details.ref .ref-item b{color:var(--text);font-weight:500}
+.footer{text-align:center;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--text-secondary)}
+.loading{text-align:center;color:var(--text-secondary);padding:30px;font-size:13px}
+.today-banner{background:var(--success-bg-soft);border-left:3px solid var(--success-border);border-radius:12px;padding:14px 18px;margin-bottom:16px;font-size:13px}
+.today-banner b{color:var(--text)}
+.today-banner .tb-sub{color:var(--success-text)}
+@media (max-width:880px){.stat-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){
+  body{padding:20px 14px;font-size:13px}
+  .header-top{flex-direction:column;align-items:flex-start;gap:6px}
+  .header-meta{text-align:left}
+  h1{font-size:22px}
+  .stat-grid{grid-template-columns:1fr;gap:10px}
+  .stat-card .big{font-size:24px}
+  .card{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header-top">
+    <div class="brand">LiveRichMedia</div>
+    <div class="header-meta">OnlyFans Automation Build Sheet<br><span id="todayLabel"></span></div>
+  </div>
+
+  <h1>Build Tracker — one a day, with proof</h1>
+  <p class="subtitle">Every manager builds one automation per day on their own models, checks it off here, and pastes the proof. No proof, no check.</p>
+
+  <h2>Ground rules</h2>
+  <div class="card rules-card">
+    <p><b>Safe vs. Sending.</b> Read-only tools: run freely. Anything that SENDS to fans drafts only and waits for human approval. No auto-send to fans, ever.</p>
+    <p><b>Caption boundary — hard line.</b> Claude studies top captions and WHY they worked (hook, structure, urgency, timing) and suggests non-explicit angles. Claude will NOT write erotic or sexually explicit wording. Breaking this can get the account banned.</p>
+    <p><b>One per day.</b> The page enforces it: one check-off per manager per day, each build only once, and check-offs can't be edited or deleted after submitting.</p>
+  </div>
+
+  <h2>Who are you?</h2>
+  <div class="card">
+    <div class="mgr-row" id="mgrRow"><span class="loading">Loading roster…</span></div>
+    <div class="mgr-models" id="mgrModels"></div>
+    <div class="mgr-note" id="mgrNote"></div>
+  </div>
+
+  <div id="todayBanner"></div>
+
+  <div class="stat-grid" id="statGrid"></div>
+
+  <h2>Tier 1 — The Core 10 <span style="font-size:12px;color:var(--text-secondary);font-weight:400">(build in this order)</span></h2>
+  <div id="buildList"><div class="loading">Loading…</div></div>
+
+  <h2>Team board</h2>
+  <div class="card board-wrap" id="boardCard"><div class="loading">Loading…</div></div>
+
+  <h2>Check-off log</h2>
+  <div class="card" id="feedCard"><div class="loading">Loading…</div></div>
+
+  <h2>Reference — what comes after Tier 1</h2>
+  <details class="ref">
+    <summary>Tier 2 — Explore these too (pick 1–2 that excite you)</summary>
+    <div class="ref-body">
+      <div class="ref-item"><b>Spender tier auto-sorter</b> — group every fan cheap/mid/whale so masses hit the right list · listTopFans, fan lists</div>
+      <div class="ref-item"><b>Refund &amp; chargeback watch ⏰</b> — flag disputes/refunds as they hit · transactions/chargebacks</div>
+      <div class="ref-item"><b>First-time buyer catcher</b> — spot a fan's first-ever purchase so chatters pounce · directMessages, transactions</div>
+      <div class="ref-item"><b>Tip-chaser</b> — fans who tip but don't buy PPV (and vice versa) · listTopFans</div>
+      <div class="ref-item"><b>Shift-over-shift comparison ⏰</b> — same chatter vs their own normal; catch slipping early · directMessages (deeper dig)</div>
+      <div class="ref-item"><b>Response-time check</b> — how long fans wait for a reply · directMessages (deeper dig)</div>
+      <div class="ref-item"><b>Unsent-content tracker</b> — flag what should've been unsent and wasn't · massMessages, queue</div>
+      <div class="ref-item"><b>Dead-conversation reviver</b> — fans who went quiet mid-chat, never closed · directMessages (deeper dig)</div>
+      <div class="ref-item"><b>Content gap finder</b> — what's selling that we're low on → ask model to shoot · listVaultMedia, massMessages</div>
+      <div class="ref-item"><b>OFTV / promo countdown prep</b> — pull what worked last promo · massMessages, getEarnings</div>
+      <div class="ref-item"><b>Holiday &amp; event calendar ⏰</b> — auto-remind ahead of holidays/paydays · Google Calendar + Slack</div>
+      <div class="ref-item"><b>Best-performing post finder</b> — which wall posts drove subs; repost winners · statisticsOverview</div>
+      <div class="ref-item"><b>Caption help — the RIGHT way</b> — study top captions, analyze WHY they worked, suggest non-explicit angles. <span style="color:var(--amber-text)">Hard rule: no erotic or explicit wording, study and structure only.</span> · massMessages</div>
+      <div class="ref-item"><b>Voice note → game plan</b> — speak it, get a clean written plan</div>
+      <div class="ref-item"><b>Daily viral-topics feed ⏰</b> — trending things to talk about, into Slack</div>
+      <div class="ref-item"><b>Shift summarizer</b> — auto-summarize a chatter's shift</div>
+      <div class="ref-item"><b>Model check-in drafts</b> — draft WhatsApp check-ins</div>
+      <div class="ref-item"><b>Model performance report</b> — the report you send each model</div>
+      <div class="ref-item"><b>Manager's morning briefing ⏰</b> — ALL her accounts in one card</div>
+      <div class="ref-item"><b>"What changed" detector</b> — model dropped? auto-compare to her best week, name what slacked</div>
+      <div class="ref-item"><b>Win-back list</b> — lapsed whales across all her models, ready to re-engage</div>
+    </div>
+  </details>
+  <details class="ref">
+    <summary>Tier 3 — Slack / team-operations layer</summary>
+    <div class="ref-body">
+      <div class="ref-item"><b>Morning Slack sweep ⏰</b> — overnight @s, urgent or unanswered messages, newspaper-style · Slack read (safe)</div>
+      <div class="ref-item"><b>Unanswered-message catcher ⏰</b> — chatter question or model message sitting with no reply · Slack read (safe)</div>
+      <div class="ref-item"><b>Clock-out report check ⏰</b> — who didn't leave their end-of-shift report · Slack read (safe)</div>
+      <div class="ref-item"><b>Problem triage</b> — simple &amp; known → handle; real problem → flag, don't guess · draft-and-confirm</div>
+      <div class="ref-item"><b>Scheduled chatter check-ins ⏰</b> — "you good? need anything?" mid-shift · simple = auto-send OK</div>
+      <div class="ref-item"><b>Score-request reminders ⏰</b> — auto-ping chatters to send scores X min into shift</div>
+      <div class="ref-item"><b>Encouragement / morale pings ⏰</b> — positive note on a good shift, gentle nudge on a slow one</div>
+      <div class="ref-item"><b>Daily viral-topics drop ⏰</b> — trending topics into the team channel</div>
+      <div class="ref-item" style="color:var(--amber-text)">⚠️ Auto-firing on a schedule needs the hosted job layer (cron/agent) — Slack Workflow Builder covers fixed-time pings only. Don't promise "fully automatic" until that exists.</div>
+    </div>
+  </details>
+
+  <div class="footer">One build a day · proof or it didn't happen · LiveRichMedia</div>
+</div>
+
+<script>
+const SUPA = 'https://hqvtbfainhtkfptglfuv.supabase.co';
+const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxdnRiZmFpbmh0a2ZwdGdsZnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTI2NjEsImV4cCI6MjA4NzE4ODY2MX0.ZCxTY3aslMdcBuy3QNl5IVR4dTWn7SRM5SvkmdUgAT4';
+const H = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY };
+const MIN_PROOF = 40;
+
+const BUILDS = [
+ {id:'b1', day:1, name:'Morning Money Report', sched:true, deep:false, sends:false, caption:false,
+  does:"Yesterday's earnings per model, one card. Total + subs/tips/messages, who's up, who's down.",
+  prompt:'Pull yesterday\'s OnlyFans earnings for [model]. One clean card: total, subscriptions, tips, messages. Tell me up or down vs the day before.',
+  endpoint:'getEarnings, getEarningsOverview'},
+ {id:'b2', day:2, name:'Mass Message Check', sched:true, deep:false, sends:false, caption:false,
+  does:'How many masses went out, viewed, bought + revenue. Flags duds.',
+  prompt:'Check [model]\'s mass messages from yesterday. For each: sent, viewed, bought, revenue. Flag any that barely sold.',
+  endpoint:'massMessages, getMassMessageOverview'},
+ {id:'b3', day:3, name:'Top Sellers Library', sched:false, deep:false, sends:false, caption:true,
+  does:'Pulls the captions that sold the most times — repeat winners — so chatters reuse proven ones.',
+  prompt:'Look at [model]\'s mass messages over 90 days. Find captions that sold the most times. Top 20 with sale counts.',
+  endpoint:'massMessages (filter by purchases)'},
+ {id:'b4', day:4, name:'Top Fans / VIP Watch', sched:true, deep:false, sends:false, caption:false,
+  does:'Top 20 spenders ranked, with tip/message/sub breakdown. VIPs highlighted.',
+  prompt:'Top 20 fans by spend for [model], with how much and whether tips/messages/subs. Highlight VIPs.',
+  endpoint:'listTopFans'},
+ {id:'b5', day:5, name:'Whale Went Quiet', sched:true, deep:false, sends:false, caption:false,
+  does:'Flags a big fan ($1k+ lifetime) who stopped buying in 2–4 weeks, to re-engage.',
+  prompt:'Scan [model]\'s top spenders. Find any $1k+ fan who hasn\'t bought in 2–4 weeks. Names + what they used to spend.',
+  endpoint:'listTopFans + transaction history'},
+ {id:'b6', day:6, name:'Chatter Scorecard', sched:true, deep:true, sends:false, caption:false,
+  does:'Reads actual chats, grades each chatter on relationship-building, value-setting, funnel push, dead-end replies. 0–100 + real examples.',
+  prompt:'Pull [model]\'s direct messages last 2 days. Grade each chatter 0–100 on relationship, value, VIP funnel, no dead-ends. Give 3 good and 3 bad real examples.',
+  endpoint:'directMessages'},
+ {id:'b7', day:7, name:'Missed-Boat Alert', sched:true, deep:true, sends:false, caption:false,
+  does:'Finds buying-signal fans who got a flat reply or were left unread this shift.',
+  prompt:'Look at [model]\'s conversations this shift. Find fans who showed a buying signal but got a flat reply or were left unread. List them.',
+  endpoint:'directMessages'},
+ {id:'b9', day:8, name:'Price-Band Read', sched:true, deep:false, sends:false, caption:false,
+  does:"Breaks sales into cheap/mid/big bands. What price points are working vs flopping now; video vs photo demand.",
+  prompt:'Look at [model]\'s paid masses + sales last 3 weeks. Break down by price band (cheap/mid/big). What\'s selling, what\'s flopping, are fans buying more video or photo?',
+  endpoint:'massMessages, getEarnings'},
+ {id:'b10', day:9, name:'Daily Lesson Plan', sched:true, deep:false, sends:false, caption:false,
+  does:"Pulls it all into one game plan: what's selling, best price points today, 5 proven captions, who to prioritize.",
+  prompt:'Build a short daily game plan for [model]: what\'s selling now, best price points today, 5 proven captions to reuse, fans to prioritize. Use the LRM design style.',
+  endpoint:'combines Mass Check, Top Sellers, VIP Watch, Price-Band'},
+ {id:'b8', day:10, name:'Fan Recovery Draft', sched:false, deep:false, sends:true, caption:false,
+  does:'Drafts a warm check-in to each missed fan. Approve before sending. Built LAST on purpose — it\'s the only one that sends, so the approval gate gets built carefully.',
+  prompt:'For the missed fans on [model], draft a natural check-in for each to re-open the chat. Show drafts — DO NOT send until I approve.',
+  endpoint:'directMessages (read) → sendMessage (only after approval)'}
+];
+
+const AVATARS = [['#CECBF6','#26215C'],['#B5D4F4','#042C53'],['#F4C0D1','#4B1528'],['#FAC775','#412402'],['#C0DD97','#173404'],['#9FE1CB','#04342C'],['#B4B2A9','#2C2C2A'],['#F0997B','#4A1B0C']];
+let roster = [], checkoffs = [], selMgr = localStorage.getItem('bs_manager') || null;
+
+function laToday(){ return new Date().toLocaleDateString('en-CA', {timeZone:'America/Los_Angeles'}); }
+function esc(s){ const d=document.createElement('div'); d.textContent=s==null?'':String(s); return d.innerHTML; }
+function fmtDate(d){ const [y,m,dd]=d.split('-'); return new Date(+y,+m-1,+dd).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
+function avatarFor(name){ let h=0; for(const c of name) h=(h*31+c.charCodeAt(0))>>>0; return AVATARS[h%AVATARS.length]; }
+
+async function loadData(){
+  const [r1, r2] = await Promise.all([
+    fetch(SUPA+'/rest/v1/build_sheet_roster?select=*&active=eq.true&order=sort', {headers:H}),
+    fetch(SUPA+'/rest/v1/build_sheet_checkoffs?select=*&order=created_at.desc', {headers:H})
+  ]);
+  roster = await r1.json();
+  checkoffs = await r2.json();
+  if(!Array.isArray(roster)) roster=[];
+  if(!Array.isArray(checkoffs)) checkoffs=[];
+  renderAll();
+}
+
+function mgrChecks(m){ return checkoffs.filter(c=>c.manager===m); }
+function doneBuild(m, bid){ return checkoffs.find(c=>c.manager===m && c.build_id===bid); }
+function doneToday(m){ return checkoffs.find(c=>c.manager===m && c.checked_date===laToday()); }
+function nextBuild(m){ for(const b of BUILDS){ if(!doneBuild(m,b.id)) return b; } return null; }
+
+function renderAll(){ renderMgrs(); renderBanner(); renderStats(); renderBuilds(); renderBoard(); renderFeed();
+  document.getElementById('todayLabel').textContent = 'Today · ' + new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'America/Los_Angeles'});
+}
+
+function renderMgrs(){
+  const row = document.getElementById('mgrRow');
+  row.innerHTML = roster.map(r=>`<button class="mgr-chip${r.manager===selMgr?' sel':''}" onclick="pickMgr('${esc(r.manager)}')">${esc(r.manager)}</button>`).join('');
+  const mm = document.getElementById('mgrModels'), mn = document.getElementById('mgrNote');
+  const r = roster.find(x=>x.manager===selMgr);
+  mm.textContent = r ? 'Your models: ' + r.models.join(' · ') : 'Pick your name — your daily queue and models load from the roster.';
+  mn.textContent = r && r.note ? '⚠ ' + r.note : '';
+}
+function pickMgr(m){ selMgr=m; localStorage.setItem('bs_manager',m); renderAll(); }
+
+function renderBanner(){
+  const el = document.getElementById('todayBanner');
+  if(!selMgr){ el.innerHTML=''; return; }
+  const dt = doneToday(selMgr), nb = nextBuild(selMgr);
+  if(dt){
+    el.innerHTML = `<div class="today-banner"><b>✓ ${esc(selMgr)} — today is done.</b> <span class="tb-sub">You checked off "${esc(dt.build_name)}". Next build unlocks tomorrow.</span></div>`;
+  } else if(nb){
+    el.innerHTML = `<div class="today-banner"><b>${esc(selMgr)}, today's build is #${nb.day}: ${esc(nb.name)}.</b> <span class="tb-sub">Build it on one of your models, run it, paste the output below, attach a screenshot, check it off.</span></div>`;
+  } else {
+    el.innerHTML = `<div class="today-banner"><b>🏁 ${esc(selMgr)} — Tier 1 complete.</b> <span class="tb-sub">All 10 built and proven. Pick 1–2 from Tier 2 that excite you.</span></div>`;
+  }
+}
+
+function renderStats(){
+  const el = document.getElementById('statGrid');
+  if(!selMgr){ el.innerHTML=''; return; }
+  const mine = mgrChecks(selMgr).length;
+  const teamToday = checkoffs.filter(c=>c.checked_date===laToday()).length;
+  const teamTotal = checkoffs.length;
+  el.innerHTML = `
+   <div class="stat-card success"><p class="label">Your progress</p><p class="big">${mine}/10</p>
+     <div class="progress-bar"><div class="progress-fill" style="width:${mine*10}%"></div></div></div>
+   <div class="stat-card info"><p class="label">Team check-offs today</p><p class="big">${teamToday}/${roster.length}</p><p class="sub">${fmtDate(laToday())}</p></div>
+   <div class="stat-card purple"><p class="label">Total builds proven</p><p class="big">${teamTotal}</p><p class="sub">of ${roster.length*10} across the team</p></div>`;
+}
+
+function renderBuilds(){
+  const el = document.getElementById('buildList');
+  const nb = selMgr ? nextBuild(selMgr) : null;
+  const dt = selMgr ? doneToday(selMgr) : null;
+  el.innerHTML = BUILDS.map(b=>{
+    const done = selMgr ? doneBuild(selMgr,b.id) : null;
+    const isToday = selMgr && nb && nb.id===b.id && !dt;
+    const locked = selMgr && !done && !isToday;
+    const [bg,fg] = done ? ['rgba(151,196,89,.25)','#C0DD97'] : isToday ? ['rgba(250,199,117,.25)','#FAC775'] : ['#2a2a2a','#a8a8a4'];
+    let badges = `<span class="badge ${b.sends?'sends':'safe'}">${b.sends?'⚠️ Sends — draft only':'Safe · read'}</span>`;
+    if(b.sched) badges += '<span class="badge sched">⏰ schedule after proven</span>';
+    if(b.deep) badges += '<span class="badge deep">deeper dig · slower</span>';
+    if(b.caption) badges += '<span class="badge caption">caption boundary</span>';
+    let status = '';
+    if(done) status = `<div class="build-status"><div class="done-mark">✓ built</div><div class="by">${fmtDate(done.checked_date)}</div></div>`;
+    else if(isToday) status = `<div class="build-status"><div style="color:var(--amber-text);font-weight:500">today</div></div>`;
+    let body = '';
+    const open = done || isToday;
+    if(open){
+      body = `<div class="build-body">
+        <div class="prompt-box"><div class="pb-label">Exact prompt</div><div class="pb-text" id="pt-${b.id}">${esc(b.prompt)}</div>
+          <button class="copy-btn" onclick="copyPrompt('${b.id}', this)">copy</button></div>
+        <div class="endpoint-line">Endpoint: <code>${esc(b.endpoint)}</code></div>
+        ${b.caption?'<div class="caption-warning"><b>Caption boundary:</b> study captions and why they worked. Claude will NOT write erotic or sexually explicit wording — analysis and non-explicit angles only. Breaking this can get the account banned.</div>':''}
+        ${b.sends?'<div class="sends-warning"><b>⚠️ This one sends.</b> Drafts only. Nothing goes to a fan without explicit human approval. Build the approval gate first, prove it, then use it.</div>':''}
+        ${done ? proofView(done) : checkoffForm(b)}
+      </div>`;
+    }
+    return `<div class="build-card${done?' done':''}${isToday?' today':''}${locked?' locked':''}">
+      <div class="build-head">
+        <div class="build-num" style="background:${bg};color:${fg}">${b.day}</div>
+        <div class="build-title-wrap">
+          <div class="build-title">${esc(b.name)}</div>
+          <div class="build-does">${esc(b.does)}</div>
+          <div class="badges">${badges}</div>
+        </div>
+        ${status}
+      </div>
+      ${body}
+    </div>`;
+  }).join('');
+}
+
+function proofView(c){
+  return `<div class="proof-view"><div class="pv-meta">Proof · checked off ${fmtDate(c.checked_date)}</div>
+    <pre>${esc(c.proof_text)}</pre>
+    ${c.screenshot_url?`<a href="${esc(c.screenshot_url)}" target="_blank">View screenshot →</a>`:''}</div>`;
+}
+
+function checkoffForm(b){
+  return `<div class="checkoff-form">
+    <label>Proof — paste the actual output your build produced (min ${MIN_PROOF} chars)</label>
+    <textarea id="proof-${b.id}" placeholder="Paste the report/output the automation produced when you ran it…" oninput="countChars('${b.id}')"></textarea>
+    <div class="char-count" id="cc-${b.id}">0 / ${MIN_PROOF}</div>
+    <div class="file-row"><label style="margin:0">Screenshot (optional but encouraged)</label><input type="file" id="shot-${b.id}" accept="image/*"></div>
+    <button class="submit-btn" id="btn-${b.id}" onclick="submitCheckoff('${b.id}')">Check it off ✓</button>
+    <div class="form-msg" id="msg-${b.id}"></div>
+  </div>`;
+}
+
+function countChars(bid){
+  const t = document.getElementById('proof-'+bid).value.trim();
+  const cc = document.getElementById('cc-'+bid);
+  cc.textContent = t.length + ' / ' + MIN_PROOF;
+  cc.className = 'char-count' + (t.length>=MIN_PROOF?' ok':'');
+}
+
+function copyPrompt(bid, btn){
+  const b = BUILDS.find(x=>x.id===bid);
+  navigator.clipboard.writeText(b.prompt).then(()=>{ btn.textContent='copied ✓'; setTimeout(()=>btn.textContent='copy',1500); });
+}
+
+async function submitCheckoff(bid){
+  const b = BUILDS.find(x=>x.id===bid);
+  const msg = document.getElementById('msg-'+bid);
+  const btn = document.getElementById('btn-'+bid);
+  const proof = document.getElementById('proof-'+bid).value.trim();
+  if(!selMgr){ msg.className='form-msg err'; msg.textContent='Pick your name at the top first.'; return; }
+  if(proof.length < MIN_PROOF){ msg.className='form-msg err'; msg.textContent='Proof too short — paste the real output ('+MIN_PROOF+'+ characters).'; return; }
+  btn.disabled = true; msg.className='form-msg'; msg.textContent='Submitting…';
+  let screenshot_url = null;
+  try{
+    const fileEl = document.getElementById('shot-'+bid);
+    if(fileEl.files && fileEl.files[0]){
+      const f = fileEl.files[0];
+      const ext = (f.name.split('.').pop()||'png').toLowerCase().replace(/[^a-z0-9]/g,'');
+      const path = encodeURIComponent(selMgr.toLowerCase()) + '/' + bid + '-' + Date.now() + '.' + ext;
+      const up = await fetch(SUPA+'/storage/v1/object/build-proofs/'+path, {method:'POST', headers:{...H,'content-type':f.type||'image/png'}, body:f});
+      if(up.ok) screenshot_url = SUPA+'/storage/v1/object/public/build-proofs/'+path;
+      else { msg.className='form-msg err'; msg.textContent='Screenshot upload failed ('+up.status+'). Remove it or try again.'; btn.disabled=false; return; }
+    }
+    const res = await fetch(SUPA+'/rest/v1/build_sheet_checkoffs', {
+      method:'POST', headers:{...H,'content-type':'application/json','prefer':'return=representation'},
+      body: JSON.stringify({manager:selMgr, build_id:bid, build_name:b.name, proof_text:proof, screenshot_url})
+    });
+    if(res.ok){ msg.className='form-msg ok'; msg.textContent='✓ Checked off. Locked in — proof is permanent.'; await loadData(); }
+    else {
+      const e = await res.json().catch(()=>({}));
+      msg.className='form-msg err';
+      if((e.message||'').includes('one_per_day')) msg.textContent='You already checked off a build today. One per day — next unlocks tomorrow.';
+      else if((e.message||'').includes('one_build_once')) msg.textContent='This build is already checked off for you.';
+      else msg.textContent='Failed: '+(e.message||res.status);
+      btn.disabled=false;
+    }
+  }catch(err){ msg.className='form-msg err'; msg.textContent='Network error: '+err.message; btn.disabled=false; }
+}
+
+function renderBoard(){
+  const el = document.getElementById('boardCard');
+  if(!roster.length){ el.innerHTML='<div class="loading">No roster.</div>'; return; }
+  let html = '<table class="board"><tr><th>Manager</th>' + BUILDS.map(b=>`<th title="${esc(b.name)}">${b.day}</th>`).join('') + '<th>Done</th><th>Today</th></tr>';
+  for(const r of roster){
+    const mine = mgrChecks(r.manager);
+    const today = doneToday(r.manager);
+    html += `<tr><td>${esc(r.manager)}</td>` + BUILDS.map(b=>{
+      const d = doneBuild(r.manager,b.id);
+      return `<td><span class="cell ${d?'done':'pending'}" title="${esc(b.name)}${d?' · '+fmtDate(d.checked_date):''}">${d?'✓':''}</span></td>`;
+    }).join('') + `<td class="board-count">${mine.length}/10</td><td>${today?'<span style="color:var(--success-text)">✓</span>':'<span style="color:#666">—</span>'}</td></tr>`;
+  }
+  html += '</table>';
+  el.innerHTML = html;
+}
+
+function renderFeed(){
+  const el = document.getElementById('feedCard');
+  if(!checkoffs.length){ el.innerHTML='<div class="loading">No check-offs yet. First manager to build one gets bragging rights.</div>'; return; }
+  el.innerHTML = checkoffs.slice(0,40).map((c,i)=>{
+    const [bg,fg] = avatarFor(c.manager);
+    return `<div class="feed-row" onclick="document.getElementById('fp-${i}').classList.toggle('open')">
+      <div class="feed-avatar" style="background:${bg};color:${fg}">${esc(c.manager[0])}</div>
+      <div class="feed-info"><div class="feed-name">${esc(c.manager)} · ${esc(c.build_name)}</div>
+      <div class="feed-meta">${esc(c.proof_text.slice(0,90))}${c.proof_text.length>90?'… (tap to expand)':''}</div></div>
+      <div class="feed-date">${fmtDate(c.checked_date)}</div>
+    </div>
+    <div class="feed-proof" id="fp-${i}"><div class="proof-view"><div class="pv-meta">Full proof</div><pre>${esc(c.proof_text)}</pre>
+    ${c.screenshot_url?`<a href="${esc(c.screenshot_url)}" target="_blank">View screenshot →</a>`:''}</div></div>`;
+  }).join('');
+}
+
+loadData();
+setInterval(loadData, 120000);
+</script>
+</body>
+</html>
