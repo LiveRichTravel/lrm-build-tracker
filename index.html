@@ -6,28 +6,25 @@
 <title>LRM Build Tracker</title>
 <style>
 :root{
-  --bg:#0c0c0f; --text:#f4f4f3; --muted:#a6a6a8; --faint:#6d6d72;
-  --glass:rgba(255,255,255,0.045); --glass-2:rgba(255,255,255,0.07); --stroke:rgba(255,255,255,0.10); --stroke-2:rgba(255,255,255,0.06);
+  --bg:#0b0b0e; --text:#f5f5f4; --muted:#a4a4a8; --faint:#6c6c72;
+  --glass:rgba(255,255,255,0.05); --glass-2:rgba(255,255,255,0.08); --stroke:rgba(255,255,255,0.10); --stroke-2:rgba(255,255,255,0.06);
   --green:#9bd459; --green-t:#c7e69e; --amber:#f7c66e; --blue:#86bdf2; --blue-t:#bcdcfb; --purple:#9a8cf0; --purple-t:#cfc8f8; --pink:#f3a8c4; --red:#f29b9b;
   --grad:linear-gradient(100deg,#cfc8f8 0%,#f3a8c4 48%,#86bdf2 100%);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;position:relative;overflow-x:hidden}
-/* animated gradient mesh background */
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;position:relative;overflow-x:hidden}
 .mesh{position:fixed;inset:0;z-index:-2;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.32;animation:float 22s ease-in-out infinite}
-.b1{width:520px;height:520px;background:#6f5bd4;top:-140px;left:-120px}
-.b2{width:460px;height:460px;background:#d36f9e;top:30%;right:-160px;animation-delay:-6s}
-.b3{width:420px;height:420px;background:#4f86c6;bottom:-160px;left:25%;animation-delay:-12s}
-@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.08)}66%{transform:translate(-30px,40px) scale(.95)}}
-.grain{position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.03),transparent 60%);pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(95px);opacity:.30;animation:float 24s ease-in-out infinite}
+.b1{width:540px;height:540px;background:#6f5bd4;top:-150px;left:-120px}
+.b2{width:480px;height:480px;background:#d36f9e;top:28%;right:-170px;animation-delay:-7s}
+.b3{width:440px;height:440px;background:#4f86c6;bottom:-170px;left:24%;animation-delay:-13s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(44px,-32px) scale(1.08)}66%{transform:translate(-32px,44px) scale(.95)}}
+.grain{position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 50% -10%,rgba(255,255,255,.04),transparent 55%);pointer-events:none}
+.shell{max-width:1240px;margin:0 auto;padding:0 22px 80px}
 
-.shell{max-width:1180px;margin:0 auto;padding:0 20px 70px}
-
-/* nav */
-.nav{position:sticky;top:0;z-index:50;margin:0 -20px;padding:13px 20px;background:rgba(12,12,15,0.55);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-bottom:1px solid var(--stroke-2);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{font-weight:700;font-size:20px;letter-spacing:-.01em;background:var(--grad);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 6s linear infinite}
+.nav{position:sticky;top:0;z-index:60;margin:0 -22px;padding:14px 22px;background:rgba(11,11,14,0.6);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);border-bottom:1px solid var(--stroke-2);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font-weight:700;font-size:20px;letter-spacing:-.01em;background:var(--grad);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 7s linear infinite}
 @keyframes shine{to{background-position:200% center}}
 .nav-right{display:flex;align-items:center;gap:14px;font-size:12.5px}
 .nav-link{color:var(--muted);text-decoration:none;cursor:pointer}.nav-link:hover{color:var(--text)}
@@ -35,171 +32,186 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .who-pill .dot{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px}
 .who-pill .chev{color:var(--faint);font-size:9px}
 
-/* hero */
-.hero{padding:46px 0 26px}
-.hero .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--purple-t);font-weight:600;margin-bottom:14px}
-.hero h1{font-size:38px;font-weight:600;letter-spacing:-.025em;line-height:1.08}
+.hero{padding:54px 0 30px}
+.hero .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--purple-t);font-weight:600;margin-bottom:16px}
+.hero h1{font-size:46px;font-weight:700;letter-spacing:-.03em;line-height:1.04}
 .hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.hero .lede{font-size:15.5px;color:var(--muted);margin-top:14px;max-width:660px}
-.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
-.chip{font-size:11.5px;color:var(--muted);background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:6px 13px;backdrop-filter:blur(8px)}
+.hero .lede{font-size:17px;color:var(--muted);margin-top:18px;max-width:680px}
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.chip{font-size:11.5px;color:var(--muted);background:var(--glass);border:1px solid var(--stroke);border-radius:999px;padding:7px 14px;backdrop-filter:blur(8px)}
 .chip b{color:var(--text);font-weight:600}
 
-/* glass card base */
-.glass{background:var(--glass);border:1px solid var(--stroke);border-radius:20px;backdrop-filter:blur(20px) saturate(130%);-webkit-backdrop-filter:blur(20px) saturate(130%);box-shadow:0 10px 40px rgba(0,0,0,.28)}
-
-/* reveal animation */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
+.glass{background:var(--glass);border:1px solid var(--stroke);border-radius:24px;backdrop-filter:blur(22px) saturate(130%);-webkit-backdrop-filter:blur(22px) saturate(130%);box-shadow:0 12px 44px rgba(0,0,0,.30)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
 
-.sec{margin-top:42px}
-.sec-h{display:flex;align-items:baseline;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.sec-h h2{font-size:20px;font-weight:600;letter-spacing:-.01em}
-.sec-h .sub{font-size:12.5px;color:var(--muted)}
+.sec{margin-top:52px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.sec-h h2{font-size:30px;font-weight:700;letter-spacing:-.02em}
+.sec-h .sub{font-size:13px;color:var(--muted)}
 
-/* how it works */
-.how{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.step{padding:18px}
-.step .n{width:30px;height:30px;border-radius:9px;background:var(--grad);color:#1a1330;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-.step h4{font-size:14px;font-weight:600;margin-bottom:5px}
-.step p{font-size:12.5px;color:var(--muted)}
+.how{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.step{padding:22px}
+.step .n{width:34px;height:34px;border-radius:11px;background:var(--grad);color:#1a1330;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.step h4{font-size:15px;font-weight:600;margin-bottom:6px}
+.step p{font-size:13px;color:var(--muted)}
 .step code{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--blue-t);background:rgba(134,189,242,.12);padding:1px 6px;border-radius:5px}
 
-/* pick */
-.pickbar{padding:18px 20px}
-.pb-label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:12px}
-.mgr-row{display:flex;flex-wrap:wrap;gap:9px}
-.mgr-chip{border:1px solid var(--stroke);background:rgba(255,255,255,.03);color:var(--text);border-radius:999px;padding:9px 17px;font-size:13px;cursor:pointer;transition:.18s}
+.pickbar{padding:22px 24px}
+.pb-label{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:14px}
+.mgr-row{display:flex;flex-wrap:wrap;gap:10px}
+.mgr-chip{border:1px solid var(--stroke);background:rgba(255,255,255,.03);color:var(--text);border-radius:999px;padding:10px 19px;font-size:13.5px;cursor:pointer;transition:.18s}
 .mgr-chip:hover{border-color:var(--purple);transform:translateY(-2px);background:rgba(154,140,240,.12)}
 .mgr-chip.sel{background:var(--grad);color:#1a1330;border-color:transparent;font-weight:700}
-.mgr-models{font-size:12.5px;color:var(--muted);margin-top:13px}.mgr-models b{color:var(--text);font-weight:600}
-.mgr-note{font-size:12.5px;color:var(--amber);margin-top:6px}
+.mgr-models{font-size:13px;color:var(--muted);margin-top:15px}.mgr-models b{color:var(--text);font-weight:600}
+.mgr-note{font-size:13px;color:var(--amber);margin-top:6px}
 
-/* dashboard */
-.dash{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px}
-.dcard{padding:20px 22px;position:relative;overflow:hidden}
-.dcard .glow{position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;filter:blur(50px);opacity:.5}
+.dash{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px}
+.dcard{padding:24px 26px;position:relative;overflow:hidden}
+.dcard .glow{position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;filter:blur(55px);opacity:.5}
 .dcard.g1 .glow{background:#9bd459}.dcard.g2 .glow{background:#86bdf2}.dcard.g3 .glow{background:#9a8cf0}
 .dcard .label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);position:relative}
-.dcard .big{font-size:34px;font-weight:600;letter-spacing:-.02em;margin:5px 0;position:relative}
-.dcard .small{font-size:12.5px;color:var(--muted);position:relative}
-.pbar{height:9px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;margin-top:11px;position:relative}
+.dcard .big{font-size:40px;font-weight:700;letter-spacing:-.03em;margin:6px 0;position:relative}
+.dcard .small{font-size:13px;color:var(--muted);position:relative}
+.pbar{height:10px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;margin-top:13px;position:relative}
 .pbar>i{display:block;height:100%;background:linear-gradient(90deg,#9bd459,#c7e69e);border-radius:6px;transition:width .6s cubic-bezier(.2,.7,.2,1);position:relative}
-.pbar>i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);transform:translateX(-100%);animation:sweep 2.4s infinite}
-@keyframes sweep{to{transform:translateX(200%)}}
+.pbar>i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);transform:translateX(-100%);animation:sweep 2.6s infinite}
+@keyframes sweep{to{transform:translateX(220%)}}
 
-/* spotlight */
-.spot{margin-top:14px;padding:24px;display:none;position:relative;overflow:hidden}
+.spot{margin-top:16px;padding:28px;display:none;position:relative;overflow:hidden}
 .spot.show{display:block}
-.spot::before{content:"";position:absolute;top:-60px;left:-30px;width:220px;height:220px;border-radius:50%;background:var(--amber);filter:blur(80px);opacity:.16}
+.spot::before{content:"";position:absolute;top:-70px;left:-30px;width:240px;height:240px;border-radius:50%;background:var(--amber);filter:blur(85px);opacity:.16}
 .spot.done-state::before{background:var(--green)}
 .spot .kicker{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);font-weight:700;position:relative}
 .spot.done-state .kicker{color:var(--green-t)}
-.spot h3{font-size:25px;font-weight:600;letter-spacing:-.01em;margin:7px 0 5px;position:relative}
-.spot .does{font-size:13.5px;color:var(--muted);max-width:700px;position:relative}
+.spot h3{font-size:28px;font-weight:700;letter-spacing:-.02em;margin:8px 0 6px;position:relative}
+.spot .does{font-size:14px;color:var(--muted);max-width:720px;position:relative}
+.spot .spot-btn{margin-top:18px;position:relative;display:inline-flex;align-items:center;gap:8px;background:#fff;color:#16161a;border:none;border-radius:999px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer}
 
-/* builds */
-.builds{display:flex;flex-direction:column;gap:13px}
-.bcard{padding:18px 20px;transition:transform .2s,box-shadow .2s,border-color .2s}
-.bcard:hover{transform:translateY(-2px);box-shadow:0 16px 50px rgba(0,0,0,.34)}
-.bcard.done{border-color:rgba(155,212,89,.4)}
-.bcard.today{border-color:rgba(247,198,110,.55);box-shadow:0 0 0 1px rgba(247,198,110,.4),0 16px 50px rgba(0,0,0,.34)}
-.bcard.locked{opacity:.45}
-.bhead{display:flex;align-items:flex-start;gap:14px}
-.bnum{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
-.btw{flex:1;min-width:0}
-.btitle{font-size:16px;font-weight:600}
-.bdoes{font-size:13px;color:var(--muted);margin-top:3px}
-.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.badge{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px;border:1px solid var(--stroke);color:var(--muted)}
+/* Apple-style card grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.card{border-radius:26px;overflow:hidden;background:var(--glass);border:1px solid var(--stroke);backdrop-filter:blur(22px);box-shadow:0 12px 44px rgba(0,0,0,.30);display:flex;flex-direction:column;transition:transform .22s,box-shadow .22s,border-color .22s;cursor:pointer}
+.card:hover{transform:translateY(-4px);box-shadow:0 22px 60px rgba(0,0,0,.4)}
+.card.today{border-color:rgba(247,198,110,.6);box-shadow:0 0 0 1px rgba(247,198,110,.45),0 22px 60px rgba(0,0,0,.4)}
+.card.done{border-color:rgba(155,212,89,.45)}
+.card.locked{opacity:.5}
+.art{position:relative;height:170px;display:block}
+.art svg{width:100%;height:100%;display:block}
+.art .daychip{position:absolute;top:14px;left:14px;width:34px;height:34px;border-radius:11px;background:rgba(0,0,0,.4);backdrop-filter:blur(6px);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.25)}
+.art .statechip{position:absolute;top:14px;right:14px;font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.2)}
+.art .statechip.tdy{color:#16161a;background:var(--amber);border-color:transparent}
+.art .statechip.ok{color:#16330a;background:var(--green);border-color:transparent}
+.art .statechip.lk{color:#fff}
+.cbody{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+.kick{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:8px}
+.kick.safe{color:var(--green-t)}.kick.sends{color:var(--red)}
+.ctitle{font-size:20px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+.cdesc{font-size:13px;color:var(--muted);margin-top:7px;flex:1}
+.minibadges{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.mb{font-size:10px;text-transform:uppercase;letter-spacing:.03em;padding:3px 8px;border-radius:999px;border:1px solid var(--stroke);color:var(--muted)}
+.mb.sched{color:var(--blue-t);border-color:rgba(134,189,242,.4)}
+.mb.deep{color:var(--purple-t);border-color:rgba(154,140,240,.4)}
+.mb.cap{color:var(--amber);border-color:rgba(247,198,110,.4)}
+.cfoot{display:flex;align-items:center;gap:10px;margin-top:16px}
+.skill-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:7px;background:rgba(154,140,240,.16);border:1px solid rgba(154,140,240,.42);color:var(--purple-t);border-radius:12px;padding:10px;font-size:12.5px;font-weight:600;text-decoration:none;transition:.15s}
+.skill-btn:hover{background:rgba(154,140,240,.28)}
+.skill-btn svg{width:14px;height:14px}
+.plus{width:42px;height:42px;border-radius:50%;background:#fff;color:#16161a;border:none;font-size:22px;font-weight:400;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.15s;line-height:1}
+.plus:hover{transform:scale(1.08)}
+.plus.lk{background:rgba(255,255,255,.12);color:var(--faint)}
+
+/* modal */
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.modal-bg.open{display:flex}
+.modal{max-width:640px;width:100%;background:#161619;border:1px solid var(--stroke);border-radius:26px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.6);animation:pop .25s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+.m-art{height:150px;position:relative}.m-art svg{width:100%;height:100%}
+.m-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.m-body{padding:24px}
+.m-body h3{font-size:24px;font-weight:700;letter-spacing:-.01em}
+.m-body .mdesc{font-size:14px;color:var(--muted);margin-top:8px}
+.m-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.badge{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;padding:4px 10px;border-radius:999px;border:1px solid var(--stroke);color:var(--muted)}
 .badge.safe{color:var(--green-t);border-color:rgba(155,212,89,.4)}
 .badge.sends{color:var(--red);border-color:rgba(242,155,155,.45);background:rgba(242,155,155,.08)}
 .badge.sched{color:var(--blue-t);border-color:rgba(134,189,242,.4)}
 .badge.deep{color:var(--purple-t);border-color:rgba(154,140,240,.4)}
-.badge.caption{color:var(--amber);border-color:rgba(247,198,110,.4)}
-.bstatus{flex-shrink:0;text-align:right;font-size:12px}
-.bstatus .ok{color:var(--green-t);font-weight:600}.bstatus .dt{color:var(--faint);font-size:11px}
-.bstatus .tdy{color:var(--amber);font-weight:700}.bstatus .lk{color:var(--faint)}
-.skill-btn{display:inline-flex;align-items:center;gap:7px;margin-top:12px;background:rgba(154,140,240,.14);border:1px solid rgba(154,140,240,.4);color:var(--purple-t);border-radius:10px;padding:8px 14px;font-size:12.5px;font-weight:600;text-decoration:none;transition:.15s}
-.skill-btn:hover{background:rgba(154,140,240,.24);transform:translateY(-1px)}
-.skill-btn svg{width:14px;height:14px}
-
-.bbody{margin-top:16px;border-top:1px solid var(--stroke-2);padding-top:16px}
-.run{background:rgba(0,0,0,.22);border:1px solid var(--stroke-2);border-radius:14px;padding:16px 18px}
-.run .rt{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:13px}
-.run ol{list-style:none;counter-reset:r;display:flex;flex-direction:column;gap:12px}
-.run li{counter-increment:r;position:relative;padding-left:34px;font-size:13px}
-.run li::before{content:counter(r);position:absolute;left:0;top:-1px;width:23px;height:23px;border-radius:8px;background:var(--glass-2);border:1px solid var(--stroke);color:var(--text);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.badge.cap{color:var(--amber);border-color:rgba(247,198,110,.4)}
+.m-skill{display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:rgba(154,140,240,.16);border:1px solid rgba(154,140,240,.42);color:var(--purple-t);border-radius:12px;padding:11px 18px;font-size:13px;font-weight:600;text-decoration:none}
+.m-skill svg{width:15px;height:15px}
+.run{margin-top:18px;background:rgba(0,0,0,.28);border:1px solid var(--stroke-2);border-radius:16px;padding:18px}
+.run .rt{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:14px}
+.run ol{list-style:none;counter-reset:r;display:flex;flex-direction:column;gap:13px}
+.run li{counter-increment:r;position:relative;padding-left:36px;font-size:13.5px}
+.run li::before{content:counter(r);position:absolute;left:0;top:-1px;width:24px;height:24px;border-radius:8px;background:var(--glass-2);border:1px solid var(--stroke);color:var(--text);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .run li .h{font-weight:600}.run li .d{color:var(--muted);display:block;margin-top:2px;font-size:12.5px}
 .run code{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--blue-t);background:rgba(134,189,242,.12);padding:1px 6px;border-radius:5px}
-.run .pill-skill{color:var(--purple-t);font-weight:700}
-
-.prompt-box{margin-top:12px;background:rgba(0,0,0,.4);border:1px solid var(--stroke);border-radius:12px;padding:14px 14px 14px 16px;position:relative}
+.run .ps{color:var(--purple-t);font-weight:700}
+.prompt-box{margin-top:14px;background:rgba(0,0,0,.45);border:1px solid var(--stroke);border-radius:14px;padding:14px 14px 14px 16px;position:relative}
 .prompt-box .pl{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:6px}
 .prompt-box .pt{color:#e9f1e1;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;white-space:pre-wrap;line-height:1.5;padding-right:74px}
 .prompt-box .hl{color:var(--amber);font-weight:700}
 .copy{position:absolute;top:12px;right:12px;background:var(--grad);border:none;color:#1a1330;border-radius:8px;padding:6px 14px;font-size:11.5px;font-weight:700;cursor:pointer}
-.copy:hover{filter:brightness(1.07)}
-.endpoint{font-size:11.5px;color:var(--muted);margin-top:10px}.endpoint code{font-family:ui-monospace,Menlo,monospace;color:var(--blue-t);font-size:11px}
-.warn{border-radius:12px;padding:11px 14px;font-size:12.5px;margin-top:12px;line-height:1.5}
+.endpoint{font-size:11.5px;color:var(--muted);margin-top:12px}.endpoint code{font-family:ui-monospace,Menlo,monospace;color:var(--blue-t);font-size:11px}
+.warn{border-radius:12px;padding:11px 14px;font-size:12.5px;margin-top:14px;line-height:1.5}
 .warn.cap{background:rgba(247,198,110,.1);border-left:3px solid var(--amber);color:var(--amber)}
 .warn.snd{background:rgba(242,155,155,.1);border-left:3px solid var(--red);color:var(--red)}
 .warn b{font-weight:700}
-
-.form{margin-top:16px;background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:14px;padding:18px}
+.form{margin-top:18px}
 .form .fl{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:8px;font-weight:600}
-.form textarea{width:100%;min-height:120px;background:rgba(0,0,0,.4);border:1px solid var(--stroke);border-radius:10px;color:var(--text);padding:12px 14px;font-size:13px;font-family:ui-monospace,Menlo,monospace;resize:vertical;line-height:1.5}
+.form textarea{width:100%;min-height:120px;background:rgba(0,0,0,.4);border:1px solid var(--stroke);border-radius:12px;color:var(--text);padding:12px 14px;font-size:13px;font-family:ui-monospace,Menlo,monospace;resize:vertical;line-height:1.5}
 .form textarea:focus{outline:none;border-color:var(--purple)}
 .cc{font-size:11px;color:var(--faint);margin-top:6px}.cc.ok{color:var(--green-t)}
 .filerow{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
 .filerow input[type=file]{font-size:12px;color:var(--muted)}
-.submit{margin-top:16px;background:linear-gradient(90deg,#9bd459,#7fc04a);color:#16330a;border:none;border-radius:11px;padding:11px 26px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s}
-.submit:hover{filter:brightness(1.06);transform:translateY(-1px)}
-.submit:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.submit{margin-top:16px;width:100%;background:linear-gradient(90deg,#9bd459,#7fc04a);color:#16330a;border:none;border-radius:13px;padding:13px;font-size:14.5px;font-weight:700;cursor:pointer;transition:.15s}
+.submit:hover{filter:brightness(1.06)}.submit:disabled{opacity:.4;cursor:not-allowed}
 .fmsg{font-size:12.5px;margin-top:10px}.fmsg.err{color:var(--red)}.fmsg.ok{color:var(--green-t)}
-.proof{margin-top:14px;background:rgba(155,212,89,.08);border-left:3px solid var(--green);border-radius:12px;padding:12px 16px;font-size:12.5px}
+.proof{margin-top:16px;background:rgba(155,212,89,.08);border-left:3px solid var(--green);border-radius:12px;padding:14px 16px;font-size:12.5px}
 .proof .pm{color:var(--green-t);font-weight:600;margin-bottom:6px}
-.proof pre{white-space:pre-wrap;color:var(--muted);font-size:12px;font-family:ui-monospace,Menlo,monospace;max-height:180px;overflow-y:auto}
+.proof pre{white-space:pre-wrap;color:var(--muted);font-size:12px;font-family:ui-monospace,Menlo,monospace;max-height:200px;overflow-y:auto}
 .proof a{color:var(--blue-t)}
+.lockmsg{margin-top:16px;color:var(--muted);font-size:13px;background:rgba(255,255,255,.04);border:1px solid var(--stroke-2);border-radius:12px;padding:14px}
 
-.board-wrap{padding:8px;overflow-x:auto}
-table.board{width:100%;border-collapse:collapse;font-size:12px;min-width:680px}
-table.board th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;text-align:center;padding:12px 6px;border-bottom:1px solid var(--stroke)}
-table.board th:first-child{text-align:left;padding-left:14px}
-table.board td{padding:9px 6px;text-align:center;border-bottom:1px solid var(--stroke-2)}
+.board-wrap{padding:10px;overflow-x:auto}
+table.board{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
+table.board th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;text-align:center;padding:13px 6px;border-bottom:1px solid var(--stroke)}
+table.board th:first-child{text-align:left;padding-left:16px}
+table.board td{padding:10px 6px;text-align:center;border-bottom:1px solid var(--stroke-2)}
 table.board tr:last-child td{border-bottom:none}
-table.board td:first-child{text-align:left;font-weight:600;white-space:nowrap;padding-left:14px}
+table.board td:first-child{text-align:left;font-weight:600;white-space:nowrap;padding-left:16px}
 table.board tr:hover td{background:rgba(255,255,255,.03)}
 .cell{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;font-size:11px}
 .cell.done{background:rgba(155,212,89,.22);color:var(--green-t);border:1px solid rgba(155,212,89,.5)}
-.cell.pending{background:rgba(255,255,255,.04);color:#4a4a4e;border:1px solid var(--stroke-2)}
+.cell.pending{background:rgba(255,255,255,.04);color:#46464a;border:1px solid var(--stroke-2)}
 .cnt{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600}
 
-.feed{padding:6px 18px}
-.frow{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--stroke-2);font-size:13px;cursor:pointer;align-items:center}
+.feed{padding:8px 20px}
+.frow{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid var(--stroke-2);font-size:13px;cursor:pointer;align-items:center}
 .frow:last-child{border-bottom:none}
-.fav{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:14px}
+.fav{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:15px}
 .finfo{flex:1;min-width:0}.fname{font-weight:600}.fmeta{color:var(--muted);font-size:12px;margin-top:1px}
 .fdate{color:var(--faint);font-size:11.5px;white-space:nowrap}
-.fproof{display:none;padding:0 0 14px 50px}.fproof.open{display:block}
+.fproof{display:none;padding:0 0 14px 52px}.fproof.open{display:block}
 
-details.ref{padding:16px 20px;margin-bottom:12px}
-details.ref summary{cursor:pointer;font-size:14.5px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.ref{padding:18px 22px;margin-bottom:12px}
+details.ref summary{cursor:pointer;font-size:15px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
 details.ref summary::-webkit-details-marker{display:none}
-details.ref summary::after{content:"+";color:var(--muted);font-size:18px}
+details.ref summary::after{content:"+";color:var(--muted);font-size:20px}
 details.ref[open] summary::after{content:"\2013"}
-details.ref .rb{margin-top:12px;font-size:12.5px;color:var(--muted)}
-details.ref .ri{padding:8px 0;border-bottom:1px solid var(--stroke-2)}
+details.ref .rb{margin-top:14px;font-size:13px;color:var(--muted)}
+details.ref .ri{padding:9px 0;border-bottom:1px solid var(--stroke-2)}
 details.ref .ri:last-child{border-bottom:none}
 details.ref .ri b{color:var(--text);font-weight:600}
 
-.empty{text-align:center;color:var(--muted);padding:30px;font-size:13px}
-.foot{text-align:center;margin-top:48px;padding-top:22px;border-top:1px solid var(--stroke-2);font-size:12px;color:var(--faint)}
+.empty{text-align:center;color:var(--muted);padding:34px;font-size:13px}
+.foot{text-align:center;margin-top:56px;padding-top:24px;border-top:1px solid var(--stroke-2);font-size:12px;color:var(--faint)}
 
-@media (max-width:900px){.how{grid-template-columns:1fr 1fr}.dash{grid-template-columns:1fr}}
+@media (max-width:900px){.how{grid-template-columns:1fr 1fr}.dash{grid-template-columns:1fr}.hero h1{font-size:38px}}
 @media (max-width:600px){
-  .shell{padding:0 14px 50px}.hero{padding:34px 0 20px}.hero h1{font-size:29px}
-  .how{grid-template-columns:1fr}.nav-right .nav-link{display:none}
+  .shell{padding:0 14px 50px}.hero{padding:40px 0 22px}.hero h1{font-size:32px}.hero .lede{font-size:15px}
+  .how{grid-template-columns:1fr}.nav-right .nav-link{display:none}.sec-h h2{font-size:24px}
+  .grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -212,16 +224,15 @@ details.ref .ri b{color:var(--text);font-weight:600}
   <div class="nav-right">
     <a class="nav-link" onclick="document.getElementById('how').scrollIntoView()">How it works</a>
     <a class="nav-link" onclick="document.getElementById('board').scrollIntoView()">Team board</a>
-    <div class="who-pill" onclick="document.getElementById('pick').scrollIntoView()"><span class="dot" id="navDot" style="background:rgba(255,255,255,.1);color:#a6a6a8">?</span><span id="navWho">Pick your name</span><span class="chev">▼</span></div>
+    <div class="who-pill" onclick="document.getElementById('pick').scrollIntoView()"><span class="dot" id="navDot" style="background:rgba(255,255,255,.1);color:#a4a4a8">?</span><span id="navWho">Pick your name</span><span class="chev">▼</span></div>
   </div>
 </div>
 
 <div class="shell">
-
   <div class="hero reveal">
     <div class="eyebrow">OnlyFans automation · build sheet</div>
-    <h1>Build one automation a day.<br><span class="g">Prove it. Check it off.</span></h1>
-    <p class="lede">Each automation is now an installable skill. Add it to your Claude app once, then just say "run it" — no copying prompts. Build one a day on your own models, paste the real result here as proof, and the page locks it so it can't be faked.</p>
+    <h1>One automation a day.<br><span class="g">Build it. Prove it. Check it off.</span></h1>
+    <p class="lede">Every automation is an installable skill. Add it to your Claude app once, then just say “run it” — no copying prompts. Build one a day on your own models, paste the real result here as proof, and the page locks it so it can’t be faked.</p>
     <div class="chips">
       <span class="chip"><b>10</b> skills to install</span>
       <span class="chip"><b>1</b> build per day</span>
@@ -232,12 +243,12 @@ details.ref .ri b{color:var(--text);font-weight:600}
   </div>
 
   <div class="sec reveal" id="how">
-    <div class="sec-h"><h2>How it works</h2><span class="sub">Done inside the Claude desktop app (Cowork) · ~10–20 min</span></div>
+    <div class="sec-h"><h2>How it works</h2><span class="sub">Inside the Claude desktop app (Cowork) · ~10–20 min</span></div>
     <div class="how">
-      <div class="step glass"><div class="n">1</div><h4>Install the skill</h4><p>On today's build, tap <b>Get the skill</b>. It downloads a <code>.skill</code> file — open it / add it in your Claude app once and it's installed.</p></div>
-      <div class="step glass"><div class="n">2</div><h4>Run it in Claude</h4><p>Make sure the <b>OnlyFans connector</b> is on, then just tell Claude to run it for one of your models. The skill already knows the steps.</p></div>
-      <div class="step glass"><div class="n">3</div><h4>Read the result</h4><p>Claude pulls your numbers and builds the report in our LRM style. Read it over — that's the work the robot just did for you.</p></div>
-      <div class="step glass"><div class="n">4</div><h4>Prove it here</h4><p>Copy what Claude gave you, paste it below as <b>proof</b>, add a screenshot, and hit <b>Check it off</b>. Done till tomorrow.</p></div>
+      <div class="step glass"><div class="n">1</div><h4>Install the skill</h4><p>On a build card, tap <b>Get the skill</b>. It downloads a <code>.skill</code> file — add it in your Claude app once and it’s installed.</p></div>
+      <div class="step glass"><div class="n">2</div><h4>Run it in Claude</h4><p>Turn on the <b>OnlyFans connector</b>, then tell Claude to run it for one of your models. The skill knows the steps.</p></div>
+      <div class="step glass"><div class="n">3</div><h4>Read the result</h4><p>Claude pulls your numbers and builds the report in our LRM style. That’s the work the robot just did for you.</p></div>
+      <div class="step glass"><div class="n">4</div><h4>Prove it here</h4><p>Open the build, paste what Claude gave you as <b>proof</b>, add a screenshot, and hit <b>Check it off</b>.</p></div>
     </div>
   </div>
 
@@ -256,8 +267,8 @@ details.ref .ri b{color:var(--text);font-weight:600}
   </div>
 
   <div class="sec reveal">
-    <div class="sec-h"><h2>The Core 10</h2><span class="sub">Build in this order · today's is highlighted · grab any skill anytime</span></div>
-    <div class="builds" id="buildList"><div class="empty">Loading…</div></div>
+    <div class="sec-h"><h2>The Core 10</h2><span class="sub">Build in order · today’s is highlighted · grab any skill anytime</span></div>
+    <div class="grid" id="buildGrid"><div class="empty">Loading…</div></div>
   </div>
 
   <div class="sec reveal" id="board">
@@ -271,13 +282,15 @@ details.ref .ri b{color:var(--text);font-weight:600}
   </div>
 
   <div class="sec reveal">
-    <div class="sec-h"><h2>What's next</h2><span class="sub">After the Core 10</span></div>
+    <div class="sec-h"><h2>What’s next</h2><span class="sub">After the Core 10</span></div>
     <details class="ref glass"><summary>Tier 2 — Explore these too (pick 1–2 that excite you)</summary><div class="rb" id="t2"></div></details>
     <details class="ref glass"><summary>Tier 3 — Slack / team-operations layer</summary><div class="rb" id="t3"></div></details>
   </div>
 
-  <div class="foot">One build a day · proof or it didn't happen · LiveRichMedia</div>
+  <div class="foot">One build a day · proof or it didn’t happen · LiveRichMedia</div>
 </div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()"><div class="modal" id="modalInner"></div></div>
 
 <script>
 const SUPA='https://hqvtbfainhtkfptglfuv.supabase.co';
@@ -286,17 +299,48 @@ const H={'apikey':KEY,'Authorization':'Bearer '+KEY};
 const MIN_PROOF=40;
 const SKILL_BASE='https://liverichtravel.github.io/lrm-build-tracker/skills/';
 
+/* ---- per-skill art (gradient + glyph) ---- */
+const ICON={
+ b1:['#9bd459','#4f8f2e','<circle cx="32" cy="32" r="15"/><path d="M32 23v18M27.5 27.5a4.5 3.5 0 018 0c0 2.6-8 1.6-8 4.6a4.5 3.5 0 008 0"/>'],
+ b2:['#86bdf2','#3f6fc4','<path d="M14 32 50 16 40 50 33 38z"/><path d="M33 38 50 16"/>'],
+ b3:['#f7c66e','#d98f2c','<path d="M24 18h16v6a8 8 0 01-16 0zM20 19h-4v3a5 5 0 005 5M44 19h4v3a5 5 0 01-5 5M27 38h10M30 38v5M34 38v5M26 46h12"/>'],
+ b4:['#9a8cf0','#5f4cc8','<path d="M14 26l8 8 10-14 10 14 8-8-4 22H18z"/>'],
+ b5:['#86bdf2','#7b5fd6','<path d="M12 34c5 7 22 9 30 2 4-3 6-9 6-9-4 1-7 3-7 3 0-7-6-12-13-12-8 0-14 6-14 14 0 0-5-1-8 2zM41 28v.1"/>'],
+ b6:['#9bd459','#4f86c6','<path d="M14 40a18 18 0 1136 0" /><path d="M32 40l11-8"/><circle cx="32" cy="40" r="2.5" fill="currentColor" stroke="none"/>'],
+ b7:['#f7c66e','#d36f9e','<path d="M14 36h36l-4 8H18zM32 14v18M32 14l9 5-9 4" /><circle cx="46" cy="20" r="2.5" fill="currentColor" stroke="none"/>'],
+ b8:['#9a8cf0','#d36f9e','<path d="M14 46V30M26 46V20M38 46V34M50 46V24"/>'],
+ b9:['#f3a8c4','#c85f93','<rect x="20" y="14" width="24" height="36" rx="4"/><path d="M27 14h10v5H27zM26 28h12M26 35h9"/>'],
+ b8s:['','',''],
+ b10:['#f29b9b','#c85f7a','<path d="M32 46S16 36 16 26a8 8 0 0116-3 8 8 0 0116 3c0 4-3 8-7 11"/><path d="M40 40h8M40 40l3-3M40 40l3 3"/>']
+};
+function artSVG(b,big){
+  const ic=ICON[b.id]||['#9a8cf0','#5f4cc8','<circle cx="32" cy="32" r="14"/>'];
+  return `<svg viewBox="0 0 200 ${big?150:170}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="g-${b.id}${big?'m':''}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="${ic[0]}"/><stop offset="1" stop-color="${ic[1]}"/>
+      </linearGradient>
+      <radialGradient id="rg-${b.id}${big?'m':''}" cx="0.7" cy="0.2" r="0.9">
+        <stop offset="0" stop-color="rgba(255,255,255,.35)"/><stop offset="1" stop-color="rgba(255,255,255,0)"/>
+      </radialGradient>
+    </defs>
+    <rect width="200" height="${big?150:170}" fill="url(#g-${b.id}${big?'m':''})"/>
+    <rect width="200" height="${big?150:170}" fill="url(#rg-${b.id}${big?'m':''})"/>
+    <g transform="translate(${100-32} ${(big?75:85)-32})" fill="none" stroke="rgba(255,255,255,.96)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${ic[2]}</g>
+  </svg>`;
+}
+
 const BUILDS=[
  {id:'b1',day:1,name:'Morning Money Report',skill:'of-morning-money',sched:true,deep:false,sends:false,caption:false,
-  does:"Yesterday's earnings for the model, one clean card: total + subs, tips, messages, and whether she's up or down vs the day before.",
+  does:"Yesterday's earnings in one card: total + subs, tips, messages — and whether she's up or down.",
   prompt:"Run my Morning Money skill for [model] (yesterday's earnings: total, subs, tips, messages, up or down vs the day before, LRM style).",
   endpoint:'getEarnings, getEarningsOverview',result:'A dark LRM card with total earnings, the breakdown, and an up/down arrow vs the prior day.'},
  {id:'b2',day:2,name:'Mass Message Check',skill:'of-mass-check',sched:true,deep:false,sends:false,caption:false,
-  does:'How many mass messages went out yesterday — sent, viewed, bought, revenue — and which ones barely sold.',
+  does:'How the masses did yesterday — sent, viewed, bought, revenue — with the duds flagged.',
   prompt:"Run my Mass Message Check skill for [model] (yesterday's masses: sent, viewed, bought, revenue; flag the duds).",
   endpoint:'massMessages, getMassMessageOverview',result:'A list of yesterday’s masses with sent/viewed/bought/revenue and the duds flagged.'},
  {id:'b3',day:3,name:'Top Sellers Library',skill:'of-top-sellers',sched:false,deep:false,sends:false,caption:true,
-  does:'The captions that sold the most over 90 days — repeat winners chatters should reuse.',
+  does:'The captions that sold the most over 90 days — proven winners chatters should reuse.',
   prompt:"Run my Top Sellers skill for [model] (top 20 captions by number of sales over 90 days). Study only — no explicit wording.",
   endpoint:'massMessages (filter by purchases)',result:'A top-20 list of proven captions with how many times each sold.'},
  {id:'b4',day:4,name:'Top Fans / VIP Watch',skill:'of-vip-watch',sched:true,deep:false,sends:false,caption:false,
@@ -304,11 +348,11 @@ const BUILDS=[
   prompt:"Run my VIP Watch skill for [model] (top 20 spenders, tips/messages/subs breakdown, VIPs highlighted).",
   endpoint:'listTopFans',result:'A ranked top-20 spender card with the breakdown and VIPs marked.'},
  {id:'b5',day:5,name:'Whale Went Quiet',skill:'of-whale-quiet',sched:true,deep:false,sends:false,caption:false,
-  does:'Big fans ($1k+ lifetime) who stopped buying in the last 2–4 weeks — so you can re-engage them.',
+  does:'Big fans ($1k+ lifetime) who stopped buying in 2–4 weeks — so you can re-engage.',
   prompt:"Run my Whale Went Quiet skill for [model] ($1k+ lifetime fans who haven't bought in 2–4 weeks, with their old spend).",
   endpoint:'listTopFans + transaction history',result:'A short list of lapsed whales with names and their old spend.'},
  {id:'b6',day:6,name:'Chatter Scorecard',skill:'of-chatter-scorecard',sched:true,deep:true,sends:false,caption:false,
-  does:'Grades each chatter 0–100 on relationship-building, value-setting, VIP funnel, and dead-end replies — with real examples.',
+  does:'Grades each chatter 0–100 on relationship, value, VIP funnel, dead-ends — with real examples.',
   prompt:"Run my Chatter Scorecard skill for [model] (grade each chatter 0–100 on relationship, value, VIP funnel, no dead-ends; 3 good + 3 bad real examples).",
   endpoint:'directMessages',result:'A scorecard per chatter (0–100) with three good and three bad real message examples.'},
  {id:'b7',day:7,name:'Missed-Boat Alert',skill:'of-missed-boat',sched:true,deep:true,sends:false,caption:false,
@@ -316,18 +360,20 @@ const BUILDS=[
   prompt:"Run my Missed-Boat skill for [model] (this shift's fans who showed a buying signal but got a flat reply or were left unread).",
   endpoint:'directMessages',result:'A list of buying-signal fans who slipped through this shift.'},
  {id:'b9',day:8,name:'Price-Band Read',skill:'of-price-band',sched:true,deep:false,sends:false,caption:false,
-  does:'Sales split into cheap / mid / big price bands — what’s working, what’s flopping, and whether fans want video or photo right now.',
+  does:'Sales split into cheap / mid / big bands — what’s working, what’s flopping, video vs photo.',
   prompt:"Run my Price-Band skill for [model] (last 3 weeks split into cheap/mid/big bands: what's selling, what's flopping, video vs photo).",
   endpoint:'massMessages, getEarnings',result:'A price-band breakdown showing winners, flops, and video-vs-photo demand.'},
  {id:'b10',day:9,name:'Daily Lesson Plan',skill:'of-daily-lesson',sched:true,deep:false,sends:false,caption:false,
-  does:'Everything pulled into one game plan: what’s selling, best price points today, 5 proven captions, who to prioritize.',
+  does:'One game plan: what’s selling, best price points today, 5 proven captions, who to prioritize.',
   prompt:"Run my Daily Lesson Plan skill for [model] (what's selling now, best price points today, 5 proven captions, fans to prioritize).",
   endpoint:'combines Mass Check, Top Sellers, VIP Watch, Price-Band',result:'A one-card game plan: what to push, price points, 5 captions, fans to prioritize.'},
  {id:'b8',day:10,name:'Fan Recovery Draft',skill:'of-fan-recovery',sched:false,deep:false,sends:true,caption:false,
-  does:'Drafts a warm check-in to each missed fan — you approve before anything sends. Built last on purpose: it’s the only one that can send.',
+  does:'Drafts a warm check-in to each missed fan — you approve before anything sends.',
   prompt:"Run my Fan Recovery skill for [model] (draft a check-in for each missed fan). Show me the drafts — DO NOT send until I approve.",
   endpoint:'directMessages (read) → sendMessage (only after approval)',result:'A set of draft check-in messages, one per fan — nothing sent. You review, then approve each.'}
 ];
+/* map b8 art to its real key */
+ICON['b8']=ICON['b10']; // fan recovery uses heart glyph
 
 const T2=[['Spender tier auto-sorter','group every fan cheap/mid/whale so masses hit the right list'],['Refund & chargeback watch ⏰','flag disputes/refunds as they hit'],['First-time buyer catcher','spot a fan’s first-ever purchase so chatters pounce'],['Tip-chaser','fans who tip but don’t buy PPV (and vice versa)'],['Shift-over-shift comparison ⏰','same chatter vs their own normal; catch slipping early'],['Response-time check','how long fans wait for a reply'],['Unsent-content tracker','flag what should’ve been unsent and wasn’t'],['Dead-conversation reviver','fans who went quiet mid-chat, never closed'],['Content gap finder','what’s selling that we’re low on → ask model to shoot'],['OFTV / promo countdown prep','pull what worked last promo'],['Holiday & event calendar ⏰','auto-remind ahead of holidays/paydays'],['Best-performing post finder','which wall posts drove subs; repost winners'],['Caption help — the RIGHT way','study top captions & why they worked, suggest non-explicit angles. No explicit wording, ever.'],['Voice note → game plan','speak it, get a clean written plan'],['Daily viral-topics feed ⏰','trending things to talk about, into Slack'],['Shift summarizer','auto-summarize a chatter’s shift'],['Model check-in drafts','draft WhatsApp check-ins'],['Model performance report','the report you send each model'],['Manager’s morning briefing ⏰','ALL her accounts in one card'],['"What changed" detector','model dropped? compare to her best week, name what slacked'],['Win-back list','lapsed whales across all her models, ready to re-engage']];
 const T3=[['Morning Slack sweep ⏰','overnight @s, urgent or unanswered messages, newspaper-style · safe read'],['Unanswered-message catcher ⏰','chatter question or model message sitting with no reply · safe read'],['Clock-out report check ⏰','who didn’t leave their end-of-shift report · safe read'],['Problem triage','simple & known → handle; real problem → flag, don’t guess · draft-and-confirm'],['Scheduled chatter check-ins ⏰','"you good? need anything?" mid-shift · simple = auto-send OK'],['Score-request reminders ⏰','auto-ping chatters to send scores X min into shift'],['Encouragement / morale pings ⏰','positive note on a good shift, gentle nudge on a slow one'],['Daily viral-topics drop ⏰','trending topics into the team channel'],['⚠️ Build note','auto-firing on a schedule needs the hosted job layer (cron/agent) — Slack Workflow Builder covers fixed-time pings only.']];
@@ -338,6 +384,7 @@ const laToday=()=>new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_A
 const esc=s=>{const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;};
 const fmtDate=d=>{const[y,m,dd]=d.split('-');return new Date(+y,+m-1,+dd).toLocaleDateString('en-US',{month:'short',day:'numeric'});};
 const avatarFor=n=>{let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))>>>0;return AV[h%AV.length];};
+const byId=id=>BUILDS.find(b=>b.id===id);
 
 async function loadData(){
   try{
@@ -354,11 +401,11 @@ const doneBuild=(m,b)=>checkoffs.find(c=>c.manager===m&&c.build_id===b);
 const doneToday=m=>checkoffs.find(c=>c.manager===m&&c.checked_date===laToday());
 const nextBuild=m=>{for(const b of BUILDS)if(!doneBuild(m,b.id))return b;return null;};
 
-function renderAll(){renderMgrs();renderNav();renderDash();renderSpot();renderBuilds();renderBoard();renderFeed();renderRef();observeReveals();}
+function renderAll(){renderMgrs();renderNav();renderDash();renderSpot();renderGrid();renderBoard();renderFeed();renderRef();observeReveals();}
 
 function renderNav(){const dot=document.getElementById('navDot'),who=document.getElementById('navWho');
   if(selMgr){const a=avatarFor(selMgr);dot.style.background=a[0];dot.style.color=a[1];dot.textContent=selMgr[0];who.textContent=selMgr;}
-  else{dot.style.background='rgba(255,255,255,.1)';dot.style.color='#a6a6a8';dot.textContent='?';who.textContent='Pick your name';}}
+  else{dot.style.background='rgba(255,255,255,.1)';dot.style.color='#a4a4a8';dot.textContent='?';who.textContent='Pick your name';}}
 function renderMgrs(){
   document.getElementById('mgrRow').innerHTML=roster.map(r=>`<button class="mgr-chip${r.manager===selMgr?' sel':''}" onclick="pickMgr('${esc(r.manager)}')">${esc(r.manager)}</button>`).join('')||'<span class="empty">No roster.</span>';
   const r=roster.find(x=>x.manager===selMgr);
@@ -376,85 +423,123 @@ function renderDash(){const el=document.getElementById('dash');if(!selMgr){el.in
 
 function renderSpot(){const el=document.getElementById('spot');if(!selMgr){el.className='spot glass';el.innerHTML='';return;}
   const dt=doneToday(selMgr),nb=nextBuild(selMgr);
-  if(dt){el.className='spot glass show done-state';el.innerHTML=`<div class="kicker">✓ Today is done</div><h3>Nice — you built "${esc(dt.build_name)}"</h3><p class="does">Your next build unlocks tomorrow. Check the team board to see how everyone else is doing.</p>`;}
-  else if(nb){el.className='spot glass show';el.innerHTML=`<div class="kicker">Today's build · #${nb.day} of 10</div><h3>${esc(nb.name)}</h3><p class="does">${esc(nb.does)} — scroll to the highlighted card for the skill and the steps.</p>`;}
+  if(dt){el.className='spot glass show done-state';el.innerHTML=`<div class="kicker">✓ Today is done</div><h3>Nice — you built “${esc(dt.build_name)}”</h3><p class="does">Your next build unlocks tomorrow. Check the team board to see how everyone else is doing.</p>`;}
+  else if(nb){el.className='spot glass show';el.innerHTML=`<div class="kicker">Today’s build · #${nb.day} of 10</div><h3>${esc(nb.name)}</h3><p class="does">${esc(nb.does)}</p><button class="spot-btn" onclick="openBuild('${nb.id}')">Open today’s build →</button>`;}
   else{el.className='spot glass show done-state';el.innerHTML=`<div class="kicker">🏁 Tier 1 complete</div><h3>All 10 built and proven</h3><p class="does">Pick 1–2 from Tier 2 that excite you.</p>`;}}
 
-function renderBuilds(){const el=document.getElementById('buildList');
+function renderGrid(){const el=document.getElementById('buildGrid');
   const nb=selMgr?nextBuild(selMgr):null,dt=selMgr?doneToday(selMgr):null;
   el.innerHTML=BUILDS.map(b=>{
     const done=selMgr?doneBuild(selMgr,b.id):null;
     const isToday=selMgr&&nb&&nb.id===b.id&&!dt;
     const locked=selMgr&&!done&&!isToday;
-    const col=done?['rgba(155,212,89,.25)','#c7e69e']:isToday?['rgba(247,198,110,.25)','#f7c66e']:['rgba(255,255,255,.06)','#a6a6a8'];
-    let badges=`<span class="badge ${b.sends?'sends':'safe'}">${b.sends?'⚠️ Sends — draft only':'Safe · read only'}</span>`;
-    if(b.sched)badges+='<span class="badge sched">⏰ schedule after proven</span>';
-    if(b.deep)badges+='<span class="badge deep">deeper dig · slower</span>';
-    if(b.caption)badges+='<span class="badge caption">caption boundary</span>';
+    let state='';
+    if(done)state=`<span class="statechip ok">✓ ${fmtDate(done.checked_date)}</span>`;
+    else if(isToday)state=`<span class="statechip tdy">Today</span>`;
+    else if(locked)state=`<span class="statechip lk">🔒</span>`;
+    let mb='';
+    if(b.sched)mb+='<span class="mb sched">⏰ schedule later</span>';
+    if(b.deep)mb+='<span class="mb deep">deeper dig</span>';
+    if(b.caption)mb+='<span class="mb cap">caption rule</span>';
     const dl=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`;
-    const skillBtn=`<a class="skill-btn" href="${SKILL_BASE}${b.skill}.skill" download>${dl} Get the skill</a>`;
-    let status='';
-    if(done)status=`<div class="bstatus"><div class="ok">✓ built</div><div class="dt">${fmtDate(done.checked_date)}</div></div>`;
-    else if(isToday)status=`<div class="bstatus"><div class="tdy">today</div></div>`;
-    else if(locked)status=`<div class="bstatus"><div class="lk">🔒</div></div>`;
-    let body='';
-    if(done||isToday){
-      const hp=esc(b.prompt).replace(/\[model\]/g,'<span class="hl">[model]</span>');
-      const run=isToday?`<div class="run">
-        <div class="rt">How to run this build</div>
-        <ol>
-          <li><span class="h">Install the skill</span><span class="d">Tap <span class="pill-skill">Get the skill</span> above, then add the downloaded <code>.skill</code> file in your Claude app.</span></li>
-          <li><span class="h">Turn on the OnlyFans connector</span><span class="d">In Claude, make sure OnlyFans is connected.</span></li>
-          <li><span class="h">Tell Claude to run it for your model</span><span class="d">Use the line below and swap <code>[model]</code> for one of your own. Claude builds: <i>${esc(b.result)}</i></span></li>
-          <li><span class="h">Paste the result here as proof</span><span class="d">Copy what Claude gave you into the box below, add a screenshot, check it off.</span></li>
-        </ol>
-        <div class="prompt-box"><div class="pl">Say this to Claude — tap copy</div><div class="pt">${hp}</div><button class="copy" onclick="copyPrompt('${b.id}',this)">Copy</button></div>
-        <div class="endpoint">Pulls from: <code>${esc(b.endpoint)}</code></div>
-        ${b.caption?'<div class="warn cap"><b>Caption boundary:</b> study captions and why they worked only. Claude will NOT write explicit wording — this protects the account from bans.</div>':''}
-        ${b.sends?'<div class="warn snd"><b>⚠️ This one can send.</b> It only drafts. Nothing goes to a fan until you personally approve each message.</div>':''}
-      </div>`:`<div class="prompt-box"><div class="pl">Say this to Claude</div><div class="pt">${hp}</div><button class="copy" onclick="copyPrompt('${b.id}',this)">Copy</button></div>`;
-      body=`<div class="bbody">${run}${done?proofView(done):checkoffForm(b)}</div>`;
-    }
-    return `<div class="bcard glass${done?' done':''}${isToday?' today':''}${locked?' locked':''}">
-      <div class="bhead">
-        <div class="bnum" style="background:${col[0]};color:${col[1]}">${b.day}</div>
-        <div class="btw"><div class="btitle">${esc(b.name)}</div><div class="bdoes">${esc(b.does)}</div><div class="badges">${badges}</div>${skillBtn}</div>
-        ${status}
-      </div>${body}</div>`;
-  }).join('');}
+    return `<div class="card${isToday?' today':''}${done?' done':''}${locked?' locked':''}" onclick="openBuild('${b.id}')">
+      <div class="art">${artSVG(b,false)}<span class="daychip">${b.day}</span>${state}</div>
+      <div class="cbody">
+        <div class="kick ${b.sends?'sends':'safe'}">${b.sends?'⚠️ Sends — draft only':'Safe · read only'}</div>
+        <div class="ctitle">${esc(b.name)}</div>
+        <div class="cdesc">${esc(b.does)}</div>
+        ${mb?`<div class="minibadges">${mb}</div>`:''}
+        <div class="cfoot">
+          <a class="skill-btn" href="${SKILL_BASE}${b.skill}.skill" download onclick="event.stopPropagation()">${dl} Get the skill</a>
+          <button class="plus${locked?' lk':''}" onclick="event.stopPropagation();openBuild('${b.id}')" title="Open">${locked?'🔒':'+'}</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
 
-const proofView=c=>`<div class="proof"><div class="pm">✓ Proof · checked off ${fmtDate(c.checked_date)}</div><pre>${esc(c.proof_text)}</pre>${c.screenshot_url?`<a href="${esc(c.screenshot_url)}" target="_blank">View screenshot →</a>`:''}</div>`;
-const checkoffForm=b=>`<div class="form">
-  <div class="fl">Proof — paste what Claude actually gave you (min ${MIN_PROOF} characters)</div>
-  <textarea id="proof-${b.id}" placeholder="Paste the report Claude produced when you ran the skill…" oninput="countChars('${b.id}')"></textarea>
-  <div class="cc" id="cc-${b.id}">0 / ${MIN_PROOF}</div>
-  <div class="filerow"><span class="fl" style="margin:0">Screenshot (encouraged)</span><input type="file" id="shot-${b.id}" accept="image/*"></div>
-  <button class="submit" id="btn-${b.id}" onclick="submitCheckoff('${b.id}')">Check it off ✓</button>
-  <div class="fmsg" id="msg-${b.id}"></div></div>`;
-function countChars(b){const t=document.getElementById('proof-'+b).value.trim(),cc=document.getElementById('cc-'+b);cc.textContent=t.length+' / '+MIN_PROOF;cc.className='cc'+(t.length>=MIN_PROOF?' ok':'');}
-function copyPrompt(b,btn){const x=BUILDS.find(v=>v.id===b);navigator.clipboard.writeText(x.prompt).then(()=>{btn.textContent='Copied ✓';setTimeout(()=>btn.textContent='Copy',1500);});}
+/* ---- modal ---- */
+function openBuild(id){
+  const b=byId(id); if(!b)return;
+  const done=selMgr?doneBuild(selMgr,id):null;
+  const nb=selMgr?nextBuild(selMgr):null, dt=selMgr?doneToday(selMgr):null;
+  const isToday=selMgr&&nb&&nb.id===id&&!dt;
+  const locked=selMgr&&!done&&!isToday;
+  const dl=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`;
+  let badges=`<span class="badge ${b.sends?'sends':'safe'}">${b.sends?'⚠️ Sends — draft only':'Safe · read only'}</span>`;
+  if(b.sched)badges+='<span class="badge sched">⏰ schedule after proven</span>';
+  if(b.deep)badges+='<span class="badge deep">deeper dig · slower</span>';
+  if(b.caption)badges+='<span class="badge cap">caption boundary</span>';
+  const hp=esc(b.prompt).replace(/\[model\]/g,'<span class="hl">[model]</span>');
+  let mid='';
+  if(!selMgr){
+    mid=`<div class="lockmsg">Pick your name at the top of the page first, then open today’s build.</div>`;
+  } else if(done){
+    mid=`<div class="proof"><div class="pm">✓ Proof · checked off ${fmtDate(done.checked_date)}</div><pre>${esc(done.proof_text)}</pre>${done.screenshot_url?`<a href="${esc(done.screenshot_url)}" target="_blank">View screenshot →</a>`:''}</div>`;
+  } else if(isToday){
+    mid=`<div class="run"><div class="rt">How to run this build</div><ol>
+        <li><span class="h">Install the skill</span><span class="d">Tap <span class="ps">Get the skill</span> below, then add the <code>.skill</code> file in your Claude app.</span></li>
+        <li><span class="h">Turn on the OnlyFans connector</span><span class="d">In Claude, make sure OnlyFans is connected.</span></li>
+        <li><span class="h">Tell Claude to run it</span><span class="d">Swap <code>[model]</code> for one of your own. It builds: <i>${esc(b.result)}</i></span></li>
+        <li><span class="h">Paste the result as proof</span><span class="d">Copy what Claude gave you into the box, add a screenshot, check it off.</span></li>
+      </ol>
+      <div class="prompt-box"><div class="pl">Say this to Claude — tap copy</div><div class="pt">${hp}</div><button class="copy" onclick="copyPrompt('${b.id}',this)">Copy</button></div>
+      <div class="endpoint">Pulls from: <code>${esc(b.endpoint)}</code></div>
+      ${b.caption?'<div class="warn cap"><b>Caption boundary:</b> study captions and why they worked only. Claude will NOT write explicit wording — this protects the account from bans.</div>':''}
+      ${b.sends?'<div class="warn snd"><b>⚠️ This one can send.</b> It only drafts. Nothing goes to a fan until you personally approve each message.</div>':''}
+    </div>
+    <div class="form">
+      <div class="fl">Proof — paste what Claude actually gave you (min ${MIN_PROOF} characters)</div>
+      <textarea id="m-proof" placeholder="Paste the report Claude produced when you ran the skill…" oninput="mCount()"></textarea>
+      <div class="cc" id="m-cc">0 / ${MIN_PROOF}</div>
+      <div class="filerow"><span class="fl" style="margin:0">Screenshot (encouraged)</span><input type="file" id="m-shot" accept="image/*"></div>
+      <button class="submit" id="m-btn" onclick="submitCheckoff('${b.id}')">Check it off ✓</button>
+      <div class="fmsg" id="m-msg"></div>
+    </div>`;
+  } else if(locked){
+    const need=nb?nb.day:'?';
+    mid=`<div class="prompt-box"><div class="pl">Say this to Claude (once it’s your turn)</div><div class="pt">${hp}</div><button class="copy" onclick="copyPrompt('${b.id}',this)">Copy</button></div>
+      <div class="lockmsg">🔒 This unlocks after you finish build #${need}. You build one a day, in order — but you can install this skill now so it’s ready.</div>`;
+  }
+  document.getElementById('modalInner').innerHTML=`
+    <div class="m-art">${artSVG(b,true)}<button class="m-close" onclick="closeModal()">✕</button></div>
+    <div class="m-body">
+      <h3>${esc(b.name)}</h3>
+      <div class="mdesc">${esc(b.does)}</div>
+      <div class="m-badges">${badges}</div>
+      <a class="m-skill" href="${SKILL_BASE}${b.skill}.skill" download>${dl} Get the skill</a>
+      ${mid}
+    </div>`;
+  document.getElementById('modalBg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modalBg').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+function mCount(){const t=document.getElementById('m-proof').value.trim(),cc=document.getElementById('m-cc');cc.textContent=t.length+' / '+MIN_PROOF;cc.className='cc'+(t.length>=MIN_PROOF?' ok':'');}
+function copyPrompt(id,btn){navigator.clipboard.writeText(byId(id).prompt).then(()=>{btn.textContent='Copied ✓';setTimeout(()=>btn.textContent='Copy',1500);});}
 
-async function submitCheckoff(b){
-  const x=BUILDS.find(v=>v.id===b),msg=document.getElementById('msg-'+b),btn=document.getElementById('btn-'+b);
-  const proof=document.getElementById('proof-'+b).value.trim();
-  if(!selMgr){msg.className='fmsg err';msg.textContent='Pick your name at the top first.';return;}
+async function submitCheckoff(id){
+  const b=byId(id),msg=document.getElementById('m-msg'),btn=document.getElementById('m-btn');
+  const proof=document.getElementById('m-proof').value.trim();
+  if(!selMgr){msg.className='fmsg err';msg.textContent='Pick your name first.';return;}
   if(proof.length<MIN_PROOF){msg.className='fmsg err';msg.textContent='Proof too short — paste the real result ('+MIN_PROOF+'+ characters).';return;}
   btn.disabled=true;msg.className='fmsg';msg.textContent='Submitting…';let url=null;
   try{
-    const fe=document.getElementById('shot-'+b);
+    const fe=document.getElementById('m-shot');
     if(fe.files&&fe.files[0]){const f=fe.files[0],ext=(f.name.split('.').pop()||'png').toLowerCase().replace(/[^a-z0-9]/g,'');
-      const path=encodeURIComponent(selMgr.toLowerCase())+'/'+b+'-'+Date.now()+'.'+ext;
+      const path=encodeURIComponent(selMgr.toLowerCase())+'/'+id+'-'+Date.now()+'.'+ext;
       const up=await fetch(SUPA+'/storage/v1/object/build-proofs/'+path,{method:'POST',headers:{...H,'content-type':f.type||'image/png'},body:f});
       if(up.ok)url=SUPA+'/storage/v1/object/public/build-proofs/'+path;
       else{msg.className='fmsg err';msg.textContent='Screenshot upload failed ('+up.status+'). Remove it or try again.';btn.disabled=false;return;}}
     const res=await fetch(SUPA+'/rest/v1/build_sheet_checkoffs',{method:'POST',headers:{...H,'content-type':'application/json','prefer':'return=representation'},
-      body:JSON.stringify({manager:selMgr,build_id:b,build_name:x.name,proof_text:proof,screenshot_url:url})});
-    if(res.ok){msg.className='fmsg ok';msg.textContent='✓ Checked off — locked in. Proof can’t be changed.';await loadData();}
+      body:JSON.stringify({manager:selMgr,build_id:id,build_name:b.name,proof_text:proof,screenshot_url:url})});
+    if(res.ok){msg.className='fmsg ok';msg.textContent='✓ Checked off — locked in. Proof can’t be changed.';await loadData();setTimeout(closeModal,900);}
     else{const e=await res.json().catch(()=>({}));msg.className='fmsg err';
       if((e.message||'').includes('one_per_day'))msg.textContent='You already checked off a build today. One per day — next unlocks tomorrow.';
       else if((e.message||'').includes('one_build_once'))msg.textContent='This build is already checked off for you.';
       else msg.textContent='Failed: '+(e.message||res.status);btn.disabled=false;}
-  }catch(err){msg.className='fmsg err';msg.textContent='Network error: '+err.message;btn.disabled=false;}}
+  }catch(err){msg.className='fmsg err';msg.textContent='Network error: '+err.message;btn.disabled=false;}
+}
 
 function renderBoard(){const el=document.getElementById('boardCard');if(!roster.length){el.innerHTML='<div class="empty">No roster.</div>';return;}
   let h='<table class="board"><tr><th>Manager</th>'+BUILDS.map(b=>`<th title="${esc(b.name)}">${b.day}</th>`).join('')+'<th>Done</th><th>Today</th></tr>';
@@ -477,7 +562,7 @@ function renderRef(){
 
 let io;
 function observeReveals(){
-  if(!io)io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.08});
+  if(!io)io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.06});
   document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
 }
 loadData();
