@@ -4,160 +4,104 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LRM Editor Board</title>
-<style>
-:root{--bg:#0b0b0e;--text:#f5f5f4;--muted:#a4a4a8;--faint:#6c6c72;--glass:rgba(255,255,255,0.05);--glass-2:rgba(255,255,255,0.08);--stroke:rgba(255,255,255,0.10);--stroke-2:rgba(255,255,255,0.06);--green:#9bd459;--green-t:#c7e69e;--amber:#f7c66e;--blue:#86bdf2;--blue-t:#bcdcfb;--purple:#9a8cf0;--purple-t:#cfc8f8;--pink:#f3a8c4;--red:#f29b9b;--grad:linear-gradient(100deg,#cfc8f8 0%,#f3a8c4 48%,#86bdf2 100%);}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Arial,sans-serif;font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;position:relative;overflow-x:hidden}
-.mesh{position:fixed;inset:0;z-index:-2;overflow:hidden}.blob{position:absolute;border-radius:50%;filter:blur(95px);opacity:.28;animation:float 24s ease-in-out infinite}
-.b1{width:520px;height:520px;background:#6f5bd4;top:-150px;left:-120px}.b2{width:460px;height:460px;background:#d36f9e;top:30%;right:-160px;animation-delay:-7s}.b3{width:420px;height:420px;background:#4f86c6;bottom:-160px;left:25%;animation-delay:-13s}
-@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(42px,-30px) scale(1.07)}66%{transform:translate(-30px,42px) scale(.95)}}
-.shell{max-width:1240px;margin:0 auto;padding:0 22px 70px}
-.nav{position:sticky;top:0;z-index:50;margin:0 -22px;padding:14px 22px;background:rgba(11,11,14,0.6);backdrop-filter:blur(20px);border-bottom:1px solid var(--stroke-2);display:flex;align-items:center;justify-content:space-between;gap:14px}
-.brand{font-weight:700;font-size:20px;background:var(--grad);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 7s linear infinite}
-@keyframes shine{to{background-position:200% center}}
-.nav a{color:var(--muted);text-decoration:none;font-size:12.5px}.nav a:hover{color:var(--text)}
-.glass{background:var(--glass);border:1px solid var(--stroke);border-radius:22px;backdrop-filter:blur(20px);box-shadow:0 12px 44px rgba(0,0,0,.3)}
-.hero{padding:40px 0 22px}.hero h1{font-size:34px;font-weight:700;letter-spacing:-.02em}.hero h1 .g{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{color:var(--muted);margin-top:10px;max-width:680px;font-size:15px}
-.idbar{margin-top:22px;padding:16px 18px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.idbar .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);width:100%}
-.roleseg{display:flex;gap:6px;background:rgba(0,0,0,.3);border:1px solid var(--stroke);border-radius:999px;padding:4px}
-.roleseg button{border:none;background:transparent;color:var(--muted);border-radius:999px;padding:7px 16px;font-size:13px;cursor:pointer;font-weight:600}
-.roleseg button.on{background:var(--grad);color:#1a1330}
-.idbar input{background:rgba(0,0,0,.35);border:1px solid var(--stroke);border-radius:10px;color:var(--text);padding:9px 13px;font-size:13.5px;min-width:200px}
-.idbar input:focus{outline:none;border-color:var(--purple)}
-.idbar .who{font-size:12.5px;color:var(--muted)}
-.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
-.st{padding:16px 18px;position:relative;overflow:hidden}
-.st .glow{position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;filter:blur(48px);opacity:.5}
-.st.a .glow{background:var(--amber)}.st.b .glow{background:var(--blue)}.st.c .glow{background:var(--green)}.st.d .glow{background:var(--purple)}
-.st .l{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-.st .v{font-size:30px;font-weight:700;letter-spacing:-.02em;margin-top:3px}
-.st .s{font-size:12px;color:var(--muted)}
-.formc{margin-top:18px;padding:20px 22px}
-.formc h3{font-size:16px;font-weight:600;margin-bottom:14px}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
-.field input,.field select,.field textarea{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--stroke);border-radius:10px;color:var(--text);padding:10px 13px;font-size:13.5px;font-family:inherit}
-.field textarea{min-height:64px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--purple)}
-.field.full{grid-column:1/-1}
-.filebtn{margin-top:14px;background:var(--grad);color:#1a1330;border:none;border-radius:11px;padding:11px 24px;font-size:14px;font-weight:700;cursor:pointer}
-.filebtn:disabled{opacity:.4;cursor:not-allowed}
-.fmsg{font-size:12.5px;margin-top:10px}.fmsg.err{color:var(--red)}.fmsg.ok{color:var(--green-t)}
-.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
-.col{padding:14px}
-.col h2{font-size:14px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:0 4px}
-.col h2 .dot{width:9px;height:9px;border-radius:50%}
-.col.req h2 .dot{background:var(--amber)}.col.prog h2 .dot{background:var(--blue)}.col.done h2 .dot{background:var(--green)}
-.col h2 .ct{margin-left:auto;font-size:12px;color:var(--muted);font-weight:600}
-.rcard{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-radius:14px;padding:14px;margin-bottom:10px;animation:cardIn .4s ease both}
-@keyframes cardIn{from{opacity:0;transform:translateY(10px)}}
-.rcard .rt{font-size:14px;font-weight:600}
-.rcard .rm{font-size:12px;color:var(--blue-t);margin-top:2px}
-.rcard .rd{font-size:12.5px;color:var(--muted);margin-top:7px;white-space:pre-wrap}
-.rcard .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}
-.pchip{font-size:10px;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:999px;font-weight:700}
-.pchip.low{color:var(--muted);border:1px solid var(--stroke)}
-.pchip.normal{color:var(--blue-t);background:rgba(134,189,242,.12);border:1px solid rgba(134,189,242,.3)}
-.pchip.high{color:var(--amber);background:rgba(247,198,110,.12);border:1px solid rgba(247,198,110,.3)}
-.pchip.urgent{color:var(--red);background:rgba(242,155,155,.14);border:1px solid rgba(242,155,155,.4)}
-.who2{font-size:11px;color:var(--faint)}
-.act{margin-top:10px;display:flex;gap:8px}
-.act button{flex:1;border:none;border-radius:9px;padding:8px;font-size:12px;font-weight:700;cursor:pointer}
-.act .start{background:rgba(134,189,242,.18);color:var(--blue-t);border:1px solid rgba(134,189,242,.4)}
-.act .finish{background:rgba(155,212,89,.18);color:var(--green-t);border:1px solid rgba(155,212,89,.45)}
-.act .reopen{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--stroke)}
-.act button:hover{filter:brightness(1.12)}
-.empty{color:var(--faint);font-size:12.5px;text-align:center;padding:18px}
-.peoplebar{margin-top:26px;padding:18px 20px}
-.peoplebar h3{font-size:15px;font-weight:600;margin-bottom:12px}
-.ppl{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.ppl .grp h4{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:8px}
-.prow{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--stroke-2);font-size:13px}
-.prow:last-child{border-bottom:none}.prow .n{font-weight:600}.prow .c{color:var(--muted);font-variant-numeric:tabular-nums}
-@media(max-width:880px){.cols{grid-template-columns:1fr}.stat-strip{grid-template-columns:1fr 1fr}.frow{grid-template-columns:1fr}.ppl{grid-template-columns:1fr}}
-</style>
+<link rel="stylesheet" href="lrm.css">
 </head>
 <body>
 <div class="mesh"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
-<div class="nav"><div class="brand">LiveRichMedia</div><a href="./">← Build Tracker</a></div>
+<div class="grain"></div>
+
+<div class="nav">
+  <div class="brand">LiveRichMedia</div>
+  <div class="nav-right"><a class="nav-link" href="./">← Build Tracker</a></div>
+</div>
+
 <div class="shell">
-  <div class="hero">
+  <div class="hero reveal">
+    <div class="eyebrow">Editors + managers · one place</div>
     <h1>Editor <span class="g">Board</span></h1>
-    <p>One place for managers and editors. Managers file what they need cut. Editors claim it and mark it done. Everyone sees what’s being worked on, what’s still waiting, and who’s active — all timestamped, nothing hidden.</p>
+    <p class="lede">Managers file what they need cut. Editors claim it and mark it done. Everyone sees what’s being worked on, what’s still waiting, and who’s active — all timestamped, nothing hidden.</p>
   </div>
 
-  <div class="idbar glass">
-    <span class="lbl">Who are you?</span>
-    <div class="roleseg" id="roleseg">
-      <button data-r="Manager" onclick="setRole('Manager')">I’m a Manager</button>
-      <button data-r="Editor" onclick="setRole('Editor')">I’m an Editor</button>
+  <div class="sec reveal">
+    <div class="eb-id glass">
+      <span class="lbl">Who are you?</span>
+      <div class="roletiles" id="roletiles">
+        <div class="roletile" data-r="Manager" onclick="setRole('Manager')">
+          <div class="rt-art"><svg viewBox="0 0 150 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rmg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9a8cf0"/><stop offset="1" stop-color="#5f4cc8"/></linearGradient></defs><rect width="150" height="64" fill="url(#rmg)"/><circle cx="118" cy="16" r="26" fill="rgba(255,255,255,.16)"/><g transform="translate(20 18)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="6"/><path d="M0 28c0-7 4.5-11 10-11s10 4 10 11"/></g></svg></div>
+          <div class="rt-l">Manager</div>
+        </div>
+        <div class="roletile" data-r="Editor" onclick="setRole('Editor')">
+          <div class="rt-art"><svg viewBox="0 0 150 64" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="reg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#86bdf2"/><stop offset="1" stop-color="#3f6fc4"/></linearGradient></defs><rect width="150" height="64" fill="url(#reg)"/><circle cx="120" cy="48" r="24" fill="rgba(255,255,255,.14)"/><g transform="translate(20 16)" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 26 22 6l6 6L8 32 0 34z"/><path d="M18 10l6 6"/></g></svg></div>
+          <div class="rt-l">Editor</div>
+        </div>
+      </div>
+      <div class="namewrap"><label>Your name</label><input class="bigname" id="nameInput" placeholder="Type your name" oninput="setName(this.value)"></div>
     </div>
-    <input id="nameInput" placeholder="Your name" oninput="setName(this.value)">
-    <span class="who" id="whoTxt"></span>
   </div>
 
-  <div class="stat-strip" id="stats"></div>
+  <div class="sec reveal"><div class="dash" id="stats"></div></div>
 
-  <div class="formc glass">
-    <h3>📝 File an edit request</h3>
-    <div class="frow">
-      <div class="field"><label>Model</label><input id="f-model" list="models" placeholder="Which model"></div>
-      <div class="field"><label>Priority</label><select id="f-prio"><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option><option value="low">Low</option></select></div>
-      <div class="field full"><label>What needs editing</label><input id="f-title" placeholder="e.g. 3 PPV teasers from last shoot, vertical for mass"></div>
-      <div class="field full"><label>Details (optional)</label><textarea id="f-detail" placeholder="Clip lengths, vibe, deadline, which folder the raw is in…"></textarea></div>
+  <div class="sec reveal">
+    <div class="sec-h"><h2>File an edit request</h2><span class="sub">Managers — tell the editors what you need</span></div>
+    <div class="eb-form glass" style="padding:22px 24px">
+      <div class="frow">
+        <div class="field"><label>Model</label><input id="f-model" list="models" placeholder="Which model"></div>
+        <div class="field"><label>Priority</label><select id="f-prio"><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option><option value="low">Low</option></select></div>
+        <div class="field full"><label>What needs editing</label><input id="f-title" placeholder="e.g. 3 PPV teasers from last shoot, vertical for mass"></div>
+        <div class="field full"><label>Details (optional)</label><textarea id="f-detail" placeholder="Clip lengths, vibe, deadline, which folder the raw is in…"></textarea></div>
+      </div>
+      <datalist id="models"></datalist>
+      <button class="filebtn" id="fileBtn" onclick="fileRequest()">File request</button>
+      <div class="fmsg" id="fileMsg" style="font-size:12.5px;margin-top:10px"></div>
     </div>
-    <datalist id="models"></datalist>
-    <button class="filebtn" id="fileBtn" onclick="fileRequest()">File request</button>
-    <div class="fmsg" id="fileMsg"></div>
   </div>
 
-  <div class="cols">
-    <div class="col req glass"><h2><span class="dot"></span>Requested<span class="ct" id="ct-requested">0</span></h2><div id="col-requested"></div></div>
-    <div class="col prog glass"><h2><span class="dot"></span>In progress<span class="ct" id="ct-in_progress">0</span></h2><div id="col-in_progress"></div></div>
-    <div class="col done glass"><h2><span class="dot"></span>Done<span class="ct" id="ct-done">0</span></h2><div id="col-done"></div></div>
+  <div class="eb-cols reveal">
+    <div class="eb-col req glass"><div class="ch"><span class="d"></span>Requested<span class="ct" id="ct-requested">0</span></div><div id="col-requested"></div></div>
+    <div class="eb-col prog glass"><div class="ch"><span class="d"></span>In progress<span class="ct" id="ct-in_progress">0</span></div><div id="col-in_progress"></div></div>
+    <div class="eb-col done glass"><div class="ch"><span class="d"></span>Done<span class="ct" id="ct-done">0</span></div><div id="col-done"></div></div>
   </div>
 
-  <div class="peoplebar glass">
-    <h3>How active is everyone <span style="font-size:12px;color:var(--muted);font-weight:400">· last 7 days</span></h3>
-    <div class="ppl">
+  <div class="sec reveal">
+    <div class="sec-h"><h2>How active is everyone</h2><span class="sub">Last 7 days</span></div>
+    <div class="glass" style="padding:20px 22px"><div class="ppl">
       <div class="grp"><h4>Managers — requests filed</h4><div id="ppl-filed"></div></div>
       <div class="grp"><h4>Editors — requests completed</h4><div id="ppl-done"></div></div>
-    </div>
+    </div></div>
   </div>
+
+  <div class="foot">Editors + managers, one place · LiveRichMedia</div>
 </div>
 
 <script>
 const SUPA='https://hqvtbfainhtkfptglfuv.supabase.co';
 const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxdnRiZmFpbmh0a2ZwdGdsZnV2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTI2NjEsImV4cCI6MjA4NzE4ODY2MX0.ZCxTY3aslMdcBuy3QNl5IVR4dTWn7SRM5SvkmdUgAT4';
 const H={'apikey':KEY,'Authorization':'Bearer '+KEY};
+const PGRAD={urgent:['#f29b9b','#c4444a'],high:['#f7c66e','#d98f2c'],normal:['#86bdf2','#3f6fc4'],low:['#b4b2a9','#6c6c72']};
 let role=localStorage.getItem('eb_role')||null, myname=localStorage.getItem('eb_name')||'';
-let reqs=[], acts=[];
+let reqs=[];
 const esc=s=>{const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;};
 function ago(t){const s=(Date.now()-new Date(t).getTime())/1000;if(s<3600)return Math.max(1,Math.round(s/60))+'m';if(s<86400)return Math.round(s/3600)+'h';return Math.round(s/86400)+'d';}
 
 function setRole(r){role=r;localStorage.setItem('eb_role',r);paintId();}
-function setName(v){myname=v.trim();localStorage.setItem('eb_name',myname);paintId();}
-function paintId(){document.querySelectorAll('#roleseg button').forEach(b=>b.classList.toggle('on',b.dataset.r===role));
-  document.getElementById('nameInput').value=myname;
-  document.getElementById('whoTxt').textContent=(role&&myname)?(role+' · '+myname):'Pick your role and name to file or claim work.';}
+function setName(v){myname=v.trim();localStorage.setItem('eb_name',myname);}
+function paintId(){document.querySelectorAll('.roletile').forEach(t=>t.classList.toggle('on',t.dataset.r===role));document.getElementById('nameInput').value=myname;}
 
 async function load(){
   try{
-    const[a,b,c]=await Promise.all([
+    const[a,c]=await Promise.all([
       fetch(SUPA+'/rest/v1/edit_requests?select=*&order=created_at.desc',{headers:H}),
-      fetch(SUPA+'/rest/v1/edit_activity?select=*&order=created_at.desc&limit=500',{headers:H}),
       fetch(SUPA+'/rest/v1/build_sheet_roster?select=models&active=eq.true',{headers:H})]);
-    reqs=await a.json();acts=await b.json();const ros=await c.json();
-    if(!Array.isArray(reqs))reqs=[];if(!Array.isArray(acts))acts=[];
+    reqs=await a.json();const ros=await c.json();
+    if(!Array.isArray(reqs))reqs=[];
     const models=[...new Set((Array.isArray(ros)?ros:[]).flatMap(r=>r.models||[]))].sort();
     document.getElementById('models').innerHTML=models.map(m=>`<option value="${esc(m)}">`).join('');
-  }catch(e){reqs=[];acts=[];}
+  }catch(e){reqs=[];}
   render();
 }
 function render(){paintId();renderStats();renderCols();renderPeople();}
 
+function dcard(cls,label,val,sub){return `<div class="dcard glass ${cls}"><div class="glow"></div><div class="label">${label}</div><div class="big">${val}</div><div class="small">${sub}</div></div>`;}
 function renderStats(){
   const open=reqs.filter(r=>r.status==='requested').length;
   const prog=reqs.filter(r=>r.status==='in_progress').length;
@@ -165,39 +109,42 @@ function renderStats(){
   const doneWk=reqs.filter(r=>r.status==='done'&&r.done_at&&new Date(r.done_at).getTime()>=wk).length;
   const openReqs=reqs.filter(r=>r.status!=='done');
   const oldest=openReqs.length?openReqs.reduce((a,b)=>new Date(a.created_at)<new Date(b.created_at)?a:b):null;
-  document.getElementById('stats').innerHTML=`
-   <div class="st a glass"><div class="glow"></div><div class="l">Waiting</div><div class="v">${open}</div><div class="s">not started yet</div></div>
-   <div class="st b glass"><div class="glow"></div><div class="l">In progress</div><div class="v">${prog}</div><div class="s">being worked on</div></div>
-   <div class="st c glass"><div class="glow"></div><div class="l">Done this week</div><div class="v">${doneWk}</div><div class="s">last 7 days</div></div>
-   <div class="st d glass"><div class="glow"></div><div class="l">Oldest waiting</div><div class="v">${oldest?ago(oldest.created_at):'—'}</div><div class="s">${oldest?esc(oldest.model):'all clear'}</div></div>`;
+  document.getElementById('stats').innerHTML=
+    dcard('g1','Waiting',open,'not started yet')+
+    dcard('g2','In progress',prog,'being worked on')+
+    dcard('g3','Done this week',doneWk,'last 7 days')+
+    dcard('g3','Oldest waiting',oldest?ago(oldest.created_at):'—',oldest?esc(oldest.model):'all clear');
 }
 
-function card(r){
+function rqCard(r){
   const canAct=role&&myname;
+  const g=PGRAD[r.priority]||PGRAD.normal;
   let actions='';
-  if(r.status==='requested')actions=`<div class="act"><button class="start" ${canAct?'':'disabled'} onclick="move('${r.id}','in_progress')">Claim & start</button></div>`;
-  else if(r.status==='in_progress')actions=`<div class="act"><button class="finish" ${canAct?'':'disabled'} onclick="move('${r.id}','done')">Mark done</button><button class="reopen" onclick="move('${r.id}','requested')">↩</button></div>`;
-  else actions=`<div class="act"><button class="reopen" onclick="move('${r.id}','in_progress')">Reopen</button></div>`;
+  if(r.status==='requested')actions=`<div class="rq-act"><button class="start" ${canAct?'':'disabled style=opacity:.4'} onclick="move('${r.id}','in_progress')">Claim &amp; start</button></div>`;
+  else if(r.status==='in_progress')actions=`<div class="rq-act"><button class="finish" ${canAct?'':'disabled style=opacity:.4'} onclick="move('${r.id}','done')">Mark done</button><button class="reopen" onclick="move('${r.id}','requested')">↩</button></div>`;
+  else actions=`<div class="rq-act"><button class="reopen" style="flex:1" onclick="move('${r.id}','in_progress')">Reopen</button></div>`;
   const who=r.status==='requested'?`filed by ${esc(r.filed_by)} · ${ago(r.created_at)} ago`
     :r.status==='in_progress'?`${r.claimed_by?'on it: '+esc(r.claimed_by):'unclaimed'} · filed by ${esc(r.filed_by)}`
     :`done${r.claimed_by?' by '+esc(r.claimed_by):''}${r.done_at?' · '+ago(r.done_at)+' ago':''}`;
-  return `<div class="rcard">
-    <div class="rt">${esc(r.title)}</div><div class="rm">${esc(r.model)}</div>
-    ${r.detail?`<div class="rd">${esc(r.detail)}</div>`:''}
-    <div class="meta"><span class="pchip ${esc(r.priority)}">${esc(r.priority)}</span><span class="who2">${who}</span></div>
-    ${canAct?actions:'<div class="who2" style="margin-top:8px">Set your role + name above to claim or update.</div>'}
-  </div>`;
+  return `<div class="rq">
+    <div class="rq-art"><svg viewBox="0 0 300 54" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pg${r.id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${g[0]}"/><stop offset="1" stop-color="${g[1]}"/></linearGradient></defs><rect width="300" height="54" fill="url(#pg${r.id})"/><circle cx="265" cy="10" r="30" fill="rgba(255,255,255,.16)"/></svg><span class="pl">${esc(r.priority)}</span></div>
+    <div class="rq-b">
+      <div class="rq-t">${esc(r.title)}</div>
+      <div class="rq-m">${esc(r.model)}</div>
+      ${r.detail?`<div class="rq-d">${esc(r.detail)}</div>`:''}
+      <div class="rq-w">${who}</div>
+      ${canAct?actions:'<div class="rq-w" style="margin-top:8px">Pick your role + name above to claim or update.</div>'}
+    </div></div>`;
 }
 function renderCols(){
   for(const s of ['requested','in_progress','done']){
     const list=reqs.filter(r=>r.status===s);
     document.getElementById('ct-'+s).textContent=list.length;
-    document.getElementById('col-'+s).innerHTML=list.length?list.map(card).join(''):'<div class="empty">Nothing here.</div>';
+    document.getElementById('col-'+s).innerHTML=list.length?list.map(rqCard).join(''):'<div class="empty">Nothing here.</div>';
   }
 }
 function renderPeople(){
-  const wk=Date.now()-7*864e5;
-  const filed={},done={};
+  const wk=Date.now()-7*864e5,filed={},done={};
   for(const r of reqs){if(new Date(r.created_at).getTime()>=wk)filed[r.filed_by]=(filed[r.filed_by]||0)+1;}
   for(const r of reqs){if(r.status==='done'&&r.claimed_by&&r.done_at&&new Date(r.done_at).getTime()>=wk)done[r.claimed_by]=(done[r.claimed_by]||0)+1;}
   const rows=o=>{const e=Object.entries(o).sort((a,b)=>b[1]-a[1]);return e.length?e.map(([n,c])=>`<div class="prow"><span class="n">${esc(n)}</span><span class="c">${c}</span></div>`).join(''):'<div class="empty">No activity yet this week.</div>';};
@@ -207,18 +154,15 @@ function renderPeople(){
 
 async function fileRequest(){
   const msg=document.getElementById('fileMsg'),btn=document.getElementById('fileBtn');
-  const model=document.getElementById('f-model').value.trim();
-  const title=document.getElementById('f-title').value.trim();
-  const detail=document.getElementById('f-detail').value.trim();
-  const priority=document.getElementById('f-prio').value;
+  const model=document.getElementById('f-model').value.trim(),title=document.getElementById('f-title').value.trim();
+  const detail=document.getElementById('f-detail').value.trim(),priority=document.getElementById('f-prio').value;
   if(!myname){msg.className='fmsg err';msg.textContent='Type your name up top first.';return;}
   if(!model||!title){msg.className='fmsg err';msg.textContent='Model and what-needs-editing are required.';return;}
   btn.disabled=true;msg.className='fmsg';msg.textContent='Filing…';
   try{
-    const res=await fetch(SUPA+'/rest/v1/edit_requests',{method:'POST',headers:{...H,'content-type':'application/json','prefer':'return=representation'},
-      body:JSON.stringify({model,title,detail:detail||null,priority,filed_by:myname})});
+    const res=await fetch(SUPA+'/rest/v1/edit_requests',{method:'POST',headers:{...H,'content-type':'application/json','prefer':'return=representation'},body:JSON.stringify({model,title,detail:detail||null,priority,filed_by:myname})});
     if(res.ok){const row=(await res.json())[0];
-      await fetch(SUPA+'/rest/v1/edit_activity',{method:'POST',headers:{...H,'content-type':'application/json'},body:JSON.stringify({request_id:row.id,actor:myname,action:'filed'})});
+      fetch(SUPA+'/rest/v1/edit_activity',{method:'POST',headers:{...H,'content-type':'application/json'},body:JSON.stringify({request_id:row.id,actor:myname,action:'filed'})});
       document.getElementById('f-model').value='';document.getElementById('f-title').value='';document.getElementById('f-detail').value='';
       msg.className='fmsg ok';msg.textContent='✓ Filed.';await load();}
     else{const e=await res.json().catch(()=>({}));msg.className='fmsg err';msg.textContent='Failed: '+(e.message||res.status);}
@@ -230,11 +174,9 @@ async function move(id,status){
   const body={status,updated_at:new Date().toISOString()};
   if(status==='in_progress')body.claimed_by=myname;
   if(status==='done')body.done_at=new Date().toISOString();
-  if(status==='requested'){body.done_at=null;}
-  try{
-    const res=await fetch(SUPA+'/rest/v1/edit_requests?id=eq.'+id,{method:'PATCH',headers:{...H,'content-type':'application/json'},body:JSON.stringify(body)});
-    if(res.ok){await fetch(SUPA+'/rest/v1/edit_activity',{method:'POST',headers:{...H,'content-type':'application/json'},body:JSON.stringify({request_id:id,actor:myname,action:status})});await load();}
-  }catch(e){}
+  if(status==='requested')body.done_at=null;
+  try{const res=await fetch(SUPA+'/rest/v1/edit_requests?id=eq.'+id,{method:'PATCH',headers:{...H,'content-type':'application/json'},body:JSON.stringify(body)});
+    if(res.ok){fetch(SUPA+'/rest/v1/edit_activity',{method:'POST',headers:{...H,'content-type':'application/json'},body:JSON.stringify({request_id:id,actor:myname,action:status})});await load();}}catch(e){}
 }
 load();setInterval(load,60000);
 </script>
