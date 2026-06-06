@@ -138,6 +138,27 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .tb .tt{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
 .tb .td{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
 .tb .ttag{display:inline-block;margin-top:9px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--blue-t);background:rgba(134,189,242,.12);border:1px solid rgba(134,189,242,.3);border-radius:999px;padding:2px 8px}
+/* cinematic how-it-works cards */
+.stepc{background:var(--glass);border:1px solid var(--stroke);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 12px 44px rgba(0,0,0,.3);transition:transform .25s,box-shadow .25s;animation:cardIn .55s cubic-bezier(.2,.7,.2,1) both}
+.stepc:hover{transform:translateY(-5px);box-shadow:0 24px 64px rgba(0,0,0,.45)}
+.scene{height:148px;position:relative;overflow:hidden}
+.scene svg{width:100%;height:100%;display:block}
+.scene .num{position:absolute;top:12px;left:14px;width:32px;height:32px;border-radius:10px;background:rgba(0,0,0,.42);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.32);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:2}
+.scene::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.22) 50%,transparent 68%);transform:translateX(-120%);transition:transform .85s ease}
+.stepc:hover .scene::after{transform:translateX(120%)}
+.sb{padding:18px 20px 20px}
+.sb h4{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.sb p{font-size:13px;color:var(--muted);margin-top:7px}
+.sb code{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--blue-t);background:rgba(134,189,242,.12);padding:1px 6px;border-radius:5px}
+.fl1{animation:orb 5s ease-in-out infinite}.fl2{animation:orb 6.4s ease-in-out infinite}.fl3{animation:orb 5.7s ease-in-out infinite}.fl4{animation:orb 7s ease-in-out infinite}
+@keyframes orb{50%{transform:translateY(-9px)}}
+.bob{animation:bob 2.3s ease-in-out infinite}@keyframes bob{50%{transform:translateY(8px)}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pls 2.1s ease-in-out infinite}@keyframes pls{50%{transform:scale(1.13)}}
+.ring{transform-box:fill-box;transform-origin:center;animation:ringp 2.1s ease-in-out infinite}@keyframes ringp{0%{opacity:.6;transform:scale(.8)}70%{opacity:0;transform:scale(1.5)}100%{opacity:0}}
+.bar{transform-box:fill-box;transform-origin:bottom;animation:rise 1.8s ease-in-out infinite}
+.bar.b2{animation-delay:.18s}.bar.b3{animation-delay:.36s}.bar.b4{animation-delay:.54s}
+@keyframes rise{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+.check{stroke-dasharray:48;stroke-dashoffset:48;animation:draw 2.6s ease-in-out infinite}@keyframes draw{0%,15%{stroke-dashoffset:48}55%,100%{stroke-dashoffset:0}}
 
 /* modal */
 .modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
@@ -264,10 +285,22 @@ details.ref .ri b{color:var(--text);font-weight:600}
   <div class="sec reveal" id="how">
     <div class="sec-h"><h2>How it works</h2><span class="sub">Inside the Claude desktop app (Cowork) · ~10–20 min</span></div>
     <div class="how">
-      <div class="step glass"><div class="n">1</div><h4>Install the skill</h4><p>On a build card, tap <b>Get the skill</b>. It downloads a <code>.skill</code> file — add it in your Claude app once and it’s installed.</p></div>
-      <div class="step glass"><div class="n">2</div><h4>Run it in Claude</h4><p>Turn on the <b>OnlyFans connector</b>, then tell Claude to run it for one of your models. The skill knows the steps.</p></div>
-      <div class="step glass"><div class="n">3</div><h4>Read the result</h4><p>Claude pulls your numbers and builds the report in our LRM style. That’s the work the robot just did for you.</p></div>
-      <div class="step glass"><div class="n">4</div><h4>Prove it here</h4><p>Open the build, paste what Claude gave you as <b>proof</b>, add a screenshot, and hit <b>Check it off</b>.</p></div>
+      <div class="stepc" style="animation-delay:0ms">
+        <div class="scene"><span class="num">1</span><svg viewBox="0 0 200 148" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hw1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7b5fd6"/><stop offset="1" stop-color="#352883"/></linearGradient></defs><rect width="200" height="148" fill="url(#hw1)"/><circle class="fl1" cx="38" cy="42" r="10" fill="rgba(255,255,255,.5)"/><circle class="fl2" cx="166" cy="52" r="14" fill="rgba(255,255,255,.28)"/><circle class="fl3" cx="150" cy="112" r="8" fill="rgba(255,255,255,.4)"/><rect x="56" y="44" width="88" height="62" rx="11" fill="rgba(255,255,255,.15)" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/><circle cx="67" cy="55" r="2.6" fill="#fff"/><circle cx="76" cy="55" r="2.6" fill="rgba(255,255,255,.7)"/><circle cx="85" cy="55" r="2.6" fill="rgba(255,255,255,.5)"/><g class="fl4" transform="translate(100 82)" fill="#fff"><path d="M0 -13 L3.2 -3.2 L13 0 L3.2 3.2 L0 13 L-3.2 3.2 L-13 0 L-3.2 -3.2 Z"/></g></svg></div>
+        <div class="sb"><h4>Open Cowork</h4><p>Open the <b>Cowork app</b> on your computer — the Claude app you’re in right now. Everything happens here. You don’t open anything else, and you don’t need to know any tech.</p></div>
+      </div>
+      <div class="stepc" style="animation-delay:70ms">
+        <div class="scene"><span class="num">2</span><svg viewBox="0 0 200 148" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hw2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f9bf2"/><stop offset="1" stop-color="#27599f"/></linearGradient></defs><rect width="200" height="148" fill="url(#hw2)"/><circle class="fl1" cx="40" cy="100" r="9" fill="rgba(255,255,255,.35)"/><circle class="fl2" cx="160" cy="40" r="11" fill="rgba(255,255,255,.3)"/><rect x="58" y="100" width="84" height="11" rx="5" fill="rgba(255,255,255,.28)"/><g class="bob"><rect x="82" y="40" width="36" height="36" rx="9" fill="rgba(255,255,255,.92)"/><path d="M100 49 v16 M92 58 l8 8 8 -8" stroke="#27599f" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div>
+        <div class="sb"><h4>Get your skill</h4><p>On today’s card, tap <b>Get the skill</b>. A little file downloads. In Cowork, add it once — now Cowork knows how to do that whole job for you.</p></div>
+      </div>
+      <div class="stepc" style="animation-delay:140ms">
+        <div class="scene"><span class="num">3</span><svg viewBox="0 0 200 148" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hw3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7b24a"/><stop offset="1" stop-color="#d9791f"/></linearGradient></defs><rect width="200" height="148" fill="url(#hw3)"/><circle class="ring" cx="100" cy="60" r="27" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="2"/><g class="pulse"><circle cx="100" cy="60" r="27" fill="rgba(255,255,255,.92)"/><path d="M93 48 l20 12 -20 12 z" fill="#d9791f"/></g><rect class="bar b1" x="58" y="96" width="12" height="26" rx="3" fill="rgba(255,255,255,.85)"/><rect class="bar b2" x="78" y="96" width="12" height="26" rx="3" fill="rgba(255,255,255,.7)"/><rect class="bar b3" x="110" y="96" width="12" height="26" rx="3" fill="rgba(255,255,255,.7)"/><rect class="bar b4" x="130" y="96" width="12" height="26" rx="3" fill="rgba(255,255,255,.85)"/></svg></div>
+        <div class="sb"><h4>Say your model’s name</h4><p>Tell Cowork: <i>“run it for [your model].”</i> That’s the whole command — type it or say it out loud. It pulls the numbers and writes the report itself.</p></div>
+      </div>
+      <div class="stepc" style="animation-delay:210ms">
+        <div class="scene"><span class="num">4</span><svg viewBox="0 0 200 148" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hw4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fd14f"/><stop offset="1" stop-color="#4d982c"/></linearGradient></defs><rect width="200" height="148" fill="url(#hw4)"/><circle class="fl2" cx="160" cy="44" r="11" fill="rgba(255,255,255,.28)"/><rect x="64" y="40" width="56" height="60" rx="10" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.5)" stroke-width="1.4"/><path d="M74 56 h36 M74 66 h28 M74 76 h32" stroke="rgba(255,255,255,.7)" stroke-width="2.4" stroke-linecap="round"/><circle cx="120" cy="84" r="22" fill="rgba(255,255,255,.94)"/><path class="check" d="M110 84 l7 7 14 -15" stroke="#4d982c" stroke-width="4.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="sb"><h4>Check it off here</h4><p>Copy what Cowork made, come back to this page, paste it in the box, add a screenshot, and press the green button. You’re done for the day.</p></div>
+      </div>
     </div>
   </div>
 
