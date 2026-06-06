@@ -119,6 +119,25 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .plus{width:42px;height:42px;border-radius:50%;background:#fff;color:#16161a;border:none;font-size:22px;font-weight:400;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:.15s;line-height:1}
 .plus:hover{transform:scale(1.08)}
 .plus.lk{background:rgba(255,255,255,.12);color:var(--faint)}
+/* motion */
+@keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.card,.tcard{animation:cardIn .55s cubic-bezier(.2,.7,.2,1) both}
+.art svg{animation:breathe 9s ease-in-out infinite;transform-origin:center}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+.card .art::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);transform:translateX(-120%);transition:transform .8s ease}
+.card:hover .art::after{transform:translateX(120%)}
+/* tier graphic cards */
+.tier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:14px}
+.tcard{border-radius:18px;overflow:hidden;background:var(--glass);border:1px solid var(--stroke);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s,border-color .2s;position:relative}
+.tcard:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(0,0,0,.34);border-color:var(--stroke)}
+.tart{height:58px;position:relative;overflow:hidden}
+.tart svg{width:100%;height:100%;display:block}
+.tart::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.25) 50%,transparent 70%);transform:translateX(-120%);transition:transform .8s ease}
+.tcard:hover .tart::after{transform:translateX(120%)}
+.tb{padding:13px 15px 15px}
+.tb .tt{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.tb .td{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
+.tb .ttag{display:inline-block;margin-top:9px;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--blue-t);background:rgba(134,189,242,.12);border:1px solid rgba(134,189,242,.3);border-radius:999px;padding:2px 8px}
 
 /* modal */
 .modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
@@ -271,6 +290,11 @@ details.ref .ri b{color:var(--text);font-weight:600}
     <div class="grid" id="buildGrid"><div class="empty">Loading…</div></div>
   </div>
 
+  <div class="sec reveal">
+    <div class="sec-h"><h2>Bonus skills</h2><span class="sub">Extras — install anytime, not part of the daily 10</span></div>
+    <div class="grid" id="bonusGrid"></div>
+  </div>
+
   <div class="sec reveal" id="board">
     <div class="sec-h"><h2>Team board</h2><span class="sub">Everyone × every build · live</span></div>
     <div class="board-wrap glass" id="boardCard"><div class="empty">Loading…</div></div>
@@ -375,6 +399,19 @@ const BUILDS=[
 /* map b8 art to its real key */
 ICON['b8']=ICON['b10']; // fan recovery uses heart glyph
 
+const BONUS=[
+ {id:'x1',name:'Model Daily Report',skill:'of-model-daily-report',sends:false,
+  does:"A warm daily recap for the MODEL — her wins yesterday, written to encourage. Ready for you to send on a good day.",
+  prompt:"Run my Model Daily Report skill for [model]. Pull yesterday's earnings and wins, write a warm recap I can send her — lead with the good news if she's up. Draft only, I'll send it.",
+  endpoint:'getEarnings, getMassMessageOverview, listTopFans',result:'A warm, on-brand recap addressed to the model — draft only, you send it.'},
+ {id:'x2',name:'Canvas Report + Read-Check',skill:'of-canvas-report',sends:false,
+  does:"Turn any report into a Slack Canvas — LRM dark or a softer 'girly' style — then see which chatters acknowledged it.",
+  prompt:"Run my Canvas Report skill: turn [this report] into a Slack Canvas for [channel] in [LRM dark / soft girly] style, then tell me which chatters acknowledged it.",
+  endpoint:'Slack canvas + reactions (acknowledgement)',result:'A Slack Canvas in your chosen style + a who-acknowledged / who-hasn’t list.'}];
+ICON['x1']=['#f3a8c4','#c85f93','<path d="M32 46S16 36 16 26a8 8 0 0116-3 8 8 0 0116 3c0 10-16 20-16 20z"/>'];
+ICON['x2']=['#9a8cf0','#4f86c6','<rect x="14" y="16" width="36" height="32" rx="4"/><path d="M20 24h24M20 31h18M20 38h12"/><path d="M40 44l3 3 6-6"/>'];
+const byBonus=id=>BONUS.find(x=>x.id===id);
+
 const T2=[['Spender tier auto-sorter','group every fan cheap/mid/whale so masses hit the right list'],['Refund & chargeback watch ⏰','flag disputes/refunds as they hit'],['First-time buyer catcher','spot a fan’s first-ever purchase so chatters pounce'],['Tip-chaser','fans who tip but don’t buy PPV (and vice versa)'],['Shift-over-shift comparison ⏰','same chatter vs their own normal; catch slipping early'],['Response-time check','how long fans wait for a reply'],['Unsent-content tracker','flag what should’ve been unsent and wasn’t'],['Dead-conversation reviver','fans who went quiet mid-chat, never closed'],['Content gap finder','what’s selling that we’re low on → ask model to shoot'],['OFTV / promo countdown prep','pull what worked last promo'],['Holiday & event calendar ⏰','auto-remind ahead of holidays/paydays'],['Best-performing post finder','which wall posts drove subs; repost winners'],['Caption help — the RIGHT way','study top captions & why they worked, suggest non-explicit angles. No explicit wording, ever.'],['Voice note → game plan','speak it, get a clean written plan'],['Daily viral-topics feed ⏰','trending things to talk about, into Slack'],['Shift summarizer','auto-summarize a chatter’s shift'],['Model check-in drafts','draft WhatsApp check-ins'],['Model performance report','the report you send each model'],['Manager’s morning briefing ⏰','ALL her accounts in one card'],['"What changed" detector','model dropped? compare to her best week, name what slacked'],['Win-back list','lapsed whales across all her models, ready to re-engage']];
 const T3=[['Morning Slack sweep ⏰','overnight @s, urgent or unanswered messages, newspaper-style · safe read'],['Unanswered-message catcher ⏰','chatter question or model message sitting with no reply · safe read'],['Clock-out report check ⏰','who didn’t leave their end-of-shift report · safe read'],['Problem triage','simple & known → handle; real problem → flag, don’t guess · draft-and-confirm'],['Scheduled chatter check-ins ⏰','"you good? need anything?" mid-shift · simple = auto-send OK'],['Score-request reminders ⏰','auto-ping chatters to send scores X min into shift'],['Encouragement / morale pings ⏰','positive note on a good shift, gentle nudge on a slow one'],['Daily viral-topics drop ⏰','trending topics into the team channel'],['⚠️ Build note','auto-firing on a schedule needs the hosted job layer (cron/agent) — Slack Workflow Builder covers fixed-time pings only.']];
 
@@ -401,7 +438,7 @@ const doneBuild=(m,b)=>checkoffs.find(c=>c.manager===m&&c.build_id===b);
 const doneToday=m=>checkoffs.find(c=>c.manager===m&&c.checked_date===laToday());
 const nextBuild=m=>{for(const b of BUILDS)if(!doneBuild(m,b.id))return b;return null;};
 
-function renderAll(){renderMgrs();renderNav();renderDash();renderSpot();renderGrid();renderBoard();renderFeed();renderRef();observeReveals();}
+function renderAll(){renderMgrs();renderNav();renderDash();renderSpot();renderGrid();renderBonus();renderBoard();renderFeed();renderRef();observeReveals();}
 
 function renderNav(){const dot=document.getElementById('navDot'),who=document.getElementById('navWho');
   if(selMgr){const a=avatarFor(selMgr);dot.style.background=a[0];dot.style.color=a[1];dot.textContent=selMgr[0];who.textContent=selMgr;}
@@ -442,7 +479,7 @@ function renderGrid(){const el=document.getElementById('buildGrid');
     if(b.deep)mb+='<span class="mb deep">deeper dig</span>';
     if(b.caption)mb+='<span class="mb cap">caption rule</span>';
     const dl=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`;
-    return `<div class="card${isToday?' today':''}${done?' done':''}${locked?' locked':''}" onclick="openBuild('${b.id}')">
+    return `<div class="card${isToday?' today':''}${done?' done':''}${locked?' locked':''}" style="animation-delay:${BUILDS.indexOf(b)*45}ms" onclick="openBuild('${b.id}')">
       <div class="art">${artSVG(b,false)}<span class="daychip">${b.day}</span>${state}</div>
       <div class="cbody">
         <div class="kick ${b.sends?'sends':'safe'}">${b.sends?'⚠️ Sends — draft only':'Safe · read only'}</div>
@@ -457,6 +494,43 @@ function renderGrid(){const el=document.getElementById('buildGrid');
     </div>`;
   }).join('');
 }
+
+function renderBonus(){const el=document.getElementById('bonusGrid');if(!el)return;
+  const dl=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`;
+  el.innerHTML=BONUS.map((b,i)=>`<div class="card" style="animation-delay:${i*45}ms" onclick="openInfo('${b.id}')">
+    <div class="art">${artSVG(b,false)}<span class="statechip" style="color:#fff">Bonus</span></div>
+    <div class="cbody">
+      <div class="kick safe">Extra · install anytime</div>
+      <div class="ctitle">${esc(b.name)}</div>
+      <div class="cdesc">${esc(b.does)}</div>
+      <div class="cfoot">
+        <a class="skill-btn" href="${SKILL_BASE}${b.skill}.skill" download onclick="event.stopPropagation()">${dl} Get the skill</a>
+        <button class="plus" onclick="event.stopPropagation();openInfo('${b.id}')" title="Open">+</button>
+      </div>
+    </div></div>`).join('');
+}
+function openInfo(id){
+  const b=byBonus(id); if(!b)return;
+  const dl=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`;
+  const hp=esc(b.prompt).replace(/\[model\]/g,'<span class="hl">[model]</span>').replace(/\[channel\]/g,'<span class="hl">[channel]</span>').replace(/\[this report\]/g,'<span class="hl">[this report]</span>').replace(/\[LRM dark \/ soft girly\]/g,'<span class="hl">[LRM dark / soft girly]</span>');
+  document.getElementById('modalInner').innerHTML=`
+    <div class="m-art">${artSVG(b,true)}<button class="m-close" onclick="closeModal()">✕</button></div>
+    <div class="m-body">
+      <h3>${esc(b.name)}</h3><div class="mdesc">${esc(b.does)}</div>
+      <div class="m-badges"><span class="badge safe">Bonus · not part of the daily 10</span></div>
+      <a class="m-skill" href="${SKILL_BASE}${b.skill}.skill" download>${dl} Get the skill</a>
+      <div class="run"><div class="rt">How to run it</div><ol>
+        <li><span class="h">Install the skill</span><span class="d">Tap <span class="ps">Get the skill</span>, add the <code>.skill</code> file in your Claude app.</span></li>
+        <li><span class="h">Tell Claude to run it</span><span class="d">It builds: <i>${esc(b.result)}</i></span></li>
+      </ol>
+      <div class="prompt-box"><div class="pl">Say this to Claude — tap copy</div><div class="pt">${hp}</div><button class="copy" onclick="copyBonus('${b.id}',this)">Copy</button></div>
+      <div class="endpoint">Uses: <code>${esc(b.endpoint)}</code></div>
+      ${id==='x2'?'<div class="warn cap"><b>Read-check, honestly:</b> Slack can’t prove a silent view. This checks who reacted ✅ / tapped acknowledge — that part is provable.</div>':'<div class="warn snd"><b>Goes to the model, not fans.</b> Draft only — you send it yourself.</div>'}
+      </div>
+    </div>`;
+  document.getElementById('modalBg').classList.add('open');document.body.style.overflow='hidden';
+}
+function copyBonus(id,btn){navigator.clipboard.writeText(byBonus(id).prompt).then(()=>{btn.textContent='Copied ✓';setTimeout(()=>btn.textContent='Copy',1500);});}
 
 /* ---- modal ---- */
 function openBuild(id){
@@ -556,9 +630,17 @@ function renderFeed(){const el=document.getElementById('feedCard');
       <div class="fdate">${fmtDate(c.checked_date)}</div></div>
       <div class="fproof" id="fp-${i}"><div class="proof"><div class="pm">Full proof</div><pre>${esc(c.proof_text)}</pre>${c.screenshot_url?`<a href="${esc(c.screenshot_url)}" target="_blank">View screenshot →</a>`:''}</div></div>`;}).join('');}
 
+const TPAL=[['#9bd459','#4f8f2e'],['#86bdf2','#3f6fc4'],['#f7c66e','#d98f2c'],['#9a8cf0','#5f4cc8'],['#f3a8c4','#c85f93'],['#9FE1CB','#2f8f76'],['#F0997B','#b8542f'],['#bcdcfb','#5b8fd0']];
+function tierCard(x,i){
+  const p=TPAL[i%TPAL.length];
+  const sched=/⏰/.test(x[0]); const warn=/⚠️/.test(x[0]);
+  const title=esc(x[0]).replace('⏰','').replace('⚠️','').trim();
+  const art=`<svg viewBox="0 0 200 58" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="t${i}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${p[0]}"/><stop offset="1" stop-color="${p[1]}"/></linearGradient></defs><rect width="200" height="58" fill="url(#t${i})"/><circle cx="168" cy="14" r="30" fill="rgba(255,255,255,.18)"/><circle cx="150" cy="44" r="16" fill="rgba(255,255,255,.10)"/></svg>`;
+  return `<div class="tcard" style="animation-delay:${i*30}ms"><div class="tart">${art}</div><div class="tb"><div class="tt">${title}</div><div class="td">${esc(x[1])}</div>${sched?'<span class="ttag">⏰ scheduled</span>':''}${warn?'<span class="ttag" style="color:var(--amber);background:rgba(247,198,110,.12);border-color:rgba(247,198,110,.3)">build note</span>':''}</div></div>`;
+}
 function renderRef(){
-  document.getElementById('t2').innerHTML=T2.map(x=>`<div class="ri"><b>${esc(x[0])}</b> — ${esc(x[1])}</div>`).join('');
-  document.getElementById('t3').innerHTML=T3.map(x=>`<div class="ri"><b>${esc(x[0])}</b> — ${esc(x[1])}</div>`).join('');}
+  document.getElementById('t2').innerHTML='<div class="tier-grid">'+T2.map((x,i)=>tierCard(x,i)).join('')+'</div>';
+  document.getElementById('t3').innerHTML='<div class="tier-grid">'+T3.map((x,i)=>tierCard(x,i)).join('')+'</div>';}
 
 let io;
 function observeReveals(){
