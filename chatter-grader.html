@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LRM · Chatter Grader Guide</title>
+<link rel="stylesheet" href="lrm.css">
+<style>
+  .guide{max-width:760px;margin:0 auto}
+  .guide .glass{padding:24px 22px;margin-bottom:18px}
+  .guide h2{font-size:21px;font-weight:700;letter-spacing:-.01em;margin-bottom:12px}
+  .guide h2 .ico{font-size:18px;margin-right:8px}
+  .guide p{font-size:15px;line-height:1.62;color:var(--text);margin-bottom:10px}
+  .guide p.m{color:var(--muted)}
+  .guide strong{color:#fff;font-weight:650}
+  .steps{list-style:none;counter-reset:s;margin:4px 0 0}
+  .steps li{counter-increment:s;position:relative;padding:12px 0 12px 46px;font-size:15px;line-height:1.6;border-top:1px solid var(--stroke-2)}
+  .steps li:first-child{border-top:0}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:11px;width:30px;height:30px;border-radius:50%;
+    background:var(--grad);color:#16131f;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .tmpl{background:rgba(255,255,255,.04);border:1px solid var(--stroke);border-left:3px solid var(--purple);
+    border-radius:14px;padding:16px 18px;margin:8px 0;font-size:14.5px;line-height:1.65;color:var(--text)}
+  .tmpl .lead{display:block;margin-bottom:8px;color:#fff;font-weight:650}
+  .tmpl ul{margin:0;padding-left:18px}
+  .tmpl li{margin:4px 0}
+  .blank{color:var(--amber)}
+  .note{background:rgba(155,212,89,.07);border:1px solid rgba(155,212,89,.22);border-radius:14px;padding:14px 16px;font-size:14px;color:var(--green-t)}
+  .roster-cta{background:rgba(243,168,196,.07);border:1px solid rgba(243,168,196,.24);border-radius:14px;padding:14px 16px;font-size:14px;color:var(--pink)}
+  .kv{font-size:15px;line-height:1.7}
+  .kv b{color:#fff}
+  .chip{display:inline-block;background:var(--glass-2);border:1px solid var(--stroke);border-radius:999px;padding:3px 11px;font-size:13px;color:var(--muted);margin:2px 4px 2px 0}
+  ul.plain{list-style:none;margin:4px 0 0}
+  ul.plain li{position:relative;padding:8px 0 8px 22px;font-size:15px;line-height:1.6;border-top:1px solid var(--stroke-2)}
+  ul.plain li:first-child{border-top:0}
+  ul.plain li::before{content:"";position:absolute;left:2px;top:16px;width:7px;height:7px;border-radius:50%;background:var(--blue)}
+</style>
+</head>
+<body>
+<div class="mesh"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grain"></div>
+
+<div class="nav">
+  <div class="brand">LiveRichMedia</div>
+  <div class="nav-right"><a class="nav-link" href="./">← Build Tracker</a></div>
+</div>
+
+<div class="shell">
+  <div class="hero reveal">
+    <div class="eyebrow">Cowork automation · manager guide</div>
+    <h1>Set up a <span class="g">Chatter Grader</span> yourself</h1>
+    <p class="lede">No tech skills needed, about 5 minutes per model. This is just another job you hand to your Cowork: it reads the live numbers every couple of hours and posts a short coaching scoreboard into the model's team channel, so the chatters can adjust mid-shift.</p>
+  </div>
+
+  <div class="guide">
+
+    <div class="sec reveal"><div class="glass">
+      <h2><span class="ico">🎯</span>What it does</h2>
+      <p>Every 2 hours during the shift it reads the model's live OnlyFans numbers and posts a short coaching scoreboard into her team's Slack channel: what's working, what to tighten, which whales to chase, and how today's money compares to her average. It's a coach, not a callout.</p>
+      <p class="m">It reads <strong>captions and numbers only</strong>. It never looks at the photos or videos, so it never overpromises.</p>
+    </div></div>
+
+    <div class="sec reveal"><div class="glass">
+      <h2><span class="ico">🔌</span>Before you start (one time)</h2>
+      <p>In the Cowork app, make sure two things are connected (green): <strong>OnlyFans API</strong> and <strong>Slack</strong>. If they're connected, you're ready.</p>
+      <p class="m">Every model's account ID and team channel lives in the private team roster your manager keeps. You don't type IDs from memory, you look them up there.</p>
+    </div></div>
+
+    <div class="sec reveal"><div class="glass">
+      <h2><span class="ico">✅</span>The 5 steps</h2>
+      <ol class="steps">
+        <li><strong>Open Cowork</strong> (the Claude desktop app).</li>
+        <li><strong>Look up the model</strong> in the private roster, copy her account ID and her team channel.</li>
+        <li><strong>Type the setup request</strong> (template below), filling in the blanks.</li>
+        <li><strong>Test it once first.</strong> Say: <em>"Before scheduling, run it once now so I can see it."</em> Read the post. Happy with the tone? Move on.</li>
+        <li><strong>Approve the popup.</strong> When you ask to schedule it, a box pops up to approve the recurring task. Click <strong>Approve</strong>. It now runs on its own.</li>
+      </ol>
+    </div></div>
+
+    <div class="sec reveal"><div class="glass">
+      <h2><span class="ico">📋</span>Copy-paste template</h2>
+      <p class="m">Fill the <span class="blank">amber blanks</span> from the roster, then paste into Cowork.</p>
+      <div class="tmpl">
+        <span class="lead">Set up a Chatter Grader for <span class="blank">[MODEL NAME]</span>.</span>
+        <ul>
+          <li>OnlyFans account: <span class="blank">[acct_… from the roster]</span></li>
+          <li>Post live to Slack channel: <span class="blank">[#channel-name / channel ID from the roster]</span></li>
+          <li>Schedule: <strong>every 2 hours, 8am–10pm</strong>.</li>
+          <li>Grade: caption honesty (text only, no image claims), reply speed, whale coverage, and today's money vs her 30-day daily average, with a motivational push if she's behind.</li>
+          <li>Banned words: <span class="blank">[her list]</span>.</li>
+          <li>Tone: supportive coach. <strong>Never name or shame an individual chatter.</strong> Post directly and send me the link.</li>
+        </ul>
+      </div>
+    </div></div>
+
+    <div class="sec reveal"><div class="glass">
+      <h2><span class="ico">💗</span>Worked example — Shantal</h2>
+      <p class="m">Proven live on Jun 14, 2026. Real IDs are kept in the private roster, not here.</p>
+      <div class="tmpl">
+        <span class="lead">Set up a Chatter Grader for Shantal.</span>
+        <ul>
+          <li>OnlyFans account: <span class="blank">acct_… (look it up in the private roster)</span></li>
+          <li>Post live to <span class="blank">#shantal-team (channel ID in the roster)</span></li>
+          <li>Every 2 hours, 8am–10pm.</li>
+          <li>Grade caption honesty (text only), reply speed, whale coverage, and today vs her 30-day average, motivational push if behind.</li>
+          <li>Banned words: <span class="chip">baby</span><span class="chip">clit</span></li>
+          <li>Coaching tone, never single out a chatter. Post directly and send me the link.</li>
+        </ul>
+      </div>
+    </div></div>
+
+    <div class="sec reveal"><div class="glass">
+      <h2><span class="ico">🔧</span>Changing or stopping one</h2>
+      <ul class="plain">
+        <li><strong>Change timing:</strong> <em>"Make Shantal's grader run every 4 hours instead,"</em> or <em>"…only 10am–10pm."</em></li>
+        <li><strong>Pause it:</strong> <em>"Turn off the Shantal Chatter Grader."</em></li>
+        <li><strong>See what's running:</strong> <em>"List my scheduled tasks."</em></li>
+      </ul>
+    </div></div>
+
+    <div class="sec reveal"><div class="glass">
+      <h2><span class="ico">💡</span>Good to know</h2>
+      <ul class="plain">
+        <li><strong>The approval popup is normal.</strong> Anything scheduled asks you to approve once, just click Approve.</li>
+        <li><strong>It only reads captions and numbers, never the images,</strong> so it can't and won't claim the video matches or doesn't match. It checks caption wording against the banned-words and no-false-advertising rules.</li>
+        <li><strong>Real numbers only.</strong> If a data pull fails, the post says so instead of guessing.</li>
+        <li><strong>Scheduled tasks run while the Cowork app is open.</strong> If the computer is asleep when one is due, it runs at next open. For 24/7 coverage, keep it on an always-on machine.</li>
+      </ul>
+      <div class="note" style="margin-top:14px"><strong>Safety:</strong> never paste the OnlyFans API key or any password into the chat. It already lives inside the connector. The roster holds IDs only, and stays private to the team.</div>
+    </div></div>
+
+    <div class="sec reveal"><div class="glass">
+      <div class="roster-cta"><strong>The roster lives privately.</strong> The model list with account IDs and team channels is kept in your team's private roster (ask Jay for access). It is intentionally not on this public page.</div>
+    </div></div>
+
+  </div>
+
+  <div class="foot">A job you can hand to your Cowork · captions + numbers only, never the images · LiveRichMedia</div>
+</div>
+
+</body>
+</html>
